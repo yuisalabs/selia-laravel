@@ -2,10 +2,12 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "yuisalabs/selia-laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "The skeleton application for the Laravel framework with Inertia.js and Selia UI Library.",
     "keywords": [
         "laravel",
-        "framework"
+        "framework",
+        "selia",
+        "inertia"
     ],
     "license": "MIT",
     "require": {
