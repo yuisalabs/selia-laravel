@@ -1,5 +1,3 @@
-'use client';
-
 import { useRender } from '@base-ui/react/use-render';
 import { cn } from '@/utils/cn';
 
