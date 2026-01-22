@@ -1,12 +1,14 @@
-import InputError from '@/components/InputError';
-import PrimaryButton from '@/components/PrimaryButton';
-import TextInput from '@/components/TextInput';
+import { Button } from '@/components/ui/button';
+import { Field, FieldError } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
 import GuestLayout from '@/layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 export default function ForgotPassword({ status }: { status?: string }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const errors = usePage().props.errors;
+
+    const { data, setData, post, processing } = useForm({
         email: '',
     });
 
@@ -33,23 +35,26 @@ export default function ForgotPassword({ status }: { status?: string }) {
             )}
 
             <form onSubmit={submit}>
-                <TextInput
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    className="mt-1 block w-full"
-                    isFocused={true}
-                    onChange={(e) => setData('email', e.target.value)}
-                />
+                <Field invalid={!!errors.email}>
+                    <Input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={data.email}
+                        autoComplete="username"
+                        placeholder="Enter your email"
+                        onChange={(e) => setData('email', e.target.value)}
+                    />
+                    <FieldError match={!!errors.email}>{errors.email}</FieldError>
+                </Field>
 
-                <InputError message={errors.email} className="mt-2" />
-
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Email Password Reset Link
-                    </PrimaryButton>
-                </div>
+                <Button
+                    type="submit"
+                    className="mt-4 w-full"
+                    disabled={processing}
+                >
+                    Email Password Reset Link
+                </Button>
             </form>
         </GuestLayout>
     );

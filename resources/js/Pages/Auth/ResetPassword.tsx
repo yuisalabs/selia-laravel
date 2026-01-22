@@ -3,17 +3,21 @@ import InputLabel from '@/components/InputLabel';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import GuestLayout from '@/layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+
+interface ResetPasswordProps {
+    token: string;
+    email: string;
+}
 
 export default function ResetPassword({
     token,
     email,
-}: {
-    token: string;
-    email: string;
-}) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+}: ResetPasswordProps) {
+    const errors = usePage().props.errors;
+    
+    const { data, setData, post, processing, reset } = useForm({
         token: token,
         email: email,
         password: '',
