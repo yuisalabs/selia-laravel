@@ -1,9 +1,14 @@
-import DangerButton from '@/components/DangerButton';
-import InputError from '@/components/InputError';
-import InputLabel from '@/components/InputLabel';
-import Modal from '@/components/Modal';
-import SecondaryButton from '@/components/SecondaryButton';
-import TextInput from '@/components/TextInput';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogPopup,
+    DialogHeader,
+    DialogTitle,
+    DialogBody,
+    DialogFooter,
+} from '@/components/ui/dialog';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
 
@@ -64,61 +69,58 @@ export default function DeleteUserForm({
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>
+            <Button variant="danger" onClick={confirmUserDeletion}>
                 Delete Account
-            </DangerButton>
+            </Button>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        Are you sure you want to delete your account?
-                    </h2>
+            <Dialog open={confirmingUserDeletion} onOpenChange={(open) => !open && closeModal()}>
+                <DialogPopup>
+                    <form onSubmit={deleteUser}>
+                        <DialogHeader>
+                            <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
+                        </DialogHeader>
 
-                    <p className="mt-1 text-sm text-gray-600">
-                        Once your account is deleted, all of its resources and
-                        data will be permanently deleted. Please enter your
-                        password to confirm you would like to permanently delete
-                        your account.
-                    </p>
+                        <DialogBody>
+                            <p className="mt-1 text-sm text-gray-600">
+                                Once your account is deleted, all of its resources and
+                                data will be permanently deleted. Please enter your
+                                password to confirm you would like to permanently delete
+                                your account.
+                            </p>
 
-                    <div className="mt-6">
-                        <InputLabel
-                            htmlFor="password"
-                            value="Password"
-                            className="sr-only"
-                        />
+                            <div className="mt-6">
+                                <Field invalid={!!errors.password}>
+                                    <FieldLabel htmlFor="password" className="sr-only">Password</FieldLabel>
 
-                        <TextInput
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
-                            value={data.password}
-                            onChange={(e) =>
-                                setData('password', e.target.value)
-                            }
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder="Password"
-                        />
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        ref={passwordInput}
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
+                                        className="mt-1 block w-full"
+                                        autoFocus
+                                        placeholder="Enter your password"
+                                    />
 
-                        <InputError
-                            message={errors.password}
-                            className="mt-2"
-                        />
-                    </div>
+                                    <FieldError match={!!errors.password}>{errors.password}</FieldError>
+                                </Field>
+                            </div>
+                        </DialogBody>
 
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancel
-                        </SecondaryButton>
+                        <DialogFooter>
+                            <Button variant="plain" onClick={closeModal}>
+                                Cancel
+                            </Button>
 
-                        <DangerButton className="ms-3" disabled={processing}>
-                            Delete Account
-                        </DangerButton>
-                    </div>
-                </form>
-            </Modal>
+                            <Button variant="danger" className="ms-3" type="submit" disabled={processing}>
+                                Delete Account
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogPopup>
+            </Dialog>
         </section>
     );
 }

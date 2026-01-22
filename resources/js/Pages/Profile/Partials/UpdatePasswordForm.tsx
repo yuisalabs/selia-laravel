@@ -1,7 +1,6 @@
-import InputError from '@/components/InputError';
-import InputLabel from '@/components/InputLabel';
-import PrimaryButton from '@/components/PrimaryButton';
-import TextInput from '@/components/TextInput';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
@@ -17,9 +16,9 @@ export default function UpdatePasswordForm({
     const {
         data,
         setData,
-        errors,
         put,
         reset,
+        errors,
         processing,
         recentlySuccessful,
     } = useForm({
@@ -62,34 +61,27 @@ export default function UpdatePasswordForm({
             </header>
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel
-                        htmlFor="current_password"
-                        value="Current Password"
-                    />
+                <Field invalid={!!errors.current_password}>
+                    <FieldLabel htmlFor="current_password">Current Password</FieldLabel>
 
-                    <TextInput
+                    <Input
                         id="current_password"
                         ref={currentPasswordInput}
                         value={data.current_password}
-                        onChange={(e) =>
-                            setData('current_password', e.target.value)
-                        }
+                        onChange={(e) => setData('current_password', e.target.value)}
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="current-password"
+                        placeholder="Enter your current password"
                     />
 
-                    <InputError
-                        message={errors.current_password}
-                        className="mt-2"
-                    />
-                </div>
+                    <FieldError match={!!errors.current_password}>{errors.current_password}</FieldError>
+                </Field>
 
-                <div>
-                    <InputLabel htmlFor="password" value="New Password" />
+                <Field invalid={!!errors.password}>
+                    <FieldLabel htmlFor="password">New Password</FieldLabel>
 
-                    <TextInput
+                    <Input
                         id="password"
                         ref={passwordInput}
                         value={data.password}
@@ -97,36 +89,30 @@ export default function UpdatePasswordForm({
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
+                        placeholder="Enter your new password"
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                    <FieldError match={!!errors.password}>{errors.password}</FieldError>
+                </Field>
 
-                <div>
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                <Field invalid={!!errors.password_confirmation}>
+                    <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
 
-                    <TextInput
+                    <Input
                         id="password_confirmation"
                         value={data.password_confirmation}
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
+                        placeholder="Confirm your new password"
                     />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
+                    <FieldError match={!!errors.password_confirmation}>{errors.password_confirmation}</FieldError>
+                </Field>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <Button variant="primary" type="submit" disabled={processing}>Save</Button>
 
                     <Transition
                         show={recentlySuccessful}
