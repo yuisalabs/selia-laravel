@@ -2,7 +2,7 @@
   "framework": "laravel",
   "paths": {
     "components": "resources/js/components/ui",
-    "utils": "@/utils/cn.ts"
+    "utils": "@/utils/cn"
   },
   "imports": {
     "components": "@/components/ui",

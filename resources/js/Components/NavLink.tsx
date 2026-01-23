@@ -1,4 +1,6 @@
+import { cn } from '@/utils/cn';
 import { InertiaLinkProps, Link } from '@inertiajs/react';
+import { Button } from './ui/button';
 
 export default function NavLink({
     active = false,
@@ -7,17 +9,24 @@ export default function NavLink({
     ...props
 }: InertiaLinkProps & { active: boolean }) {
     return (
-        <Link
-            {...props}
-            className={
-                'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none ' +
-                (active
-                    ? 'border-indigo-400 text-gray-900 focus:border-indigo-700'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700') +
+        <Button
+            nativeButton={false}
+            variant="plain"
+            className={cn(
+                "relative rounded-md hover:bg-transparent active:bg-transparent transition-colors ease-in-out px-3 py-2",
+                active
+                    ? 'text-foreground font-semibold'
+                    : 'text-muted-foreground hover:text-foreground font-medium',
                 className
+            )}
+            render={
+                <Link {...props}>
+                    {children}
+                    {active && (
+                        <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary rounded-full transform translate-y-3.5" />
+                    )}
+                </Link>
             }
-        >
-            {children}
-        </Link>
+        />
     );
 }
