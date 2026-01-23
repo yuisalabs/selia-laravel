@@ -17,14 +17,14 @@ export default function Authenticated({
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="min-h-screen bg-background">
+            <nav className="border-b border-separator bg-card">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                                    <ApplicationLogo className="block h-9 w-auto fill-current text-foreground" />
                                 </Link>
                             </div>
 
@@ -92,7 +92,7 @@ export default function Authenticated({
                                         (previousState) => !previousState,
                                     )
                                 }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-400 dark:focus:bg-gray-700 dark:focus:text-gray-400"
+                                className="inline-flex items-center justify-center rounded-md p-2 text-muted transition duration-150 ease-in-out hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:outline-none"
                             >
                                 <svg
                                     className="h-6 w-6"
@@ -143,12 +143,12 @@ export default function Authenticated({
                         </ResponsiveNavLink>
                     </div>
 
-                    <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
+                    <div className="border-t border-separator pb-1 pt-4">
                         <div className="px-4">
-                            <div className="text-base font-medium text-gray-800 dark:text-gray-200">
+                            <div className="text-base font-medium text-foreground">
                                 {user.name}
                             </div>
-                            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            <div className="text-sm font-medium text-muted">
                                 {user.email}
                             </div>
                         </div>
@@ -170,7 +170,7 @@ export default function Authenticated({
             </nav>
 
             {header && (
-                <header className="bg-white shadow dark:bg-gray-800">
+                <header className="bg-card shadow">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>
