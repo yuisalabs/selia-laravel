@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Text, TextLink } from '@/components/ui/text';
@@ -27,6 +28,11 @@ export default function Register() {
     return (
         <GuestLayout>
             <Head title="Register" />
+
+            <CardHeader className="flex flex-col items-center text-center border-none">
+                <CardTitle>Register</CardTitle>
+                <CardDescription>Create an account to get started.</CardDescription>
+            </CardHeader>
 
             <form onSubmit={submit}>
                 <Field>
