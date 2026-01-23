@@ -14,7 +14,7 @@ export default function Edit({
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
                     Profile
                 </h2>
             }
@@ -30,7 +30,7 @@ export default function Edit({
                             <TabsItem value="delete-account">Delete Account</TabsItem>
                         </TabsList>
                         <TabsPanel value="profile">
-                            <Fieldset className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+                            <Fieldset className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                                 <UpdateProfileInformationForm
                                     mustVerifyEmail={mustVerifyEmail}
                                     status={status}
@@ -39,12 +39,12 @@ export default function Edit({
                             </Fieldset>
                         </TabsPanel>
                         <TabsPanel value="password">
-                            <Fieldset className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+                            <Fieldset className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                                 <UpdatePasswordForm className="max-w-xl" />
                             </Fieldset>
                         </TabsPanel>
                         <TabsPanel value="delete-account">
-                            <Fieldset className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+                            <Fieldset className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
                                 <DeleteUserForm className="max-w-xl" />
                             </Fieldset>
                         </TabsPanel>
