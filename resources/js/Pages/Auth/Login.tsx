@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -36,6 +37,11 @@ export default function Login({
     return (
         <GuestLayout>
             <Head title="Log in" />
+
+            <CardHeader className="flex flex-col items-center text-center border-none">
+                <CardTitle>Sign in to your account</CardTitle>
+                <CardDescription>Sign in with your email or continue with a connected account.</CardDescription>
+            </CardHeader>
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">

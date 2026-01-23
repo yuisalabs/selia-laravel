@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/components/ApplicationLogo';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Card } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
@@ -10,13 +11,13 @@ export default function Guest({ children }: PropsWithChildren) {
                 <ThemeToggle />
             </div>
             
-            <div className="mt-6 w-full overflow-hidden bg-card px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                <Link href="/" className="flex justify-center mb-4">
-                    <ApplicationLogo className="h-16 w-16 fill-current text-muted" />
+            <Card className="mt-6 w-full overflow-hidden bg-card px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
+                <Link href="/" className="flex justify-center">
+                    <ApplicationLogo className="h-10 w-10 fill-current text-muted" />
                 </Link>
 
                 {children}
-            </div>
+            </Card>
         </div>
     );
 }

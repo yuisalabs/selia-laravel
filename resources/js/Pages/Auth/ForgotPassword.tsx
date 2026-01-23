@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import GuestLayout from '@/layouts/GuestLayout';
@@ -22,11 +23,14 @@ export default function ForgotPassword({ status }: { status?: string }) {
         <GuestLayout>
             <Head title="Forgot Password" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email
-                address and we will email you a password reset link that will
-                allow you to choose a new one.
-            </div>
+            <CardHeader className="text-center border-none">
+                <CardTitle>Forgot Password</CardTitle>
+                <CardDescription>
+                    Forgot your password? No problem. Just let us know your email
+                    address and we will email you a password reset link that will
+                    allow you to choose a new one.
+                </CardDescription>
+            </CardHeader>
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
@@ -50,7 +54,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <Button
                     type="submit"
-                    className="mt-4 w-full"
+                    className="my-4 w-full"
                     disabled={processing}
                 >
                     Email Password Reset Link
