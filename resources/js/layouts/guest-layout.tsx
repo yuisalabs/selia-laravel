@@ -1,10 +1,10 @@
-import ApplicationLogo from '@/components/ApplicationLogo';
+import ApplicationLogo from '@/components/application-logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Card } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
-export default function Guest({ children }: PropsWithChildren) {
+export default function GuestLayout({ children }: PropsWithChildren) {
     return (
         <div className="flex min-h-screen flex-col items-center bg-background pt-6 sm:justify-center sm:pt-0">
             <div className="absolute top-4 right-4">

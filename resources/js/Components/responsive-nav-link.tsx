@@ -6,11 +6,12 @@ export default function ResponsiveNavLink({
     active = false,
     className = '',
     children,
+    as: Component = Link,
     ...props
-}: InertiaLinkProps & { active?: boolean }) {
+}: any) {
     return (
         <Button
-            nativeButton={false}
+            nativeButton={props.as === 'button'}
             variant="plain"
             block
             className={cn(
@@ -21,9 +22,9 @@ export default function ResponsiveNavLink({
                 className
             )}
             render={
-                <Link {...props}>
+                <Component {...props}>
                     {children}
-                </Link>
+                </Component>
             }
         />
     );

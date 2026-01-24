@@ -1,23 +1,17 @@
 import { Button } from '@/components/ui/button';
-import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text, TextLink } from '@/components/ui/text';
-import GuestLayout from '@/layouts/GuestLayout';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
+interface LoginFormProps {
+    canResetPassword?: boolean;
 }
 
-export default function Login({
-    status,
-    canResetPassword,
-}: LoginProps) {
+export default function LoginForm({ canResetPassword }: LoginFormProps) {
     const errors = usePage().props.errors;
 
     const { data, setData, post, processing, reset } = useForm({
@@ -35,20 +29,7 @@ export default function Login({
     };
 
     return (
-        <GuestLayout>
-            <Head title="Log in" />
-
-            <CardHeader className="flex flex-col items-center text-center border-none">
-                <CardTitle>Sign in to your account</CardTitle>
-                <CardDescription>Sign in with your email or continue with a connected account.</CardDescription>
-            </CardHeader>
-
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
-
+        <>
             <form onSubmit={submit}>
                 <Field invalid={!!errors.email}>
                     <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -59,8 +40,9 @@ export default function Login({
                         value={data.email}
                         autoComplete="username"
                         placeholder="Enter your email"
-                        onChange={(e) => setData('email', e.target.value)}/>
-                    <FieldError match={!!errors.email} >{errors.email}</FieldError>
+                        onChange={(e) => setData('email', e.target.value)}
+                    />
+                    <FieldError match={!!errors.email}>{errors.email}</FieldError>
                 </Field>
 
                 <Field className="mt-4" invalid={!!errors.password}>
@@ -79,7 +61,8 @@ export default function Login({
                         value={data.password}
                         autoComplete="current-password"
                         placeholder="Enter your password"
-                        onChange={(e) => setData('password', e.target.value)}/>
+                        onChange={(e) => setData('password', e.target.value)}
+                    />
                     <FieldError match={!!errors.password}>{errors.password}</FieldError>
                 </Field>
 
@@ -88,10 +71,12 @@ export default function Login({
                         <Checkbox
                             name="remember"
                             checked={data.remember}
-                            onCheckedChange={(checked) => setData('remember', checked)}/>
+                            onCheckedChange={(checked) => setData('remember', checked as boolean)}
+                        />
                         <span>Remember me</span>
                     </Label>
                 </div>
+
                 <Button
                     variant="primary"
                     type="submit"
@@ -107,6 +92,6 @@ export default function Login({
             <Text className="text-center mt-4">
                 Don't have an account? <TextLink href={route('register')}>Register</TextLink>
             </Text>
-        </GuestLayout>
+        </>
     );
 }

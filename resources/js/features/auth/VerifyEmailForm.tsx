@@ -1,10 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import GuestLayout from '@/layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function VerifyEmail({ status }: { status?: string }) {
+export default function VerifyEmailForm({ status }: { status?: string }) {
     const { post, processing } = useForm({});
 
     const submit: FormEventHandler = (e) => {
@@ -14,14 +12,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Email Verification" />
-
-            <CardHeader className="flex flex-col items-center text-center border-none">
-                <CardTitle>Email Verification</CardTitle>
-                <CardDescription>Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.</CardDescription>
-            </CardHeader>
-
+        <>
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-sm font-medium text-green-600">
                     A new verification link has been sent to the email address
@@ -41,12 +32,12 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     Resend Verification Email
                 </Button>
                 <Button
-                    nativeButton={false}
+                    nativeButton={true}
                     variant="plain"
-                    className="mt-4"
+                    className="mt-4 w-full"
                     render={
                         <Link
-                            className='text-center w-full'
+                            className='justify-center w-full'
                             href={route('logout')}
                             method="post"
                             as="button"
@@ -55,6 +46,6 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     Log out
                 </Button>
             </form>
-        </GuestLayout>
+        </>
     );
 }

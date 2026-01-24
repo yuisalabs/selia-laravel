@@ -1,15 +1,9 @@
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard() {
+export default function DashboardPage() {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Dashboard
-                </h2>
-            }
-        >
+        <>
             <Head title="Dashboard" />
 
             <div className="py-12">
@@ -21,6 +15,18 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+DashboardPage.layout = (page: any) => {
+    return <AuthenticatedLayout
+        header={
+            <h2 className="text-xl font-semibold leading-tight text-foreground">
+                Dashboard
+            </h2>
+        }
+    >
+        {page}
+    </AuthenticatedLayout>;
+};

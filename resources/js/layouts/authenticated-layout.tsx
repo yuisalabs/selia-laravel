@@ -1,13 +1,13 @@
-import ApplicationLogo from '@/components/ApplicationLogo';
-import NavLink from '@/components/NavLink';
-import ResponsiveNavLink from '@/components/ResponsiveNavLink';
+import ApplicationLogo from '@/components/application-logo';
+import NavLink from '@/components/nav-link';
+import ResponsiveNavLink from '@/components/responsive-nav-link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
-export default function Authenticated({
+export default function AuthenticatedLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
@@ -72,7 +72,7 @@ export default function Authenticated({
                                         <MenuSeparator />
                                         <MenuItem render={
                                             <Button
-                                                nativeButton={false}
+                                                nativeButton={true}
                                                 variant="plain"
                                                 render={
                                                     <Link
