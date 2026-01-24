@@ -6,8 +6,9 @@ export default function NavLink({
     active = false,
     className = '',
     children,
+    as: Component = Link,
     ...props
-}: InertiaLinkProps & { active: boolean }) {
+}: any) {
     return (
         <Button
             nativeButton={false}
@@ -20,12 +21,12 @@ export default function NavLink({
                 className
             )}
             render={
-                <Link {...props}>
+                <Component {...props}>
                     {children}
                     {active && (
                         <span className="absolute bottom-0 left-1/2 w-3/4 transform -translate-x-1/2 translate-y-3.5 h-0.75 bg-primary rounded-full" />
                     )}
-                </Link>
+                </Component>
             }
         />
     );

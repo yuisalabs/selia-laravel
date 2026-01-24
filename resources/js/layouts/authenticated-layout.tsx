@@ -7,7 +7,7 @@ import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/compone
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
-export default function Authenticated({
+export default function AuthenticatedLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
@@ -72,7 +72,7 @@ export default function Authenticated({
                                         <MenuSeparator />
                                         <MenuItem render={
                                             <Button
-                                                nativeButton={false}
+                                                nativeButton={true}
                                                 variant="plain"
                                                 render={
                                                     <Link
