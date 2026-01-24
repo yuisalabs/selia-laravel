@@ -1,9 +1,9 @@
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
-import DeleteUserForm from './partials/DeleteUserForm';
-import UpdatePasswordForm from './partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './partials/UpdateProfileInformationForm';
+import DeleteUserForm from '../../features/profile/delete-user-form';
+import UpdatePasswordForm from '../../features/profile/update-password-form';
+import UpdateProfileInformationForm from '../../features/profile/update-profile-information-form';
 import { Tabs, TabsItem, TabsList, TabsPanel } from '@/components/ui/tabs';
 import { Fieldset } from '@/components/ui/fieldset';
 

@@ -3,7 +3,7 @@ import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Text, TextLink } from '@/components/ui/text';
-import GuestLayout from '@/layouts/GuestLayout';
+import GuestLayout from '@/layouts/guest-layout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 

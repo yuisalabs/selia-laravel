@@ -1,4 +1,4 @@
-import ApplicationLogo from '@/components/ApplicationLogo';
+import ApplicationLogo from '@/components/application-logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Card } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';

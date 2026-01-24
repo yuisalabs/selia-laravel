@@ -23,7 +23,7 @@ export default function NavLink({
                 <Link {...props}>
                     {children}
                     {active && (
-                        <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary rounded-full transform translate-y-3.5" />
+                        <span className="absolute bottom-0 left-1/2 w-3/4 transform -translate-x-1/2 translate-y-3.5 h-0.75 bg-primary rounded-full" />
                     )}
                 </Link>
             }

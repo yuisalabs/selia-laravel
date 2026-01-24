@@ -1,6 +1,6 @@
-import ApplicationLogo from '@/components/ApplicationLogo';
-import NavLink from '@/components/NavLink';
-import ResponsiveNavLink from '@/components/ResponsiveNavLink';
+import ApplicationLogo from '@/components/application-logo';
+import NavLink from '@/components/nav-link';
+import ResponsiveNavLink from '@/components/responsive-nav-link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
