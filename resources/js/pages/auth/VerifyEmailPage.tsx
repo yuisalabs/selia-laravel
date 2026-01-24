@@ -1,5 +1,5 @@
 import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import VerifyEmailForm from '@/features/auth/VerifyEmailForm';
+import VerifyEmailForm from '@/features/auth/verify-email-form';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head } from '@inertiajs/react';
 

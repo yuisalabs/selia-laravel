@@ -1,5 +1,5 @@
 import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import ResetPasswordForm from '@/features/auth/ResetPasswordForm';
+import ResetPasswordForm from '@/features/auth/reset-password-form';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head } from '@inertiajs/react';
 

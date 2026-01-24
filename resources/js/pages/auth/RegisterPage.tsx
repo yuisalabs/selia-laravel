@@ -1,5 +1,5 @@
 import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import RegisterForm from '@/features/auth/RegisterForm';
+import RegisterForm from '@/features/auth/register-form';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head } from '@inertiajs/react';
 
