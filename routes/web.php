@@ -20,4 +20,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// ACL Routes - Protected by auth and role middleware
+Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
+    Route::resource('roles', App\Http\Controllers\RoleController::class);
+    Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+    Route::resource('users', App\Http\Controllers\UserController::class);
+});
+
 require __DIR__.'/auth.php';

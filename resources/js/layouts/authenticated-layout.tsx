@@ -38,10 +38,22 @@ export default function AuthenticatedLayout({
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    href={'#'}
-                                    active={false}
+                                    href={route('users.index')}
+                                    active={route().current('users.*')}
                                 >
                                     Users
+                                </NavLink>
+                                <NavLink
+                                    href={route('roles.index')}
+                                    active={route().current('roles.*')}
+                                >
+                                    Roles
+                                </NavLink>
+                                <NavLink
+                                    href={route('permissions.index')}
+                                    active={route().current('permissions.*')}
+                                >
+                                    Permissions
                                 </NavLink>
                             </div>
                         </div>
