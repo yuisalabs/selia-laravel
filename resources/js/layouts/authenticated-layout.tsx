@@ -2,8 +2,10 @@ import ApplicationLogo from '@/components/application-logo';
 import NavLink from '@/components/nav-link';
 import ResponsiveNavLink from '@/components/responsive-nav-link';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
+import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
@@ -51,10 +53,28 @@ export default function AuthenticatedLayout({
                                         render={
                                         <Button variant="plain">
                                             Hello, {user.name}!
+                                            <Avatar size="sm">
+                                                <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
+                                                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                                            </Avatar>
                                         </Button>
                                         }
                                     />
                                     <MenuPopup>
+                                        <MenuItem render={
+                                            <Button
+                                                nativeButton={false}
+                                                variant="plain"
+                                                render={
+                                                    <a
+                                                        className='justify-start'
+                                                        href={route('welcome')}
+                                                        rel="noopener noreferrer"
+                                                    />
+                                                }>
+                                                Home
+                                            </Button>
+                                        }/>
                                         <MenuItem render={
                                             <Button
                                                 nativeButton={false}
@@ -68,7 +88,7 @@ export default function AuthenticatedLayout({
                                                 }>
                                                 Profile
                                             </Button>
-                                        }/>
+                                        }/>                                        
                                         <MenuSeparator />
                                         <MenuItem render={
                                             <Button
