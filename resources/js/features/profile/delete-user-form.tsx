@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
+import { Card } from '@/components/ui/card';
 
 export default function DeleteUserForm({
     className = '',
@@ -55,7 +56,7 @@ export default function DeleteUserForm({
     };
 
     return (
-        <section className={`space-y-6 ${className}`}>
+        <Card className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-foreground">
                     Delete Account
@@ -121,6 +122,6 @@ export default function DeleteUserForm({
                     </form>
                 </DialogPopup>
             </Dialog>
-        </section>
+        </Card>
     );
 }

@@ -30,22 +30,22 @@ export default function Edit({
                             <TabsItem value="delete-account">Delete Account</TabsItem>
                         </TabsList>
                         <TabsPanel value="profile">
-                            <Fieldset className="bg-card p-4 shadow sm:rounded-lg sm:p-8">
+                            <Fieldset>
                                 <UpdateProfileInformationForm
                                     mustVerifyEmail={mustVerifyEmail}
                                     status={status}
-                                    className="max-w-xl"
+                                    className="max-w-full p-4 bg-card shadow sm:rounded-lg sm:p-8"
                                 />
                             </Fieldset>
                         </TabsPanel>
                         <TabsPanel value="password">
-                            <Fieldset className="bg-card p-4 shadow sm:rounded-lg sm:p-8">
-                                <UpdatePasswordForm className="max-w-xl" />
+                            <Fieldset>
+                                <UpdatePasswordForm className="max-w-full p-4 bg-card shadow sm:rounded-lg sm:p-8" />
                             </Fieldset>
                         </TabsPanel>
                         <TabsPanel value="delete-account">
-                            <Fieldset className="bg-card p-4 shadow sm:rounded-lg sm:p-8">
-                                <DeleteUserForm className="max-w-xl" />
+                            <Fieldset>
+                                <DeleteUserForm className="max-w-full p-4 bg-card shadow sm:rounded-lg sm:p-8" />
                             </Fieldset>
                         </TabsPanel>
                     </Tabs>

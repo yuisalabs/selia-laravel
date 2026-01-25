@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { Card } from '@/components/ui/card';
 
 interface UpdateProfileInformationProps {
     mustVerifyEmail: boolean;
@@ -32,7 +33,7 @@ export default function UpdateProfileInformation({
     };
 
     return (
-        <section className={className}>
+        <Card className={className}>
             <header>
                 <h2 className="text-lg font-medium text-foreground">
                     Profile Information
@@ -117,6 +118,6 @@ export default function UpdateProfileInformation({
                     </Transition>
                 </div>
             </form>
-        </section>
+        </Card>
     );
 }

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
+import { Card } from '@/components/ui/card';
 
 export default function UpdatePasswordForm({
     className = '',
@@ -48,7 +49,7 @@ export default function UpdatePasswordForm({
     };
 
     return (
-        <section className={className}>
+        <Card className={className}>
             <header>
                 <h2 className="text-lg font-medium text-foreground">
                     Update Password
@@ -127,6 +128,6 @@ export default function UpdatePasswordForm({
                     </Transition>
                 </div>
             </form>
-        </section>
+        </Card>
     );
 }
