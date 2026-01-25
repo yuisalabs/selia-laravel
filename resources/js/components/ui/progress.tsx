@@ -1,0 +1,49 @@
+'use client';
+
+import { Progress as BaseProgress } from '@base-ui/react/progress';
+import { cn } from '@/utils/cn';
+
+export function Progress({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof BaseProgress.Root>) {
+  return (
+    <BaseProgress.Root
+      data-slot="progress"
+      {...props}
+      className={cn('flex flex-wrap gap-1.5 justify-between', className)}
+    >
+      {children}
+      <BaseProgress.Track className="h-1.5 w-full rounded-full bg-track">
+        <BaseProgress.Indicator className="rounded-full bg-primary transition-all duration-500" />
+      </BaseProgress.Track>
+    </BaseProgress.Root>
+  );
+}
+
+export function ProgressLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseProgress.Label>) {
+  return (
+    <BaseProgress.Label
+      data-slot="progress-label"
+      {...props}
+      className={cn('font-medium text-foreground', className)}
+    />
+  );
+}
+
+export function ProgressValue({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseProgress.Value>) {
+  return (
+    <BaseProgress.Value
+      data-slot="progress-value"
+      {...props}
+      className={cn('text-sm text-dimmed', className)}
+    />
+  );
+}
