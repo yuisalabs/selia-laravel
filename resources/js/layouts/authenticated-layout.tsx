@@ -31,14 +31,21 @@ import {
     LucideUsers,
     LucideX
 } from 'lucide-react';
-import { PropsWithChildren, ReactNode, useState, useEffect } from 'react';
+import { PropsWithChildren, ReactNode, useState, useEffect, Fragment as React } from 'react';
 import { FlashMessages } from '@/components/flash-messages';
 import { cn } from '@/utils/cn';
+import { Breadcrumb, BreadcrumbButton, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+
+export interface BreadcrumbItemType {
+    label: string;
+    href?: string;
+}
 
 export default function AuthenticatedLayout({
     header,
+    breadcrumbs,
     children,
-}: PropsWithChildren<{ header?: ReactNode }>) {
+}: PropsWithChildren<{ header?: ReactNode; breadcrumbs?: BreadcrumbItemType[] }>) {
     const user = usePage().props.auth.user;
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -280,7 +287,36 @@ export default function AuthenticatedLayout({
                 <div className={cn(
                     'min-h-[calc(100vh-4rem)] flex flex-col max-lg:px-0',
                     sidebarOpen ? 'xl:pr-0' : 'xl:px-0',
-                )}>
+                )}>  
+                    {breadcrumbs && breadcrumbs.length > 0 && (
+                        <div className="border-b border-border bg-card px-4 py-3">
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    {breadcrumbs.map((item, index) => {
+                                        const isLast = index === breadcrumbs.length - 1;
+                                        return (
+                                            <React key={index}>
+                                                <BreadcrumbItem>
+                                                    {item.href && !isLast ? (
+                                                        <BreadcrumbButton
+                                                            render={<Link href={item.href} />}
+                                                        >
+                                                            {item.label}
+                                                        </BreadcrumbButton>
+                                                    ) : (
+                                                        <BreadcrumbButton active={isLast}>
+                                                            {item.label}
+                                                        </BreadcrumbButton>
+                                                    )}
+                                                </BreadcrumbItem>
+                                                {!isLast && <BreadcrumbSeparator />}
+                                            </React>
+                                        );
+                                    })}
+                                </BreadcrumbList>
+                            </Breadcrumb>
+                        </div>
+                    )}
                     <div className="flex-1">
                         {children}
                     </div>

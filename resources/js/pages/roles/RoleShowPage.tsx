@@ -154,9 +154,10 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
 
 RoleShowPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Role Details</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Role Details</Heading>}
+            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Details' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

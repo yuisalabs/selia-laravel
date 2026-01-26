@@ -109,9 +109,10 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
 
 PermissionEditPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Edit Permission</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Edit Permission</Heading>}
+            breadcrumbs={[{ label: 'Permissions', href: route('permissions.index') }, { label: 'Edit' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

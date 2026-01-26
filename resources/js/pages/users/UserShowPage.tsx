@@ -140,9 +140,10 @@ export default function UserShowPage({ user }: UserShowPageProps) {
 
 UserShowPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">User Details</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">User Details</Heading>}
+            breadcrumbs={[{ label: 'Users', href: route('users.index') }, { label: 'Details' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

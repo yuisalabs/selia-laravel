@@ -52,7 +52,10 @@ export default function ProfileEditPage({
 
 ProfileEditPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={<Heading size="sm">Profile</Heading>}>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Profile</Heading>}
+            breadcrumbs={[{ label: 'Profile' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

@@ -44,9 +44,10 @@ export default function DashboardPage({ stats }: DashboardProps) {
 
 DashboardPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Dashboard</Heading>
-        }>
+        <AuthenticatedLayout 
+            header={<Heading size="sm">Dashboard</Heading>}
+            breadcrumbs={[{ label: 'Dashboard' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

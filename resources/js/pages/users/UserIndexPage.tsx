@@ -242,9 +242,10 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
 
 UserIndexPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Users</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Users</Heading>}
+            breadcrumbs={[{ label: 'Users' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

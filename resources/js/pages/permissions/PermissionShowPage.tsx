@@ -114,9 +114,10 @@ export default function PermissionShowPage({ permission }: PermissionShowPagePro
 
 PermissionShowPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Permission Details</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Permission Details</Heading>}
+            breadcrumbs={[{ label: 'Permissions', href: route('permissions.index') }, { label: 'Details' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

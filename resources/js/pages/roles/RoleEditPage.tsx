@@ -160,9 +160,10 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
 
 RoleEditPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Edit Role</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Edit Role</Heading>}
+            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Edit' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

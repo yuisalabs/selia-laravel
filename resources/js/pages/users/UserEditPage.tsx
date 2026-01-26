@@ -156,9 +156,10 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
 
 UserEditPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Edit User</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Edit User</Heading>}
+            breadcrumbs={[{ label: 'Users', href: route('users.index') }, { label: 'Edit' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

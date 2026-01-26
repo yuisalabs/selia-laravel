@@ -243,9 +243,10 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
 
 RoleIndexPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Roles</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Roles</Heading>}
+            breadcrumbs={[{ label: 'Roles' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

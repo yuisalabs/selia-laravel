@@ -98,9 +98,10 @@ export default function PermissionCreatePage() {
 
 PermissionCreatePage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Create Permission</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Create Permission</Heading>}
+            breadcrumbs={[{ label: 'Permissions', href: route('permissions.index') }, { label: 'Create' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

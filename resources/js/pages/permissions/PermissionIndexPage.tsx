@@ -242,9 +242,10 @@ export default function PermissionIndexPage({ permissions }: PermissionIndexPage
 
 PermissionIndexPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Permissions</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Permissions</Heading>}
+            breadcrumbs={[{ label: 'Permissions' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

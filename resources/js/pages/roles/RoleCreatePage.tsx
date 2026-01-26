@@ -151,9 +151,10 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
 
 RoleCreatePage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Create Role</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Create Role</Heading>}
+            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Create' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );

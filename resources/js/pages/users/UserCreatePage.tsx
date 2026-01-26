@@ -150,9 +150,10 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
 
 UserCreatePage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout header={
-            <Heading size="sm">Create User</Heading>
-        }>
+        <AuthenticatedLayout
+            header={<Heading size="sm">Create User</Heading>}
+            breadcrumbs={[{ label: 'Users', href: route('users.index') }, { label: 'Create' }]}
+        >
             {page}
         </AuthenticatedLayout>
     );
