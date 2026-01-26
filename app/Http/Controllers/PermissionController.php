@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Permission;
+use App\Services\PermissionService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PermissionController extends Controller
 {
     /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected PermissionService $permissionService
+    ) {}
+
+    /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
-        $permissions = Permission::with('roles')->latest()->paginate(10);
+        $permissions = $this->permissionService->getAllPermissions();
 
         return Inertia::render('permissions/PermissionIndexPage', [
             'permissions' => $permissions,
@@ -33,19 +42,9 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StorePermissionRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:permissions,name',
-            'description' => 'nullable|string|max:255',
-            'guard_name' => 'required|string|max:255',
-        ]);
-
-        Permission::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'] ?? null,
-            'guard_name' => $validated['guard_name'] ?? 'web',
-        ]);
+        $this->permissionService->createPermission($request->validated());
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission created successfully.');
@@ -56,7 +55,7 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission): Response
     {
-        $permission->load('roles');
+        $permission = $this->permissionService->getPermissionForShow($permission);
 
         return Inertia::render('permissions/PermissionShowPage', [
             'permission' => $permission,
@@ -76,19 +75,9 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permission $permission): RedirectResponse
+    public function update(UpdatePermissionRequest $request, Permission $permission): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
-            'description' => 'nullable|string|max:255',
-            'guard_name' => 'required|string|max:255',
-        ]);
-
-        $permission->update([
-            'name' => $validated['name'],
-            'description' => $validated['description'] ?? null,
-            'guard_name' => $validated['guard_name'],
-        ]);
+        $this->permissionService->updatePermission($permission, $request->validated());
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission updated successfully.');
@@ -99,7 +88,7 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission): RedirectResponse
     {
-        $permission->delete();
+        $this->permissionService->deletePermission($permission);
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission deleted successfully.');

@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Services\RoleService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class RoleController extends Controller
 {
     /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected RoleService $roleService
+    ) {}
+
+    /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
-        $roles = Role::with('permissions')->latest()->paginate(10);
+        $roles = $this->roleService->getAllRoles();
 
         return Inertia::render('roles/RoleIndexPage', [
             'roles' => $roles,
@@ -38,25 +47,9 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name',
-            'description' => 'nullable|string|max:255',
-            'guard_name' => 'required|string|max:255',
-            'permissions' => 'array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
-
-        $role = Role::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'] ?? null,
-            'guard_name' => $validated['guard_name'] ?? 'web',
-        ]);
-
-        if (isset($validated['permissions'])) {
-            $role->syncPermissions($validated['permissions']);
-        }
+        $this->roleService->createRole($request->validated());
 
         return redirect()->route('roles.index')
             ->with('success', 'Role created successfully.');
@@ -67,7 +60,7 @@ class RoleController extends Controller
      */
     public function show(Role $role): Response
     {
-        $role->load(['permissions', 'users']);
+        $role = $this->roleService->getRoleForShow($role);
 
         return Inertia::render('roles/RoleShowPage', [
             'role' => $role,
@@ -79,7 +72,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role): Response
     {
-        $role->load('permissions');
+        $role = $this->roleService->getRoleForEdit($role);
         $permissions = Permission::all();
 
         return Inertia::render('roles/RoleEditPage', [
@@ -91,25 +84,9 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role): RedirectResponse
+    public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
-            'description' => 'nullable|string|max:255',
-            'guard_name' => 'required|string|max:255',
-            'permissions' => 'array',
-            'permissions.*' => 'exists:permissions,id',
-        ]);
-
-        $role->update([
-            'name' => $validated['name'],
-            'description' => $validated['description'] ?? null,
-            'guard_name' => $validated['guard_name'],
-        ]);
-
-        if (isset($validated['permissions'])) {
-            $role->syncPermissions($validated['permissions']);
-        }
+        $this->roleService->updateRole($role, $request->validated());
 
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully.');
@@ -120,15 +97,14 @@ class RoleController extends Controller
      */
     public function destroy(Role $role): RedirectResponse
     {
-        // Prevent deleting Super Admin role
-        if ($role->name === 'Super Admin') {
+        try {
+            $this->roleService->deleteRole($role);
+
             return redirect()->route('roles.index')
-                ->with('error', 'Cannot delete Super Admin role.');
+                ->with('success', 'Role deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('roles.index')
+                ->with('error', $e->getMessage());
         }
-
-        $role->delete();
-
-        return redirect()->route('roles.index')
-            ->with('success', 'Role deleted successfully.');
     }
 }
