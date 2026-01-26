@@ -14,28 +14,31 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
             // User management
-            'view-users',
-            'create-users',
-            'edit-users',
-            'delete-users',
+            ['name' => 'view-users', 'description' => 'View list of users and their details'],
+            ['name' => 'create-users', 'description' => 'Create new user accounts'],
+            ['name' => 'edit-users', 'description' => 'Edit existing user information'],
+            ['name' => 'delete-users', 'description' => 'Delete user accounts'],
 
             // Role management
-            'view-roles',
-            'create-roles',
-            'edit-roles',
-            'delete-roles',
+            ['name' => 'view-roles', 'description' => 'View available roles and their permissions'],
+            ['name' => 'create-roles', 'description' => 'Create new roles'],
+            ['name' => 'edit-roles', 'description' => 'Edit role names and permissions'],
+            ['name' => 'delete-roles', 'description' => 'Delete roles'],
 
             // Permission management
-            'view-permissions',
-            'create-permissions',
-            'edit-permissions',
-            'delete-permissions',
+            ['name' => 'view-permissions', 'description' => 'View all available permissions'],
+            ['name' => 'create-permissions', 'description' => 'Create new permissions'],
+            ['name' => 'edit-permissions', 'description' => 'Edit existing permissions'],
+            ['name' => 'delete-permissions', 'description' => 'Delete permissions'],
         ];
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(
-                ['name' => $permission],
-                ['guard_name' => 'web']
+                ['name' => $permission['name']],
+                [
+                    'description' => $permission['description'],
+                    'guard_name' => 'web'
+                ]
             );
         }
 

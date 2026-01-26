@@ -16,7 +16,10 @@ class RoleSeeder extends Seeder
         // Create Super Admin role with all permissions
         $superAdmin = Role::firstOrCreate(
             ['name' => 'Super Admin'],
-            ['guard_name' => 'web']
+            [
+                'description' => 'Full access to all system features',
+                'guard_name' => 'web'
+            ]
         );
 
         // Assign all permissions to Super Admin
@@ -26,7 +29,10 @@ class RoleSeeder extends Seeder
         // Create Admin role with specific permissions
         $admin = Role::firstOrCreate(
             ['name' => 'Admin'],
-            ['guard_name' => 'web']
+            [
+                'description' => 'Can manage users and view roles/permissions',
+                'guard_name' => 'web'
+            ]
         );
 
         // Admin can manage users but not roles/permissions
@@ -44,7 +50,10 @@ class RoleSeeder extends Seeder
         // Create User role with limited permissions
         $user = Role::firstOrCreate(
             ['name' => 'User'],
-            ['guard_name' => 'web']
+            [
+                'description' => 'Standard user access',
+                'guard_name' => 'web'
+            ]
         );
 
         // Users can only view their own profile (no specific permissions by default)
