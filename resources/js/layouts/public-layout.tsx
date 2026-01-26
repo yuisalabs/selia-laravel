@@ -9,6 +9,7 @@ import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
 import { LucideLayoutDashboard, LucideLogOut, LucideUserRound } from 'lucide-react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
+import { FlashMessages } from '@/components/flash-messages';
 
 export default function PublicLayout({
     header,
@@ -21,6 +22,7 @@ export default function PublicLayout({
 
     return (
         <div className="min-h-screen bg-background">
+            <FlashMessages />
             <nav className="border-b border-separator bg-card">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
