@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
 import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
+import { LucideLayoutDashboard, LucideLogOut, LucideUserRound } from 'lucide-react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
+import { FlashMessages } from '@/components/flash-messages';
 
 export default function PublicLayout({
     header,
@@ -20,6 +22,7 @@ export default function PublicLayout({
 
     return (
         <div className="min-h-screen bg-background">
+            <FlashMessages />
             <nav className="border-b border-separator bg-card">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
@@ -55,7 +58,7 @@ export default function PublicLayout({
                                                 </Button>
                                             }
                                         />
-                                        <MenuPopup>
+                                        <MenuPopup align='end'>
                                             <MenuItem render={
                                                 <Button
                                                     nativeButton={false}
@@ -64,10 +67,9 @@ export default function PublicLayout({
                                                         <Link
                                                             className='justify-start w-full'
                                                             href={route('dashboard')}
-                                                        >
-                                                            Dashboard
-                                                        </Link>
+                                                        />
                                                     }>
+                                                    <LucideLayoutDashboard />
                                                     Dashboard
                                                 </Button>
                                             }/>
@@ -76,13 +78,12 @@ export default function PublicLayout({
                                                     nativeButton={false}
                                                     variant="plain"
                                                     render={
-                                                        <a
+                                                        <Link
                                                             className='justify-start'
                                                             href={route('profile.edit')}
-                                                        >
-                                                            Profile
-                                                        </a>
+                                                        />
                                                     }>
+                                                    <LucideUserRound />
                                                     Profile
                                                 </Button>
                                             }/>
@@ -99,6 +100,7 @@ export default function PublicLayout({
                                                             as="button"
                                                         />
                                                     }>
+                                                    <LucideLogOut />
                                                     Log out
                                                 </Button>
                                             }/>

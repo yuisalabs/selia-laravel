@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
 import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
+import { LucideHouse, LucideLogOut, LucideUserRound } from 'lucide-react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
+import { FlashMessages } from '@/components/flash-messages';
 
 export default function AuthenticatedLayout({
     header,
@@ -20,6 +22,7 @@ export default function AuthenticatedLayout({
 
     return (
         <div className="min-h-screen bg-background">
+            <FlashMessages />
             <nav className="border-b border-separator bg-card">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
@@ -38,10 +41,22 @@ export default function AuthenticatedLayout({
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    href={'#'}
-                                    active={false}
+                                    href={route('users.index')}
+                                    active={route().current('users.*')}
                                 >
                                     Users
+                                </NavLink>
+                                <NavLink
+                                    href={route('roles.index')}
+                                    active={route().current('roles.*')}
+                                >
+                                    Roles
+                                </NavLink>
+                                <NavLink
+                                    href={route('permissions.index')}
+                                    active={route().current('permissions.*')}
+                                >
+                                    Permissions
                                 </NavLink>
                             </div>
                         </div>
@@ -51,7 +66,7 @@ export default function AuthenticatedLayout({
                                 <Menu>
                                     <MenuTrigger
                                         render={
-                                        <Button variant="plain">
+                                        <Button nativeButton variant="plain">
                                             Hello, {user.name}!
                                             <Avatar size="sm">
                                                 <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
@@ -60,18 +75,19 @@ export default function AuthenticatedLayout({
                                         </Button>
                                         }
                                     />
-                                    <MenuPopup>
+                                    <MenuPopup align='end'>
                                         <MenuItem render={
                                             <Button
                                                 nativeButton={false}
                                                 variant="plain"
                                                 render={
-                                                    <a
+                                                    <Link
                                                         className='justify-start'
                                                         href={route('welcome')}
                                                         rel="noopener noreferrer"
                                                     />
                                                 }>
+                                                <LucideHouse/>
                                                 Home
                                             </Button>
                                         }/>
@@ -80,19 +96,19 @@ export default function AuthenticatedLayout({
                                                 nativeButton={false}
                                                 variant="plain"
                                                 render={
-                                                    <a
+                                                    <Link
                                                         className='justify-start'
                                                         href={route('profile.edit')}
-                                                        rel="noopener noreferrer"
                                                     />
                                                 }>
+                                                <LucideUserRound />
                                                 Profile
                                             </Button>
-                                        }/>                                        
+                                        }/>
                                         <MenuSeparator />
                                         <MenuItem render={
                                             <Button
-                                                nativeButton={true}
+                                                nativeButton
                                                 variant="plain"
                                                 render={
                                                     <Link
@@ -102,6 +118,7 @@ export default function AuthenticatedLayout({
                                                         as="button"
                                                     />
                                                 }>
+                                                <LucideLogOut/>
                                                 Log out
                                             </Button>
                                         }/>
