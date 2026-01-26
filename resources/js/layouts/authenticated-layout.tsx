@@ -64,7 +64,7 @@ export default function AuthenticatedLayout({
                                 <Menu>
                                     <MenuTrigger
                                         render={
-                                        <Button variant="plain">
+                                        <Button nativeButton variant="plain">
                                             Hello, {user.name}!
                                             <Avatar size="sm">
                                                 <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
@@ -102,11 +102,11 @@ export default function AuthenticatedLayout({
                                                 <LucideUserRound />
                                                 Profile
                                             </Button>
-                                        }/>                                        
+                                        }/>
                                         <MenuSeparator />
                                         <MenuItem render={
                                             <Button
-                                                nativeButton={true}
+                                                nativeButton
                                                 variant="plain"
                                                 render={
                                                     <Link

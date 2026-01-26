@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { FormEventHandler } from 'react';
+import { LucideCircleX, LucideSave } from 'lucide-react';
 
 interface Permission {
     id: number;
@@ -70,6 +71,7 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
 
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>
+                                        <LucideSave/>
                                         Update
                                     </Button>
                                     <Link
@@ -77,6 +79,7 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
                                         href={route('permissions.index')}
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
+                                        <LucideCircleX/>
                                         Cancel
                                     </Link>
                                 </div>

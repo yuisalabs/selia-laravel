@@ -7,6 +7,7 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FormEventHandler } from 'react';
+import { LucideCircleX, LucideSave } from 'lucide-react';
 
 interface Permission {
     id: number;
@@ -111,6 +112,7 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
 
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>
+                                        <LucideSave/>
                                         Update
                                     </Button>
                                     <Link
@@ -118,6 +120,7 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                         href={route('roles.index')}
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
+                                        <LucideCircleX/>
                                         Cancel
                                     </Link>
                                 </div>

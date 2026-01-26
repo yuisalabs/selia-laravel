@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { FormEventHandler } from 'react';
+import { LucideCircleX, LucideSave } from 'lucide-react';
 
 export default function PermissionCreatePage() {
     const { data, setData, post, processing, errors } = useForm({
@@ -60,6 +61,7 @@ export default function PermissionCreatePage() {
 
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>
+                                        <LucideSave/>
                                         Create
                                     </Button>
                                     <Link
@@ -67,6 +69,7 @@ export default function PermissionCreatePage() {
                                         href={route('permissions.index')}
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
+                                        <LucideCircleX/>
                                         Cancel
                                     </Link>
                                 </div>

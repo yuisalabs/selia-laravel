@@ -5,6 +5,7 @@ import { Card, CardBody, CardDescription, CardHeader, CardTitle } from '@/compon
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Divider } from '@/components/ui/divider';
+import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
 
 interface Role {
     id: number;
@@ -34,31 +35,33 @@ export default function UserShowPage({ user }: UserShowPageProps) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
                     <Card>
-                        <CardHeader>
-                            <div className="flex items-center justify-between">
+                        <CardHeader className="flex items-center justify-between">
+                            <Link
+                                as="button"
+                                href={route('users.index')}
+                                className={cn(buttonVariants({ variant: 'outline' }))}
+                            >
+                                <LucideArrowLeft/>
+                                Back
+                            </Link>
+                            <div className="space-x-2">
+                                <Link
+                                    as="button"
+                                    href={route('users.edit', user.id)}
+                                    className={cn(buttonVariants({ variant: 'secondary' }))}
+                                >
+                                    <LucideSquarePen/>
+                                    Edit
+                                </Link>
+                            </div>
+                        </CardHeader>
+                        <CardBody className="space-y-6">
+                            <div className="flex items-center gap-2">
                                 <div>
                                     <CardTitle>{user.name}</CardTitle>
                                     <CardDescription>User details and information</CardDescription>
                                 </div>
-                                <div className="space-x-2">
-                                    <Link
-                                        as="button"
-                                        href={route('users.edit', user.id)}
-                                        className={cn(buttonVariants({ variant: 'secondary' }))}
-                                    >
-                                        Edit
-                                    </Link>
-                                    <Link
-                                        as="button"
-                                        href={route('users.index')}
-                                        className={cn(buttonVariants({ variant: 'outline' }))}
-                                    >
-                                        Back
-                                    </Link>
-                                </div>
                             </div>
-                        </CardHeader>
-                        <CardBody className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <h3 className="text-sm font-medium text-muted">Name</h3>

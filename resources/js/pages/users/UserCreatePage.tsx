@@ -7,6 +7,7 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FormEventHandler } from 'react';
+import { LucideCircleX, LucideSave } from 'lucide-react';
 
 interface Role {
     id: number;
@@ -132,6 +133,7 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
 
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>
+                                        <LucideSave/>
                                         Create
                                     </Button>
                                     <Link
@@ -139,6 +141,7 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
                                         href={route('users.index')}
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
+                                        <LucideCircleX/>
                                         Cancel
                                     </Link>
                                 </div>

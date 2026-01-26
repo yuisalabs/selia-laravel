@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 import {router} from '@inertiajs/react';
+import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
 
 interface Role {
     id: number;
@@ -32,31 +33,30 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <Card>
-                        <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <CardTitle>Roles</CardTitle>
-                                    <CardDescription>
-                                        Manage roles and their permissions
-                                    </CardDescription>
-                                </div>
-                                <Link
-                                    as="button"
-                                    href={route('roles.create')}
-                                    className={cn(buttonVariants({ variant: 'primary' }))}
-                                >
-                                    Create Role
-                                </Link>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>Roles</CardTitle>
+                                <CardDescription>
+                                    Manage roles and their permissions
+                                </CardDescription>
                             </div>
+                            <Link
+                                as="button"
+                                href={route('roles.create')}
+                                className={cn(buttonVariants({ variant: 'primary' }), 'w-fit')}
+                            >
+                                <LucideCirclePlus/>
+                                Create Role
+                            </Link>
                         </CardHeader>
-                        <CardBody>
+                        <CardBody className="px-0">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Name</TableHead>
                                         <TableHead>Guard</TableHead>
                                         <TableHead>Permissions</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
+                                        <TableHead className="w-[1%] whitespace-nowrap"></TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -69,12 +69,13 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
                                             <TableCell>
                                                 {role.permissions.length} permission(s)
                                             </TableCell>
-                                            <TableCell className="text-right space-x-2">
+                                            <TableCell className="text-right space-x-2 whitespace-nowrap">
                                                 <Link
                                                     as="button"
                                                     href={route('roles.show', role.id)}
                                                     className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
                                                 >
+                                                    <LucideEye/>
                                                     View
                                                 </Link>
                                                 <Link
@@ -82,17 +83,21 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
                                                     href={route('roles.edit', role.id)}
                                                     className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}
                                                 >
+                                                    <LucideSquarePen/>
                                                     Edit
                                                 </Link>
                                                 <AlertDialog>
-                                                    <AlertDialogTrigger>
+                                                    <AlertDialogTrigger
+                                                        nativeButton
+                                                        render={
                                                         <Button
                                                             variant="danger"
                                                             size="sm"
                                                             disabled={role.name === 'Super Admin'}
-                                                        >
-                                                            Delete
-                                                        </Button>
+                                                        />
+                                                    }>
+                                                        <LucideTrash2/>
+                                                        Delete
                                                     </AlertDialogTrigger>
                                                     <AlertDialogPopup>
                                                         <AlertDialogBody>

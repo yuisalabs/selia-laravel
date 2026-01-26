@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/utils/cn';
@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 import { router } from '@inertiajs/react';
+import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
 
 interface User {
     id: number;
@@ -22,6 +23,8 @@ interface UserIndexPageProps {
 }
 
 export default function UserIndexPage({ users }: UserIndexPageProps) {
+    const authUser = usePage().props.auth.user;    
+
     const handleDelete = (id: number) => {
         router.delete(route('users.destroy', id));
     };
@@ -33,24 +36,23 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <Card>
-                        <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <CardTitle>Users</CardTitle>
-                                    <CardDescription>
-                                        Manage users and their roles
-                                    </CardDescription>
-                                </div>
-                                <Link 
-                                    as="button"
-                                    href={route('users.create')}
-                                    className={cn(buttonVariants({ variant: 'primary' }))}
-                                >
-                                    Create User
-                                </Link>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>Users</CardTitle>
+                                <CardDescription>
+                                    Manage users and their roles
+                                </CardDescription>
                             </div>
+                            <Link
+                                as="button"
+                                href={route('users.create')}
+                                className={cn(buttonVariants({ variant: 'primary' }), 'w-fit')}
+                            >
+                                <LucideCirclePlus/>
+                                Create User
+                            </Link>
                         </CardHeader>
-                        <CardBody>
+                        <CardBody className="px-0">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -58,7 +60,7 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                         <TableHead>Email</TableHead>
                                         <TableHead>Roles</TableHead>
                                         <TableHead>Status</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
+                                        <TableHead></TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -91,6 +93,7 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                                     href={route('users.show', user.id)}
                                                     className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
                                                 >
+                                                    <LucideEye/>
                                                     View
                                                 </Link>
                                                 <Link
@@ -98,13 +101,19 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                                     href={route('users.edit', user.id)}
                                                     className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}
                                                 >
+                                                    <LucideSquarePen/>
                                                     Edit
                                                 </Link>
                                                 <AlertDialog>
-                                                    <AlertDialogTrigger>
-                                                        <Button variant="danger" size="sm">
-                                                            Delete
-                                                        </Button>
+                                                    <AlertDialogTrigger render={
+                                                        <Button
+                                                            variant="danger"
+                                                            size="sm"
+                                                            disabled={user.id === authUser.id}
+                                                        />
+                                                    }>
+                                                        <LucideTrash2/>
+                                                        Delete
                                                     </AlertDialogTrigger>
                                                     <AlertDialogPopup>
                                                         <AlertDialogBody>
