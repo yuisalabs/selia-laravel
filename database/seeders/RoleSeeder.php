@@ -30,12 +30,12 @@ class RoleSeeder extends Seeder
         $admin = Role::firstOrCreate(
             ['name' => 'Admin'],
             [
-                'description' => 'Can manage users and view roles/permissions',
+                'description' => 'Can manage users and view role/permissions',
                 'guard_name' => 'web'
             ]
         );
 
-        // Admin can manage users but not roles/permissions
+        // Admin can manage users but not role/permissions
         $adminPermissions = Permission::whereIn('name', [
             'view-users',
             'create-users',

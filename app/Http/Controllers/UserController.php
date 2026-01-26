@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         $users = $this->userService->getAllUsers();
 
-        return Inertia::render('users/UserIndexPage', [
+        return Inertia::render('user/UserIndexPage', [
             'users' => $users,
         ]);
     }
@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
 
-        return Inertia::render('users/UserCreatePage', [
+        return Inertia::render('user/UserCreatePage', [
             'roles' => $roles,
         ]);
     }
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $userData = $this->userService->getUserForShow($user);
 
-        return Inertia::render('users/UserShowPage', [
+        return Inertia::render('user/UserShowPage', [
             'user' => $userData,
         ]);
     }
@@ -77,7 +77,7 @@ class UserController extends Controller
         $roles = Role::all();
         $permissions = Permission::all();
 
-        return Inertia::render('users/UserEditPage', [
+        return Inertia::render('user/UserEditPage', [
             'user' => $userData,
             'roles' => $roles,
             'permissions' => $permissions,

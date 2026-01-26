@@ -27,7 +27,7 @@ class RoleController extends Controller
     {
         $roles = $this->roleService->getAllRoles();
 
-        return Inertia::render('roles/RoleIndexPage', [
+        return Inertia::render('role/RoleIndexPage', [
             'roles' => $roles,
         ]);
     }
@@ -39,7 +39,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::all();
 
-        return Inertia::render('roles/RoleCreatePage', [
+        return Inertia::render('role/RoleCreatePage', [
             'permissions' => $permissions,
         ]);
     }
@@ -62,7 +62,7 @@ class RoleController extends Controller
     {
         $role = $this->roleService->getRoleForShow($role);
 
-        return Inertia::render('roles/RoleShowPage', [
+        return Inertia::render('role/RoleShowPage', [
             'role' => $role,
         ]);
     }
@@ -75,7 +75,7 @@ class RoleController extends Controller
         $role = $this->roleService->getRoleForEdit($role);
         $permissions = Permission::all();
 
-        return Inertia::render('roles/RoleEditPage', [
+        return Inertia::render('role/RoleEditPage', [
             'role' => $role,
             'permissions' => $permissions,
         ]);

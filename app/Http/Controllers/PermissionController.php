@@ -26,7 +26,7 @@ class PermissionController extends Controller
     {
         $permissions = $this->permissionService->getAllPermissions();
 
-        return Inertia::render('permissions/PermissionIndexPage', [
+        return Inertia::render('permission/PermissionIndexPage', [
             'permissions' => $permissions,
         ]);
     }
@@ -36,7 +36,7 @@ class PermissionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('permissions/PermissionCreatePage');
+        return Inertia::render('permission/PermissionCreatePage');
     }
 
     /**
@@ -57,7 +57,7 @@ class PermissionController extends Controller
     {
         $permission = $this->permissionService->getPermissionForShow($permission);
 
-        return Inertia::render('permissions/PermissionShowPage', [
+        return Inertia::render('permission/PermissionShowPage', [
             'permission' => $permission,
         ]);
     }
@@ -67,7 +67,7 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission): Response
     {
-        return Inertia::render('permissions/PermissionEditPage', [
+        return Inertia::render('permission/PermissionEditPage', [
             'permission' => $permission,
         ]);
     }
