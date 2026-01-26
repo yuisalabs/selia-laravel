@@ -1,7 +1,8 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
+import { PaginationLinks } from '@/components/pagination-links';
 import { Head, Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardBody, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -18,7 +19,14 @@ interface Permission {
 }
 
 interface PermissionIndexPageProps {
-    permissions: Permission[];
+    permissions: {
+        data: Permission[];
+        links: any[];
+        first_page_url: string;
+        last_page_url: string;
+        current_page: number;
+        last_page: number;
+    };
 }
 
 export default function PermissionIndexPage({ permissions }: PermissionIndexPageProps) {
@@ -60,7 +68,7 @@ export default function PermissionIndexPage({ permissions }: PermissionIndexPage
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {permissions.map((permission) => (
+                                    {permissions.data.map((permission) => (
                                         <TableRow key={permission.id}>
                                             <TableCell className="font-medium">{permission.name}</TableCell>
                                             <TableCell>
@@ -123,6 +131,9 @@ export default function PermissionIndexPage({ permissions }: PermissionIndexPage
                                 </TableBody>
                             </Table>
                         </CardBody>
+                        <CardFooter className="flex justify-center">
+                            <PaginationLinks paginator={permissions} />
+                        </CardFooter>
                     </Card>
                 </div>
             </div>

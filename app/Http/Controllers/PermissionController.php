@@ -15,7 +15,7 @@ class PermissionController extends Controller
      */
     public function index(): Response
     {
-        $permissions = Permission::with('roles')->latest()->get();
+        $permissions = Permission::with('roles')->latest()->paginate(10);
 
         return Inertia::render('permissions/PermissionIndexPage', [
             'permissions' => $permissions,

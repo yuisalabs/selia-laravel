@@ -1,12 +1,13 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { PaginationLinks } from '@/components/pagination-links';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardBody, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
-import { router } from '@inertiajs/react';
+
 import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
 
 interface User {
@@ -19,7 +20,14 @@ interface User {
 }
 
 interface UserIndexPageProps {
-    users: User[];
+    users: {
+        data: User[];
+        links: any[];
+        first_page_url: string;
+        last_page_url: string;
+        current_page: number;
+        last_page: number;
+    };
 }
 
 export default function UserIndexPage({ users }: UserIndexPageProps) {
@@ -64,7 +72,7 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {users.map((user) => (
+                                    {users.data.map((user) => (
                                         <TableRow key={user.id}>
                                             <TableCell className="font-medium">{user.name}</TableCell>
                                             <TableCell>{user.email}</TableCell>
@@ -140,6 +148,9 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                 </TableBody>
                             </Table>
                         </CardBody>
+                        <CardFooter className="flex justify-center">
+                            <PaginationLinks paginator={users} />
+                        </CardFooter>
                     </Card>
                 </div>
             </div>
