@@ -58,27 +58,33 @@ export function PaginationLinks({ paginator }: PaginationLinksProps) {
                 {paginator.links.map((link, key) => {
                     let label = link.label;
                     let icon = null;
+                    let isNavButton = false;
 
                     // Handle Previous/Next labels with icons
                     if (link.label.includes('Previous')) {
                         icon = <LucideChevronLeft className="size-4" />;
                         label = 'Previous';
+                        isNavButton = true;
                     } else if (link.label.includes('Next')) {
                         icon = <LucideChevronRight className="size-4" />;
                         label = 'Next';
+                        isNavButton = true;
                     }
 
-                    // Render ellipsis
+                    // Render ellipsis (hide on mobile)
                     if (link.label === '...') {
                         return (
-                            <PaginationItem key={key}>
+                            <PaginationItem key={key} className="hidden sm:block">
                                 <span className="px-3 py-2 text-muted-foreground">...</span>
                             </PaginationItem>
                         );
                     }
 
+                    // Hide numbered page buttons on mobile, keep only prev/next
+                    const isPageNumber = !link.label.includes('Previous') && !link.label.includes('Next');
+
                     return (
-                        <PaginationItem key={key}>
+                        <PaginationItem key={key} className={isPageNumber ? 'hidden sm:block' : ''}>
                             <PaginationButton
                                 active={link.active}
                                 disabled={!link.url}
@@ -87,13 +93,13 @@ export function PaginationLinks({ paginator }: PaginationLinksProps) {
                                     <button>
                                         {link.label.includes('Next') ? (
                                             <>
-                                                <span dangerouslySetInnerHTML={{ __html: label }} />
+                                                <span className={isNavButton ? 'hidden sm:inline' : ''} dangerouslySetInnerHTML={{ __html: label }} />
                                                 {icon}
                                             </>
                                         ) : (
                                             <>
                                                 {icon}
-                                                <span dangerouslySetInnerHTML={{ __html: label }} />
+                                                <span className={isNavButton ? 'hidden sm:inline' : ''} dangerouslySetInnerHTML={{ __html: label }} />
                                             </>
                                         )}
                                     </button>
