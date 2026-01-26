@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
 import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
+import { LucideLayoutDashboard, LucideLogOut, LucideUserRound } from 'lucide-react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
 export default function PublicLayout({
@@ -64,10 +65,9 @@ export default function PublicLayout({
                                                         <Link
                                                             className='justify-start w-full'
                                                             href={route('dashboard')}
-                                                        >
-                                                            Dashboard
-                                                        </Link>
+                                                        />
                                                     }>
+                                                    <LucideLayoutDashboard />
                                                     Dashboard
                                                 </Button>
                                             }/>
@@ -76,13 +76,12 @@ export default function PublicLayout({
                                                     nativeButton={false}
                                                     variant="plain"
                                                     render={
-                                                        <a
+                                                        <Link
                                                             className='justify-start'
                                                             href={route('profile.edit')}
-                                                        >
-                                                            Profile
-                                                        </a>
+                                                        />
                                                     }>
+                                                    <LucideUserRound />
                                                     Profile
                                                 </Button>
                                             }/>
@@ -99,6 +98,7 @@ export default function PublicLayout({
                                                             as="button"
                                                         />
                                                     }>
+                                                    <LucideLogOut />
                                                     Log out
                                                 </Button>
                                             }/>

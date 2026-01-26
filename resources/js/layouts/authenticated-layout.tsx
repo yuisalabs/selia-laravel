@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
 import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
+import { LucideHouse, LucideLogOut, LucideUserRound } from 'lucide-react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
 export default function AuthenticatedLayout({
@@ -78,12 +79,13 @@ export default function AuthenticatedLayout({
                                                 nativeButton={false}
                                                 variant="plain"
                                                 render={
-                                                    <a
+                                                    <Link
                                                         className='justify-start'
                                                         href={route('welcome')}
                                                         rel="noopener noreferrer"
                                                     />
                                                 }>
+                                                <LucideHouse/>
                                                 Home
                                             </Button>
                                         }/>
@@ -92,12 +94,12 @@ export default function AuthenticatedLayout({
                                                 nativeButton={false}
                                                 variant="plain"
                                                 render={
-                                                    <a
+                                                    <Link
                                                         className='justify-start'
                                                         href={route('profile.edit')}
-                                                        rel="noopener noreferrer"
                                                     />
                                                 }>
+                                                <LucideUserRound />
                                                 Profile
                                             </Button>
                                         }/>                                        
@@ -114,6 +116,7 @@ export default function AuthenticatedLayout({
                                                         as="button"
                                                     />
                                                 }>
+                                                <LucideLogOut/>
                                                 Log out
                                             </Button>
                                         }/>

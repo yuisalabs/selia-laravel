@@ -126,7 +126,7 @@ export function ComboboxInput({
 }: VariantProps<typeof comboboxTriggerVariants> & {
   placeholder: string;
   className?: string;
-  ref?: React.RefObject<HTMLDivElement | null>;
+  ref?: React.RefObject<HTMLDivElement>;
 }) {
   return (
     <BaseCombobox.Chips
