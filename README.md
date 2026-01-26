@@ -10,9 +10,16 @@ Make sure to update your `APP_URL` in the `.env` file before using the route fun
 
 By default, packages like Laravel Breeze use regular JavaScript for React. However, this project is tailored for those who want an Inertia.js boilerplate with TypeScript, enhanced with the **Selia UI Kit**.
 
+### Default Account
+```bash
+Email: superadmin@yuisalabs.dev
+Password: superadmin
+```
+
 ### Features
 
 - **Authentication**: Full auth scaffolding (Login, Register, Password Reset, Email Verification).
+- **Access Control List (ACL)**: Full ACL scaffolding (Role, Permission, User Role, User Permission).
 - **User Profile**: Profile management with update and delete capabilities.
 - **TypeScript**: Fully typed codebase for better developer experience.
 - **Selia UI**: Custom UI components and design system.
