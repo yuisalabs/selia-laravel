@@ -27,6 +27,7 @@ import {
     LucidePanelLeftClose,
     LucidePanelLeftOpen,
     LucideShield,
+    LucideUserCog,
     LucideUserRound,
     LucideUsers,
     LucideX
@@ -94,8 +95,10 @@ export default function AuthenticatedLayout({
                     <SidebarHeader>
                         <div className="flex items-center justify-between">
                             <SidebarLogo>
-                                <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
-                                <span className="font-semibold">Selia</span>
+                                <a href={route('welcome')} className="flex items-center gap-2">
+                                    <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
+                                    <span className="font-semibold">Selia</span>
+                                </a>
                             </SidebarLogo>
                             <Button
                                 variant="plain"
@@ -170,6 +173,21 @@ export default function AuthenticatedLayout({
                                         >
                                             <LucideKey />
                                             Permissions
+                                        </SidebarItemButton>
+                                    </SidebarItem>
+
+                                    <SidebarItem>
+                                        <SidebarItemButton
+                                            active={route().current('profile.*')}
+                                            render={
+                                                <Link
+                                                    href={route('profile.edit')}
+                                                    onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
+                                                />
+                                            }
+                                        >
+                                            <LucideUserCog />
+                                            Profile
                                         </SidebarItemButton>
                                     </SidebarItem>
                                 </SidebarList>
@@ -271,12 +289,8 @@ export default function AuthenticatedLayout({
                     >
                         {sidebarOpen ? <LucidePanelLeftClose className="size-5" /> : <LucidePanelLeftOpen className="size-5" />}
                     </Button>
-                    <div className="flex items-center gap-2 lg:hidden">
-                        <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
-                        <span className="font-semibold">Selia</span>
-                    </div>
                     {header && (
-                        <div className="hidden lg:block">{header}</div>
+                        <>{header}</>
                     )}
                     <div className="ml-auto">
                         <ThemeToggle />
