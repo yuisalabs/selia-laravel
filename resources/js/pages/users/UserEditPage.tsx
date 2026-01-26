@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectItem, SelectList, SelectPopup, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
+import { Heading } from '@/components/ui/heading';
 
 interface Role {
     id: number;
@@ -156,11 +157,8 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
 UserEditPage.layout = (page: any) => {
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Edit User
-                </h2>
-            }
+            header={<Heading size="sm">Edit User</Heading>}
+            breadcrumbs={[{ label: 'Users', href: route('users.index') }, { label: 'Edit' }]}
         >
             {page}
         </AuthenticatedLayout>

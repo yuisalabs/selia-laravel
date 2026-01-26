@@ -10,6 +10,7 @@ import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Item } from '@/components/ui/item';
 import { Textarea } from '@/components/ui/textarea';
+import { Heading } from '@/components/ui/heading';
 
 interface Permission {
     id: number;
@@ -151,11 +152,8 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
 RoleCreatePage.layout = (page: any) => {
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Create Role
-                </h2>
-            }
+            header={<Heading size="sm">Create Role</Heading>}
+            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Create' }]}
         >
             {page}
         </AuthenticatedLayout>

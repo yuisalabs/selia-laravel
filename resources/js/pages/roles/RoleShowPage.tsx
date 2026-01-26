@@ -6,6 +6,8 @@ import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Divider } from '@/components/ui/divider';
 import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
+import { Item } from '@/components/ui/item';
+import { Heading } from '@/components/ui/heading';
 
 interface Permission {
     id: number;
@@ -120,9 +122,9 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                                 <div className="space-y-2">
                                     {role.users.length > 0 ? (
                                         role.users.map((user) => (
-                                            <div
+                                            <Item
                                                 key={user.id}
-                                                className="flex items-center justify-between p-3 border rounded-md"
+                                                className="flex items-center justify-between p-3"
                                             >
                                                 <div>
                                                     <p className="text-sm font-medium text-foreground">{user.name}</p>
@@ -135,7 +137,7 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                                                 >
                                                     View
                                                 </Link>
-                                            </div>
+                                            </Item>
                                         ))
                                     ) : (
                                         <p className="text-sm text-muted">No users have this role</p>
@@ -153,11 +155,8 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
 RoleShowPage.layout = (page: any) => {
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Role Details
-                </h2>
-            }
+            header={<Heading size="sm">Role Details</Heading>}
+            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Details' }]}
         >
             {page}
         </AuthenticatedLayout>

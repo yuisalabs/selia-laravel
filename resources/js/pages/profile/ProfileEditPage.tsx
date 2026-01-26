@@ -6,19 +6,14 @@ import UpdatePasswordForm from '../../features/profile/update-password-form';
 import UpdateProfileInformationForm from '../../features/profile/update-profile-information-form';
 import { Tabs, TabsItem, TabsList, TabsPanel } from '@/components/ui/tabs';
 import { Fieldset } from '@/components/ui/fieldset';
+import { Heading } from '@/components/ui/heading';
 
-export default function Edit({
+export default function ProfileEditPage({
     mustVerifyEmail,
     status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Profile
-                </h2>
-            }
-        >
+        <>
             <Head title="Profile" />
 
             <div className="py-12">
@@ -51,6 +46,18 @@ export default function Edit({
                     </Tabs>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+ProfileEditPage.layout = (page: any) => {
+    return (
+        <AuthenticatedLayout
+            header={<Heading size="sm">Profile</Heading>}
+            breadcrumbs={[{ label: 'Profile' }]}
+        >
+            {page}
+        </AuthenticatedLayout>
+    );
+};
+

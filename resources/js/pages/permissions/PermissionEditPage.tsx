@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { Heading } from '@/components/ui/heading';
 
 interface Permission {
     id: number;
@@ -109,11 +110,8 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
 PermissionEditPage.layout = (page: any) => {
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Edit Permission
-                </h2>
-            }
+            header={<Heading size="sm">Edit Permission</Heading>}
+            breadcrumbs={[{ label: 'Permissions', href: route('permissions.index') }, { label: 'Edit' }]}
         >
             {page}
         </AuthenticatedLayout>
