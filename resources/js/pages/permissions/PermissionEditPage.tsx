@@ -7,10 +7,12 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Permission {
     id: number;
     name: string;
+    description: string | null;
     guard_name: string;
 }
 
@@ -21,6 +23,7 @@ interface PermissionEditPageProps {
 export default function PermissionEditPage({ permission }: PermissionEditPageProps) {
     const { data, setData, put, processing, errors } = useForm({
         name: permission.name,
+        description: permission.description || '',
         guard_name: permission.guard_name,
     });
 
@@ -55,6 +58,17 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
                                         placeholder="e.g., edit-posts, delete-users"
                                     />
                                     <FieldError match={!!errors.name}>{errors.name}</FieldError>
+                                </Field>
+
+                                <Field invalid={!!errors.description}>
+                                    <FieldLabel htmlFor="description">Description (Optional)</FieldLabel>
+                                    <Textarea
+                                        id="description"
+                                        value={data.description}
+                                        onChange={(e) => setData('description', e.target.value)}
+                                        placeholder="Enter permission description"
+                                    />
+                                    <FieldError match={!!errors.description}>{errors.description}</FieldError>
                                 </Field>
 
                                 <Field invalid={!!errors.guard_name}>

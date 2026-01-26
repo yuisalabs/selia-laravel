@@ -7,10 +7,12 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function PermissionCreatePage() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
+        description: '',
         guard_name: 'web',
     });
 
@@ -45,6 +47,17 @@ export default function PermissionCreatePage() {
                                         placeholder="e.g., edit-posts, delete-users"
                                     />
                                     <FieldError match={!!errors.name}>{errors.name}</FieldError>
+                                </Field>
+
+                                <Field invalid={!!errors.description}>
+                                    <FieldLabel htmlFor="description">Description (Optional)</FieldLabel>
+                                    <Textarea
+                                        id="description"
+                                        value={data.description}
+                                        onChange={(e) => setData('description', e.target.value)}
+                                        placeholder="Enter permission description"
+                                    />
+                                    <FieldError match={!!errors.description}>{errors.description}</FieldError>
                                 </Field>
 
                                 <Field invalid={!!errors.guard_name}>

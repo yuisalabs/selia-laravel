@@ -13,6 +13,7 @@ import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'luci
 interface Role {
     id: number;
     name: string;
+    description: string | null;
     guard_name: string;
     created_at: string;
     permissions: Array<{ id: number; name: string }>;
@@ -62,6 +63,7 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Name</TableHead>
+                                        <TableHead>Description</TableHead>
                                         <TableHead>Guard</TableHead>
                                         <TableHead>Permissions</TableHead>
                                         <TableHead className="w-[1%] whitespace-nowrap"></TableHead>
@@ -71,6 +73,7 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
                                     {roles.data.map((role) => (
                                         <TableRow key={role.id}>
                                             <TableCell className="font-medium">{role.name}</TableCell>
+                                            <TableCell className="text-muted-foreground">{role.description || '-'}</TableCell>
                                             <TableCell>
                                                 <Badge variant="secondary">{role.guard_name}</Badge>
                                             </TableCell>

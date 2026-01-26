@@ -9,15 +9,18 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Item } from '@/components/ui/item';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Permission {
     id: number;
     name: string;
+    description: string | null;
 }
 
 interface Role {
     id: number;
     name: string;
+    description: string | null;
     guard_name: string;
     permissions: Permission[];
 }
@@ -30,6 +33,7 @@ interface RoleEditPageProps {
 export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
     const { data, setData, put, processing, errors } = useForm({
         name: role.name,
+        description: role.description || '',
         guard_name: role.guard_name,
         permissions: role.permissions.map(p => p.id),
     });
@@ -75,6 +79,17 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                     <FieldError match={!!errors.name}>{errors.name}</FieldError>
                                 </Field>
 
+                                <Field invalid={!!errors.description}>
+                                    <FieldLabel htmlFor="description">Description (Optional)</FieldLabel>
+                                    <Textarea
+                                        id="description"
+                                        value={data.description}
+                                        onChange={(e) => setData('description', e.target.value)}
+                                        placeholder="Enter role description"
+                                    />
+                                    <FieldError match={!!errors.description}>{errors.description}</FieldError>
+                                </Field>
+
                                 <Field invalid={!!errors.guard_name}>
                                     <FieldLabel htmlFor="guard_name">Guard Name</FieldLabel>
                                     <Input
@@ -87,22 +102,30 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                     <FieldError match={!!errors.guard_name}>{errors.guard_name}</FieldError>
                                 </Field>
 
-                                <Item variant="tertiary" className="space-y-2 flex flex-col">
+                                <Item variant="plain" className="space-y-2 flex flex-col p-0">
                                     <label className="text-foreground flex items-center gap-3">Permissions</label>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
                                         {permissions.map((permission) => (
-                                            <div key={permission.id} className="flex items-center space-x-2">
+                                            <div key={permission.id} className="flex items-start space-x-2 p-2">
                                                 <Checkbox
                                                     id={`permission-${permission.id}`}
                                                     checked={data.permissions.includes(permission.id)}
                                                     onCheckedChange={() => togglePermission(permission.id)}
+                                                    className="mt-1"
                                                 />
-                                                <label
-                                                    htmlFor={`permission-${permission.id}`}
-                                                    className="text-sm font-medium cursor-pointer"
-                                                >
-                                                    {permission.name}
-                                                </label>
+                                                <div className="grid gap-1.5 leading-none">
+                                                    <label
+                                                        htmlFor={`permission-${permission.id}`}
+                                                        className="text-sm font-medium leading-none cursor-pointer"
+                                                    >
+                                                        {permission.name}
+                                                    </label>
+                                                    {permission.description && (
+                                                        <p className="text-xs text-muted-foreground">
+                                                            {permission.description}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

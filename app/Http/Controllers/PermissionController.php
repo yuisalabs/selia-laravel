@@ -37,11 +37,13 @@ class PermissionController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name',
+            'description' => 'nullable|string|max:255',
             'guard_name' => 'required|string|max:255',
         ]);
 
         Permission::create([
             'name' => $validated['name'],
+            'description' => $validated['description'] ?? null,
             'guard_name' => $validated['guard_name'] ?? 'web',
         ]);
 
@@ -78,11 +80,13 @@ class PermissionController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
+            'description' => 'nullable|string|max:255',
             'guard_name' => 'required|string|max:255',
         ]);
 
         $permission->update([
             'name' => $validated['name'],
+            'description' => $validated['description'] ?? null,
             'guard_name' => $validated['guard_name'],
         ]);
 
