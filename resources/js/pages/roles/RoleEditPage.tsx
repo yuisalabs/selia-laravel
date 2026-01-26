@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
+import { Item } from '@/components/ui/item';
 
 interface Permission {
     id: number;
@@ -86,9 +87,9 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                     <FieldError match={!!errors.guard_name}>{errors.guard_name}</FieldError>
                                 </Field>
 
-                                <div className="space-y-2">
+                                <Item variant="tertiary" className="space-y-2 flex flex-col">
                                     <label className="text-foreground flex items-center gap-3">Permissions</label>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-md max-h-96 overflow-y-auto">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
                                         {permissions.map((permission) => (
                                             <div key={permission.id} className="flex items-center space-x-2">
                                                 <Checkbox
@@ -108,7 +109,7 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                     {errors.permissions && (
                                         <p className="text-sm text-danger">{errors.permissions}</p>
                                     )}
-                                </div>
+                                </Item>
 
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>

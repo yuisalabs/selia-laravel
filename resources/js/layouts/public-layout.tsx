@@ -56,7 +56,7 @@ export default function PublicLayout({
                                                 </Button>
                                             }
                                         />
-                                        <MenuPopup>
+                                        <MenuPopup align='end'>
                                             <MenuItem render={
                                                 <Button
                                                     nativeButton={false}

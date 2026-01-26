@@ -73,7 +73,7 @@ export default function AuthenticatedLayout({
                                         </Button>
                                         }
                                     />
-                                    <MenuPopup>
+                                    <MenuPopup align='end'>
                                         <MenuItem render={
                                             <Button
                                                 nativeButton={false}

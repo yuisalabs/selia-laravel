@@ -5,9 +5,10 @@ import { Card, CardBody, CardDescription, CardHeader, CardTitle } from '@/compon
 import { cn } from '@/utils/cn';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectItem, SelectList, SelectPopup, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
+
 
 interface Role {
     id: number;
@@ -24,7 +25,7 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
         email: '',
         password: '',
         password_confirmation: '',
-        roles: [] as number[],
+        role: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -32,13 +33,7 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
         post(route('users.store'));
     };
 
-    const toggleRole = (roleId: number) => {
-        if (data.roles.includes(roleId)) {
-            setData('roles', data.roles.filter(id => id !== roleId));
-        } else {
-            setData('roles', [...data.roles, roleId]);
-        }
-    };
+
 
     return (
         <>
@@ -107,29 +102,27 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
                                     <FieldError match={!!errors.password_confirmation}>{errors.password_confirmation}</FieldError>
                                 </Field>
 
-                                <div className="space-y-2">
-                                    <label className="text-foreground flex items-center gap-3">Roles</label>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-md">
-                                        {roles.map((role) => (
-                                            <div key={role.id} className="flex items-center space-x-2">
-                                                <Checkbox
-                                                    id={`role-${role.id}`}
-                                                    checked={data.roles.includes(role.id)}
-                                                    onCheckedChange={() => toggleRole(role.id)}
-                                                />
-                                                <label
-                                                    htmlFor={`role-${role.id}`}
-                                                    className="text-sm font-medium cursor-pointer"
-                                                >
-                                                    {role.name}
-                                                </label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    {errors.roles && (
-                                        <p className="text-sm text-danger">{errors.roles}</p>
-                                    )}
-                                </div>
+                                <Field invalid={!!errors.role}>
+                                    <FieldLabel>Role</FieldLabel>
+                                    <Select
+                                        value={data.role}
+                                        onValueChange={(value) => setData('role', value as string)}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a role" />
+                                        </SelectTrigger>
+                                        <SelectPopup>
+                                            <SelectList>
+                                                {roles.map((role) => (
+                                                    <SelectItem key={role.id} value={role.name}>
+                                                        {role.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectList>
+                                        </SelectPopup>
+                                    </Select>
+                                    <FieldError match={!!errors.role}>{errors.role}</FieldError>
+                                </Field>
 
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>

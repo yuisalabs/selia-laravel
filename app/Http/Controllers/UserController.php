@@ -47,8 +47,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'roles' => 'array',
-            'roles.*' => 'exists:roles,id',
+            'role' => 'required|exists:roles,name',
         ]);
 
         $user = User::create([
@@ -57,8 +56,8 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        if (isset($validated['roles'])) {
-            $user->syncRoles($validated['roles']);
+        if (isset($validated['role'])) {
+            $user->syncRoles([$validated['role']]);
         }
 
         return redirect()->route('users.index')
@@ -115,8 +114,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:users,email,' . $user->id,
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-            'roles' => 'array',
-            'roles.*' => 'exists:roles,id',
+            'role' => 'required|exists:roles,name',
         ]);
 
         $user->update([
@@ -130,8 +128,8 @@ class UserController extends Controller
             ]);
         }
 
-        if (isset($validated['roles'])) {
-            $user->syncRoles($validated['roles']);
+        if (isset($validated['role'])) {
+            $user->syncRoles([$validated['role']]);
         }
 
         return redirect()->route('users.index')

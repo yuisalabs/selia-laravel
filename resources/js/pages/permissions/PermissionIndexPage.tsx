@@ -75,7 +75,16 @@ export default function PermissionIndexPage({ permissions }: PermissionIndexPage
                                                 <Badge variant="secondary">{permission.guard_name}</Badge>
                                             </TableCell>
                                             <TableCell>
-                                                {permission.roles.length} role(s)
+                                                <div className="flex flex-wrap gap-1">
+                                                    {permission.roles.map((role) => (
+                                                        <Badge key={role.id} variant="secondary" className="text-xs">
+                                                            {role.name}
+                                                        </Badge>
+                                                    ))}
+                                                    {permission.roles.length === 0 && (
+                                                        <span className="text-sm text-muted">No roles</span>
+                                                    )}
+                                                </div>
                                             </TableCell>
                                             <TableCell className="text-right space-x-2 whitespace-nowrap">
                                                 <Link

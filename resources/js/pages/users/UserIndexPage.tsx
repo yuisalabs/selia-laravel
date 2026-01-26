@@ -77,16 +77,13 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                             <TableCell className="font-medium">{user.name}</TableCell>
                                             <TableCell>{user.email}</TableCell>
                                             <TableCell>
-                                                <div className="flex flex-wrap gap-1">
-                                                    {user.roles.map((role) => (
-                                                        <Badge key={role.id} variant="secondary" className="text-xs">
-                                                            {role.name}
-                                                        </Badge>
-                                                    ))}
-                                                    {user.roles.length === 0 && (
-                                                        <span className="text-sm text-muted">No roles</span>
-                                                    )}
-                                                </div>
+                                                {user.roles.length > 0 ? (
+                                                    <Badge variant="secondary" className="text-xs">
+                                                        {user.roles[0].name}
+                                                    </Badge>
+                                                ) : (
+                                                    <span className="text-sm text-muted">No role</span>
+                                                )}
                                             </TableCell>
                                             <TableCell>
                                                 {user.email_verified_at ? (
