@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
+import { Heading } from '@/components/ui/heading';
 
 interface User {
     id: number;
@@ -241,13 +242,9 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
 
 UserIndexPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Users
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">Users</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

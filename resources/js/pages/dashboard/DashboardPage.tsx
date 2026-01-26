@@ -1,4 +1,5 @@
 import { StatCard } from '@/components/dashboard/stat-card';
+import { Heading } from '@/components/ui/heading';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head } from '@inertiajs/react';
 import { LucideShieldCheck, LucideUsers, LucideUserCog } from 'lucide-react';
@@ -18,7 +19,7 @@ export default function DashboardPage({ stats }: DashboardProps) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-4 px-4 md:grid-cols-2 lg:grid-cols-3">
                         <StatCard
                             title="Total Users"
                             value={stats.users}
@@ -42,13 +43,11 @@ export default function DashboardPage({ stats }: DashboardProps) {
 }
 
 DashboardPage.layout = (page: any) => {
-    return <AuthenticatedLayout
-        header={
-            <h2 className="text-xl font-semibold leading-tight text-foreground">
-                Dashboard
-            </h2>
-        }
-    >
-        {page}
-    </AuthenticatedLayout>;
+    return (
+        <AuthenticatedLayout header={
+            <Heading size="sm">Dashboard</Heading>
+        }>
+            {page}
+        </AuthenticatedLayout>
+    );
 };

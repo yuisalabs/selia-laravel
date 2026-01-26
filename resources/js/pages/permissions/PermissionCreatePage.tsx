@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { Heading } from '@/components/ui/heading';
 
 export default function PermissionCreatePage() {
     const { data, setData, post, processing, errors } = useForm({
@@ -97,13 +98,9 @@ export default function PermissionCreatePage() {
 
 PermissionCreatePage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Create Permission
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">Create Permission</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

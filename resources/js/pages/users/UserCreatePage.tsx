@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectItem, SelectList, SelectPopup, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
+import { Heading } from '@/components/ui/heading';
 
 
 interface Role {
@@ -149,13 +150,9 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
 
 UserCreatePage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Create User
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">Create User</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

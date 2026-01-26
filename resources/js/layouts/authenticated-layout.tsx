@@ -1,226 +1,291 @@
 import ApplicationLogo from '@/components/application-logo';
-import NavLink from '@/components/nav-link';
-import ResponsiveNavLink from '@/components/responsive-nav-link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
+import { 
+    Sidebar, 
+    SidebarContent, 
+    SidebarFooter, 
+    SidebarGroup, 
+    SidebarGroupTitle, 
+    SidebarHeader, 
+    SidebarItem, 
+    SidebarItemButton, 
+    SidebarList, 
+    SidebarLogo, 
+    SidebarMenu 
+} from '@/components/ui/sidebar';
 import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
-import { LucideHouse, LucideLogOut, LucideUserRound } from 'lucide-react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import { 
+    LucideChevronsUpDown,
+    LucideHouse, 
+    LucideKey,
+    LucideLayoutDashboard,
+    LucideLogOut, 
+    LucidePanelLeftClose,
+    LucidePanelLeftOpen,
+    LucideShield,
+    LucideUserRound,
+    LucideUsers,
+    LucideX
+} from 'lucide-react';
+import { PropsWithChildren, ReactNode, useState, useEffect } from 'react';
 import { FlashMessages } from '@/components/flash-messages';
+import { cn } from '@/utils/cn';
 
 export default function AuthenticatedLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    useEffect(() => {
+        const windowResize = () => {
+            if (window.innerWidth < 1024) {
+                setSidebarOpen(false);
+            } else {
+                setSidebarOpen(true);
+            }
+        };
+
+        windowResize();
+        window.addEventListener('resize', windowResize);
+        return () => window.removeEventListener('resize', windowResize);
+    }, []);
+
+    function handleSidebarToggle() {
+        setSidebarOpen(!sidebarOpen);
+    }
 
     return (
-        <div className="min-h-screen bg-background">
+        <>
             <FlashMessages />
-            <nav className="border-b border-separator bg-card">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-foreground" />
-                                </Link>
-                            </div>
+            
+            {/* Mobile Sidebar Backdrop */}
+            <div
+                className={cn(
+                    'fixed inset-0 bg-black backdrop-blur-sm z-40 transition-all max-lg:block hidden',
+                    sidebarOpen ? 'opacity-40 visible' : 'opacity-0 invisible',
+                )}
+                onClick={handleSidebarToggle}
+            />
 
-                            <div className="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex items-center">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    href={route('users.index')}
-                                    active={route().current('users.*')}
-                                >
-                                    Users
-                                </NavLink>
-                                <NavLink
-                                    href={route('roles.index')}
-                                    active={route().current('roles.*')}
-                                >
-                                    Roles
-                                </NavLink>
-                                <NavLink
-                                    href={route('permissions.index')}
-                                    active={route().current('permissions.*')}
-                                >
-                                    Permissions
-                                </NavLink>
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
-                                <Menu>
-                                    <MenuTrigger
-                                        render={
-                                        <Button nativeButton variant="plain">
-                                            Hello, {user.name}!
-                                            <Avatar size="sm">
-                                                <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
-                                                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-                                            </Avatar>
-                                        </Button>
-                                        }
-                                    />
-                                    <MenuPopup align='end'>
-                                        <MenuItem render={
-                                            <Button
-                                                nativeButton={false}
-                                                variant="plain"
-                                                render={
-                                                    <Link
-                                                        className='justify-start'
-                                                        href={route('welcome')}
-                                                        rel="noopener noreferrer"
-                                                    />
-                                                }>
-                                                <LucideHouse/>
-                                                Home
-                                            </Button>
-                                        }/>
-                                        <MenuItem render={
-                                            <Button
-                                                nativeButton={false}
-                                                variant="plain"
-                                                render={
-                                                    <Link
-                                                        className='justify-start'
-                                                        href={route('profile.edit')}
-                                                    />
-                                                }>
-                                                <LucideUserRound />
-                                                Profile
-                                            </Button>
-                                        }/>
-                                        <MenuSeparator />
-                                        <MenuItem render={
-                                            <Button
-                                                nativeButton
-                                                variant="plain"
-                                                render={
-                                                    <Link
-                                                        className='justify-start w-full'
-                                                        href={route('logout')}
-                                                        method="post"
-                                                        as="button"
-                                                    />
-                                                }>
-                                                <LucideLogOut/>
-                                                Log out
-                                            </Button>
-                                        }/>
-                                    </MenuPopup>
-                                </Menu>
-                                <ThemeToggle/>
-                            </div>
-                        </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-muted transition duration-150 ease-in-out hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:outline-none"
-                            >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
-                    }
+            {/* Sidebar */}
+            <div
+                className={cn(
+                    'fixed top-0 z-50 w-full max-w-72 md:w-72 h-dvh transition-all',
+                    sidebarOpen ? 'left-0' : '-left-full',
+                )}
+            >
+                <Sidebar
+                    size="loose"
+                    className="h-full bg-card border-r border-border flex flex-col"
                 >
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <div className="border-t border-separator pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-foreground">
-                                {user.name}
-                            </div>
-                            <div className="text-sm font-medium text-muted">
-                                {user.email}
-                            </div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route('logout')}
-                                as="button"
+                    <SidebarHeader>
+                        <div className="flex items-center justify-between">
+                            <SidebarLogo>
+                                <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
+                                <span className="font-semibold">Selia</span>
+                            </SidebarLogo>
+                            <Button
+                                variant="plain"
+                                size="sm-icon"
+                                className="lg:hidden"
+                                onClick={handleSidebarToggle}
                             >
-                                Log Out
-                            </ResponsiveNavLink>
+                                <LucideX className="size-5" />
+                            </Button>
                         </div>
+                    </SidebarHeader>
+
+                    <SidebarContent className="flex-1">
+                        <SidebarMenu>
+                            <SidebarGroup>
+                                <SidebarGroupTitle>Navigation</SidebarGroupTitle>
+                                <SidebarList>
+                                    <SidebarItem>
+                                        <SidebarItemButton
+                                            active={route().current('dashboard')}
+                                            render={
+                                                <Link
+                                                    href={route('dashboard')}
+                                                    onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
+                                                />
+                                            }
+                                        >
+                                            <LucideLayoutDashboard />
+                                            Dashboard
+                                        </SidebarItemButton>
+                                    </SidebarItem>
+
+                                    <SidebarItem>
+                                        <SidebarItemButton
+                                            active={route().current('users.*')}
+                                            render={
+                                                <Link
+                                                    href={route('users.index')}
+                                                    onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
+                                                />
+                                            }
+                                        >
+                                            <LucideUsers />
+                                            Users
+                                        </SidebarItemButton>
+                                    </SidebarItem>
+
+                                    <SidebarItem>
+                                        <SidebarItemButton
+                                            active={route().current('roles.*')}
+                                            render={
+                                                <Link
+                                                    href={route('roles.index')}
+                                                    onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
+                                                />
+                                            }
+                                        >
+                                            <LucideShield />
+                                            Roles
+                                        </SidebarItemButton>
+                                    </SidebarItem>
+
+                                    <SidebarItem>
+                                        <SidebarItemButton
+                                            active={route().current('permissions.*')}
+                                            render={
+                                                <Link
+                                                    href={route('permissions.index')}
+                                                    onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
+                                                />
+                                            }
+                                        >
+                                            <LucideKey />
+                                            Permissions
+                                        </SidebarItemButton>
+                                    </SidebarItem>
+                                </SidebarList>
+                            </SidebarGroup>
+                        </SidebarMenu>
+                    </SidebarContent>
+
+                    <SidebarFooter className="shrink-0">
+                        <SidebarMenu>
+                            <SidebarList>
+                                <SidebarItem>
+                                    <Menu>
+                                        <MenuTrigger
+                                            data-slot="sidebar-item-button"
+                                            nativeButton={false}
+                                            render={
+                                                <SidebarItemButton 
+                                                    className="border border-border"
+                                                >
+                                                    <Avatar size="sm">
+                                                        <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
+                                                        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="flex flex-col flex-1 min-w-0">
+                                                        <span className="font-medium truncate">{user.name}</span>
+                                                        <span className="text-sm text-muted truncate">{user.email}</span>
+                                                    </div>
+                                                    <LucideChevronsUpDown className="ml-auto shrink-0" />
+                                                </SidebarItemButton>
+                                            }
+                                        />
+                                        <MenuPopup className="w-(--anchor-width)" side="top">
+                                            <MenuItem render={
+                                                <Button
+                                                    nativeButton={false}
+                                                    variant="plain"
+                                                    render={
+                                                        <Link
+                                                            className='justify-start'
+                                                            href={route('welcome')}
+                                                            rel="noopener noreferrer"
+                                                        />
+                                                    }>
+                                                    <LucideHouse/>
+                                                    Home
+                                                </Button>
+                                            }/>
+                                            <MenuItem render={
+                                                <Button
+                                                    nativeButton={false}
+                                                    variant="plain"
+                                                    render={
+                                                        <Link
+                                                            className='justify-start'
+                                                            href={route('profile.edit')}
+                                                        />
+                                                    }>
+                                                    <LucideUserRound />
+                                                    Profile
+                                                </Button>
+                                            }/>
+                                            <MenuSeparator />
+                                            <MenuItem render={
+                                                <Button
+                                                    nativeButton
+                                                    variant="plain"
+                                                    render={
+                                                        <Link
+                                                            className='justify-start w-full'
+                                                            href={route('logout')}
+                                                            method="post"
+                                                            as="button"
+                                                        />
+                                                    }>
+                                                    <LucideLogOut/>
+                                                    Log out
+                                                </Button>
+                                            }/>
+                                        </MenuPopup>
+                                    </Menu>
+                                </SidebarItem>
+                            </SidebarList>
+                        </SidebarMenu>
+                    </SidebarFooter>
+                </Sidebar>
+            </div>
+
+            {/* Main Content */}
+            <main className={cn('transition-all', sidebarOpen ? 'xl:ml-72' : 'xl:ml-0')}>
+                {/* Top Navigation Bar */}
+                <nav className={cn(
+                    'h-16 flex items-center gap-2.5 border-b border-border bg-card px-2 max-lg:px-4',
+                    sidebarOpen ? 'xl:pr-4' : 'xl:px-4',
+                )}>
+                    <Button
+                        variant="plain"
+                        size="sm-icon"
+                        onClick={handleSidebarToggle}
+                    >
+                        {sidebarOpen ? <LucidePanelLeftClose className="size-5" /> : <LucidePanelLeftOpen className="size-5" />}
+                    </Button>
+                    <div className="flex items-center gap-2 lg:hidden">
+                        <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
+                        <span className="font-semibold">Selia</span>
+                    </div>
+                    {header && (
+                        <div className="hidden lg:block">{header}</div>
+                    )}
+                    <div className="ml-auto">
+                        <ThemeToggle />
+                    </div>
+                </nav>
+
+                {/* Page Content */}
+                <div className={cn(
+                    'min-h-[calc(100vh-4rem)] flex flex-col max-lg:px-0',
+                    sidebarOpen ? 'xl:pr-0' : 'xl:px-0',
+                )}>
+                    <div className="flex-1">
+                        {children}
                     </div>
                 </div>
-            </nav>
-
-            {header && (
-                <header className="bg-card shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )}
-
-            <main>{children}</main>
-        </div>
+            </main>
+        </>
     );
 }

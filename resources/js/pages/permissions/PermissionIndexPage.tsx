@@ -9,6 +9,8 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, Ta
 import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 import { router } from '@inertiajs/react';
 import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
+import { Text } from '@/components/ui/text';
+import { Heading } from '@/components/ui/heading';
 
 interface Permission {
     id: number;
@@ -240,13 +242,9 @@ export default function PermissionIndexPage({ permissions }: PermissionIndexPage
 
 PermissionIndexPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Permissions
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">Permissions</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

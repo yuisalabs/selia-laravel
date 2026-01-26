@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, Ta
 import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 import {router} from '@inertiajs/react';
 import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
+import { Heading } from '@/components/ui/heading';
 
 interface Role {
     id: number;
@@ -242,13 +243,9 @@ export default function RoleIndexPage({ roles }: RoleIndexPageProps) {
 
 RoleIndexPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Roles
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">Roles</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

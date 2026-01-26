@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Divider } from '@/components/ui/divider';
 import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
+import { Heading } from '@/components/ui/heading';
 
 interface Role {
     id: number;
@@ -139,13 +140,9 @@ export default function UserShowPage({ user }: UserShowPageProps) {
 
 UserShowPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    User Details
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">User Details</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

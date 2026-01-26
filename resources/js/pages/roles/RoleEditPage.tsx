@@ -10,6 +10,7 @@ import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Item } from '@/components/ui/item';
 import { Textarea } from '@/components/ui/textarea';
+import { Heading } from '@/components/ui/heading';
 
 interface Permission {
     id: number;
@@ -159,13 +160,9 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
 
 RoleEditPage.layout = (page: any) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-foreground">
-                    Edit Role
-                </h2>
-            }
-        >
+        <AuthenticatedLayout header={
+            <Heading size="sm">Edit Role</Heading>
+        }>
             {page}
         </AuthenticatedLayout>
     );

@@ -82,6 +82,7 @@ export function MenuPopup({
     <BaseMenu.Portal>
       <BaseMenu.Backdrop />
       <BaseMenu.Positioner
+        className="z-50"
         align={align}
         alignOffset={alignOffset}
         side={side}
