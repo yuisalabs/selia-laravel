@@ -9,7 +9,7 @@ Route::get('/', function () {
     return Inertia::render('home/HomePage');
 })->name('welcome');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 

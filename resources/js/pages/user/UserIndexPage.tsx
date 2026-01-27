@@ -6,7 +6,7 @@ import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } fr
 import { cn } from '@/utils/cn';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogBody, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogClose, AlertDialogHeader } from '@/components/ui/alert-dialog';
 import { LucideCirclePlus, LucideEye, LucideSquarePen, LucideTrash2 } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 
@@ -124,8 +124,10 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                                                     <span className="hidden xl:inline">Delete</span>
                                                                 </AlertDialogTrigger>
                                                                 <AlertDialogPopup>
-                                                                    <AlertDialogBody>
+                                                                    <AlertDialogHeader>
                                                                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                    </AlertDialogHeader>
+                                                                    <AlertDialogBody>
                                                                         <AlertDialogDescription>
                                                                             This will permanently delete the user "{user.name}".
                                                                             This action cannot be undone.
@@ -137,6 +139,7 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                                                             variant="danger"
                                                                             onClick={() => handleDelete(user.id)}
                                                                         >
+                                                                            <LucideTrash2/>
                                                                             Delete
                                                                         </Button>
                                                                     </AlertDialogFooter>
@@ -207,8 +210,10 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                                     Delete
                                                 </AlertDialogTrigger>
                                                 <AlertDialogPopup>
-                                                    <AlertDialogBody>
+                                                    <AlertDialogHeader>
                                                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogBody>
                                                         <AlertDialogDescription>
                                                             This will permanently delete the user "{user.name}".
                                                             This action cannot be undone.
@@ -220,6 +225,7 @@ export default function UserIndexPage({ users }: UserIndexPageProps) {
                                                             variant="danger"
                                                             onClick={() => handleDelete(user.id)}
                                                         >
+                                                            <LucideTrash2/>
                                                             Delete
                                                         </Button>
                                                     </AlertDialogFooter>

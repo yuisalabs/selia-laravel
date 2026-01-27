@@ -276,7 +276,7 @@ export default function AuthenticatedLayout({
             </div>
 
             {/* Main Content */}
-            <main className={cn('transition-all', sidebarOpen ? 'xl:ml-72' : 'xl:ml-0')}>
+            <main className={cn('transition-all lg:ml-72', !sidebarOpen && 'lg:ml-0')}>
                 {/* Top Navigation Bar */}
                 <nav className={cn(
                     'h-16 flex items-center gap-2.5 border-b border-border bg-card px-2 max-lg:px-4',
@@ -298,10 +298,7 @@ export default function AuthenticatedLayout({
                 </nav>
 
                 {/* Page Content */}
-                <div className={cn(
-                    'min-h-[calc(100vh-4rem)] flex flex-col max-lg:px-0',
-                    sidebarOpen ? 'xl:pr-0' : 'xl:px-0',
-                )}>  
+                <div className="min-h-[calc(100vh-4rem)] flex flex-col">  
                     {breadcrumbs && breadcrumbs.length > 0 && (
                         <div className="border-b border-border bg-card px-4 py-3">
                             <Breadcrumb>

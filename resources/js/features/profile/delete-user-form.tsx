@@ -12,6 +12,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
+import { LucideTrash2 } from 'lucide-react';
 
 export default function DeleteUserForm({
     className = '',
@@ -71,6 +72,7 @@ export default function DeleteUserForm({
             </header>
 
             <Button variant="danger" onClick={confirmUserDeletion}>
+                <LucideTrash2/>
                 Delete Account
             </Button>
 
@@ -116,6 +118,7 @@ export default function DeleteUserForm({
                             </Button>
 
                             <Button variant="danger" className="ms-3" type="submit" disabled={processing}>
+                                <LucideTrash2/>
                                 Delete Account
                             </Button>
                         </DialogFooter>

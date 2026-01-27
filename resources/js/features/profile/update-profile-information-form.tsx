@@ -5,6 +5,8 @@ import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Card } from '@/components/ui/card';
+import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogHeader, AlertDialogTitle, AlertDialogBody, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
+import { LucideSave } from 'lucide-react';
 
 interface UpdateProfileInformationProps {
     mustVerifyEmail: boolean;
@@ -28,7 +30,9 @@ export default function UpdateProfileInformation({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+    };
 
+    const handleUpdate = () => {
         patch(route('profile.update'));
     };
 
@@ -103,19 +107,43 @@ export default function UpdateProfileInformation({
                 )}
 
                 <div className="flex items-center gap-4">
-                    <Button variant="primary" type="submit" disabled={processing}>Save</Button>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-muted">
-                            Saved.
-                        </p>
-                    </Transition>
+                    <AlertDialog>
+                        <AlertDialogTrigger
+                            render={
+                                <Button variant="primary" type="button" disabled={processing}>
+                                    <LucideSave/>
+                                    Save
+                                </Button>
+                            }
+                        />
+                        <AlertDialogPopup>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Confirm Update</AlertDialogTitle>
+                            </AlertDialogHeader>
+                            <AlertDialogBody>
+                                <AlertDialogDescription>
+                                    Are you sure you want to update your profile information? This action will save all changes.
+                                </AlertDialogDescription>
+                            </AlertDialogBody>
+                            <AlertDialogFooter>
+                                <AlertDialogClose
+                                    render={
+                                        <Button variant="outline">
+                                            Cancel
+                                        </Button>
+                                    }
+                                />
+                                <AlertDialogClose
+                                    render={
+                                        <Button variant="primary" onClick={handleUpdate} disabled={processing}>
+                                            <LucideSave/>
+                                            Confirm Update
+                                        </Button>
+                                    }
+                                />
+                            </AlertDialogFooter>
+                        </AlertDialogPopup>
+                    </AlertDialog>
                 </div>
             </form>
         </Card>

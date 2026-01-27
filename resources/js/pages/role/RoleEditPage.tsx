@@ -11,6 +11,7 @@ import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Item } from '@/components/ui/item';
 import { Textarea } from '@/components/ui/textarea';
 import { Heading } from '@/components/ui/heading';
+import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogHeader, AlertDialogTitle, AlertDialogBody, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 
 interface Permission {
     id: number;
@@ -41,6 +42,9 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+    };
+
+    const handleUpdate = () => {
         put(route('roles.update', role.id));
     };
 
@@ -136,10 +140,43 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                 </Item>
 
                                 <div className="flex items-center gap-4">
-                                    <Button variant="primary" type="submit" disabled={processing}>
-                                        <LucideSave/>
-                                        Update
-                                    </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger
+                                            render={
+                                                <Button variant="primary" type="button" disabled={processing}>
+                                                    <LucideSave/>
+                                                    Update
+                                                </Button>
+                                            }
+                                        />
+                                        <AlertDialogPopup>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Confirm Update</AlertDialogTitle>
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody>
+                                                <AlertDialogDescription>
+                                                    Are you sure you want to update this role's information? This action will save all changes.
+                                                </AlertDialogDescription>
+                                            </AlertDialogBody>
+                                            <AlertDialogFooter>
+                                                <AlertDialogClose
+                                                    render={
+                                                        <Button variant="outline">
+                                                            Cancel
+                                                        </Button>
+                                                    }
+                                                />
+                                                <AlertDialogClose
+                                                    render={
+                                                        <Button variant="primary" onClick={handleUpdate} disabled={processing}>
+                                                            <LucideSave/>
+                                                            Confirm Update
+                                                        </Button>
+                                                    }
+                                                />
+                                            </AlertDialogFooter>
+                                        </AlertDialogPopup>
+                                    </AlertDialog>
                                     <Link
                                         as="button"
                                         href={route('roles.index')}

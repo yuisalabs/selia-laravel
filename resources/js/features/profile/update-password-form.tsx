@@ -1,10 +1,11 @@
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 import { Card } from '@/components/ui/card';
+import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogHeader, AlertDialogTitle, AlertDialogBody, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
+import { LucideSave } from 'lucide-react';
 
 export default function UpdatePasswordForm({
     className = '',
@@ -30,7 +31,9 @@ export default function UpdatePasswordForm({
 
     const updatePassword: FormEventHandler = (e) => {
         e.preventDefault();
+    };
 
+    const handleUpdatePassword = () => {
         put(route('password.update'), {
             preserveScroll: true,
             onSuccess: () => reset(),
@@ -113,19 +116,43 @@ export default function UpdatePasswordForm({
                 </Field>
 
                 <div className="flex items-center gap-4">
-                    <Button variant="primary" type="submit" disabled={processing}>Save</Button>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-muted">
-                            Saved.
-                        </p>
-                    </Transition>
+                    <AlertDialog>
+                        <AlertDialogTrigger
+                            render={
+                                <Button variant="primary" type="button" disabled={processing}>
+                                    <LucideSave/>
+                                    Save
+                                </Button>
+                            }
+                        />
+                        <AlertDialogPopup>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Confirm Password Update</AlertDialogTitle>
+                            </AlertDialogHeader>
+                            <AlertDialogBody>
+                                <AlertDialogDescription>
+                                    Are you sure you want to update your password? This action will change your account password.
+                                </AlertDialogDescription>
+                            </AlertDialogBody>
+                            <AlertDialogFooter>
+                                <AlertDialogClose
+                                    render={
+                                        <Button variant="outline">
+                                            Cancel
+                                        </Button>
+                                    }
+                                />
+                                <AlertDialogClose
+                                    render={
+                                        <Button variant="primary" onClick={handleUpdatePassword} disabled={processing}>
+                                            <LucideSave/>
+                                            Confirm Update
+                                        </Button>
+                                    }
+                                />
+                            </AlertDialogFooter>
+                        </AlertDialogPopup>
+                    </AlertDialog>
                 </div>
             </form>
         </Card>

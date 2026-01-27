@@ -9,6 +9,7 @@ import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Heading } from '@/components/ui/heading';
+import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogHeader, AlertDialogTitle, AlertDialogBody, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
 
 interface Permission {
     id: number;
@@ -30,6 +31,9 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+    };
+
+    const handleUpdate = () => {
         put(route('permissions.update', permission.id));
     };
 
@@ -85,10 +89,43 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
                                 </Field>
 
                                 <div className="flex items-center gap-4">
-                                    <Button variant="primary" type="submit" disabled={processing}>
-                                        <LucideSave/>
-                                        Update
-                                    </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger
+                                            render={
+                                                <Button variant="primary" type="button" disabled={processing}>
+                                                    <LucideSave/>
+                                                    Update
+                                                </Button>
+                                            }
+                                        />
+                                        <AlertDialogPopup>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Confirm Update</AlertDialogTitle>
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody>
+                                                <AlertDialogDescription>
+                                                    Are you sure you want to update this permission's information? This action will save all changes.
+                                                </AlertDialogDescription>
+                                            </AlertDialogBody>
+                                            <AlertDialogFooter>
+                                                <AlertDialogClose
+                                                    render={
+                                                        <Button variant="outline">
+                                                            Cancel
+                                                        </Button>
+                                                    }
+                                                />
+                                                <AlertDialogClose
+                                                    render={
+                                                        <Button variant="primary" onClick={handleUpdate} disabled={processing}>
+                                                            <LucideSave/>
+                                                            Confirm Update
+                                                        </Button>
+                                                    }
+                                                />
+                                            </AlertDialogFooter>
+                                        </AlertDialogPopup>
+                                    </AlertDialog>
                                     <Link
                                         as="button"
                                         href={route('permissions.index')}
