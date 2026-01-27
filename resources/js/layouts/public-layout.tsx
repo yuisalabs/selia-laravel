@@ -1,114 +1,298 @@
 import ApplicationLogo from '@/components/application-logo';
-import NavLink from '@/components/nav-link';
-import ResponsiveNavLink from '@/components/responsive-nav-link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
 import { getInitials } from '@/utils/initials';
 import { Link, usePage } from '@inertiajs/react';
-import { LucideLayoutDashboard, LucideLogOut, LucideUserRound } from 'lucide-react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import { 
+    LucideBookOpen,
+    LucideHome,
+    LucideLayoutDashboard, 
+    LucideLogIn,
+    LucideLogOut, 
+    LucideMenu,
+    LucideUserPlus,
+    LucideUserRound,
+    LucideX 
+} from 'lucide-react';
+import { PropsWithChildren, ReactNode, useState, useEffect } from 'react';
 import { FlashMessages } from '@/components/flash-messages';
+import { cn } from '@/utils/cn';
 
 export default function PublicLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
     const user = usePage().props.auth.user;
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setMobileMenuOpen(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const handleMobileMenuToggle = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setMobileMenuOpen(false);
+    };
 
     return (
         <div className="min-h-screen bg-background">
             <FlashMessages />
-            <nav className="border-b border-separator bg-card">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-foreground" />
+            
+            {/* Mobile Menu Backdrop */}
+            <div
+                className={cn(
+                    'fixed inset-0 bg-black backdrop-blur-sm z-40 transition-all md:hidden',
+                    mobileMenuOpen ? 'opacity-40 visible' : 'opacity-0 invisible pointer-events-none',
+                )}
+                onClick={closeMobileMenu}
+            />
+
+            {/* Mobile Drawer Menu */}
+            <div
+                className={cn(
+                    'fixed top-0 right-0 z-50 w-full max-w-xs h-dvh bg-card border-l border-border transition-transform duration-300 md:hidden',
+                    mobileMenuOpen ? 'translate-x-0' : 'translate-x-full',
+                )}
+            >
+                <div className="flex flex-col h-full">
+                    {/* Mobile Menu Header */}
+                    <div className="flex items-center justify-between p-4 border-b border-border">
+                        <Link href="/" onClick={closeMobileMenu} className="flex items-center gap-2">
+                            <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
+                            <span className="font-semibold">Selia</span>
+                        </Link>
+                        <Button
+                            variant="plain"
+                            size="sm-icon"
+                            onClick={closeMobileMenu}
+                        >
+                            <LucideX className="size-5" />
+                        </Button>
+                    </div>
+
+                    {/* Mobile Menu Navigation */}
+                    <nav className="flex-1 overflow-y-auto p-4">
+                        <div className="space-y-1">
+                            <Link
+                                href="/"
+                                onClick={closeMobileMenu}
+                                className={cn(
+                                    buttonVariants({ variant: 'plain', size: 'sm' }),
+                                    'justify-start w-full',
+                                    route().current('welcome') && 'bg-accent'
+                                )}
+                            >
+                                <LucideHome className="size-4" />
+                                Home
+                            </Link>
+                            <a
+                                href="https://selia.earth/docs/introduction"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={closeMobileMenu}
+                                className={cn(
+                                    buttonVariants({ variant: 'plain', size: 'sm' }),
+                                    'justify-start w-full'
+                                )}
+                            >
+                                <LucideBookOpen className="size-4" />
+                                Selia UI Documentation
+                            </a>
+                        </div>
+                    </nav>
+
+                    {/* Mobile Menu Footer */}
+                    <div className="p-4 border-t border-border">
+                        {user ? (
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3 px-3 py-2">
+                                    <Avatar size="sm">
+                                        <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
+                                        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex flex-col min-w-0">
+                                        <span className="font-medium truncate">{user.name}</span>
+                                        <span className="text-sm text-muted truncate">{user.email}</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <Link
+                                        href={route('dashboard')}
+                                        onClick={closeMobileMenu}
+                                        className={cn(
+                                            buttonVariants({ variant: 'plain', size: 'sm' }),
+                                            'justify-start w-full'
+                                        )}
+                                    >
+                                        <LucideLayoutDashboard className="size-4" />
+                                        Dashboard
+                                    </Link>
+                                    <Link
+                                        href={route('profile.edit')}
+                                        onClick={closeMobileMenu}
+                                        className={cn(
+                                            buttonVariants({ variant: 'plain', size: 'sm' }),
+                                            'justify-start w-full'
+                                        )}
+                                    >
+                                        <LucideUserRound className="size-4" />
+                                        Profile
+                                    </Link>
+                                    <Link
+                                        href={route('logout')}
+                                        method="post"
+                                        as="button"
+                                        onClick={closeMobileMenu}
+                                        className={cn(
+                                            buttonVariants({ variant: 'plain', size: 'sm' }),
+                                            'justify-start w-full'
+                                        )}
+                                    >
+                                        <LucideLogOut className="size-4" />
+                                        Log out
+                                    </Link>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                <Link
+                                    href={route('login')}
+                                    onClick={closeMobileMenu}
+                                    className={cn(
+                                        buttonVariants({ variant: 'outline', size: 'sm', block: true })
+                                    )}
+                                >
+                                    <LucideLogIn className="size-4" />
+                                    Log in
+                                </Link>
+                                <Link
+                                    href={route('register')}
+                                    onClick={closeMobileMenu}
+                                    className={cn(
+                                        buttonVariants({ variant: 'primary', size: 'sm', block: true })
+                                    )}
+                                >
+                                    <LucideUserPlus className="size-4" />
+                                    Register
                                 </Link>
                             </div>
+                        )}
+                    </div>
+                </div>
+            </div>
 
-                            <div className="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex items-center">
-                                <NavLink href="/" active={route().current('welcome')}>
+            {/* Main Navigation Bar */}
+            <nav className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="flex h-16 items-center justify-between">
+                        {/* Logo */}
+                        <div className="flex items-center gap-8">
+                            <Link href="/" className="flex items-center gap-2">
+                                <ApplicationLogo className="h-8 w-8 fill-current text-foreground" />
+                                <span className="font-semibold hidden sm:inline">Selia</span>
+                            </Link>
+
+                            {/* Desktop Navigation Links */}
+                            <div className="hidden md:flex items-center gap-1">
+                                <Link
+                                    href="/"
+                                    className={cn(
+                                        buttonVariants({ variant: 'plain', size: 'sm' }),
+                                        route().current('welcome') && 'bg-accent'
+                                    )}
+                                >
                                     Home
-                                </NavLink>
-                                <NavLink target="_blank" href="https://selia.earth/docs/introduction" active={false} as="a">
+                                </Link>
+                                <a
+                                    href="https://selia.earth/docs/introduction"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={cn(
+                                        buttonVariants({ variant: 'plain', size: 'sm' })
+                                    )}
+                                >
                                     Selia UI Documentation
-                                </NavLink>
+                                </a>
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center space-x-2">
+                        {/* Desktop Right Side */}
+                        <div className="hidden md:flex items-center gap-2">
                             {user ? (
-                                <div className="relative ms-3">
-                                    <Menu>
-                                        <MenuTrigger
-                                            render={
-                                                <Button variant="plain">
-                                                    {user.name}
-                                                    <Avatar size="sm">
-                                                        <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
-                                                        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-                                                    </Avatar>
-                                                </Button>
-                                            }
-                                        />
-                                        <MenuPopup className="w-(--anchor-width)">
-                                            <MenuItem render={
-                                                <Button
-                                                    nativeButton={false}
-                                                    variant="plain"
-                                                    render={
-                                                        <Link
-                                                            className='justify-start w-full'
-                                                            href={route('dashboard')}
-                                                        />
-                                                    }>
-                                                    <LucideLayoutDashboard />
-                                                    Dashboard
-                                                </Button>
-                                            }/>
-                                            <MenuItem render={
-                                                <Button
-                                                    nativeButton={false}
-                                                    variant="plain"
-                                                    render={
-                                                        <Link
-                                                            className='justify-start'
-                                                            href={route('profile.edit')}
-                                                        />
-                                                    }>
-                                                    <LucideUserRound />
-                                                    Profile
-                                                </Button>
-                                            }/>
-                                            <MenuSeparator />
-                                            <MenuItem render={
-                                                <Button
-                                                    nativeButton={true}
-                                                    variant="plain"
-                                                    render={
-                                                        <Link
-                                                            className='justify-start w-full'
-                                                            href={route('logout')}
-                                                            method="post"
-                                                            as="button"
-                                                        />
-                                                    }>
-                                                    <LucideLogOut />
-                                                    Log out
-                                                </Button>
-                                            }/>
-                                        </MenuPopup>
-                                    </Menu>
-                                </div>
+                                <Menu>
+                                    <MenuTrigger
+                                        render={
+                                            <Button variant="plain" className="gap-2">
+                                                <span>{user.name}</span>
+                                                <Avatar size="sm">
+                                                    <AvatarImage src="https://www.gravatar.com/avatar/c22d38582ca23fa7ccfddb87b5334b03?s=200&d=mp" />
+                                                    <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                                                </Avatar>
+                                            </Button>
+                                        }
+                                    />
+                                    <MenuPopup>
+                                        <MenuItem render={
+                                            <Button
+                                                nativeButton={false}
+                                                variant="plain"
+                                                render={
+                                                    <Link
+                                                        className='justify-start w-full'
+                                                        href={route('dashboard')}
+                                                    />
+                                                }>
+                                                <LucideLayoutDashboard />
+                                                Dashboard
+                                            </Button>
+                                        }/>
+                                        <MenuItem render={
+                                            <Button
+                                                nativeButton={false}
+                                                variant="plain"
+                                                render={
+                                                    <Link
+                                                        className='justify-start w-full'
+                                                        href={route('profile.edit')}
+                                                    />
+                                                }>
+                                                <LucideUserRound />
+                                                Profile
+                                            </Button>
+                                        }/>
+                                        <MenuSeparator />
+                                        <MenuItem render={
+                                            <Button
+                                                nativeButton={true}
+                                                variant="plain"
+                                                render={
+                                                    <Link
+                                                        className='justify-start w-full'
+                                                        href={route('logout')}
+                                                        method="post"
+                                                        as="button"
+                                                    />
+                                                }>
+                                                <LucideLogOut />
+                                                Log out
+                                            </Button>
+                                        }/>
+                                    </MenuPopup>
+                                </Menu>
                             ) : (
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center gap-2">
                                     <Button
                                         nativeButton={false}
                                         variant="plain"
@@ -121,101 +305,26 @@ export default function PublicLayout({
                                     />
                                 </div>
                             )}
-                            <ThemeToggle/>
+                            <ThemeToggle />
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-muted transition duration-150 ease-in-out hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:outline-none"
+                        {/* Mobile Right Side */}
+                        <div className="flex items-center gap-2 md:hidden">
+                            <ThemeToggle />
+                            <Button
+                                variant="plain"
+                                size="sm-icon"
+                                onClick={handleMobileMenuToggle}
                             >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
+                                <LucideMenu className="size-5" />
+                            </Button>
                         </div>
                     </div>
-                </div>
-
-                <div
-                    className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
-                    }
-                >
-                    {/* Mobile Menu */}
-                    {user ? (
-                        <div className="border-t border-separator pb-1 pt-4">
-                            <div className="px-4">
-                                <div className="text-base font-medium text-foreground">
-                                    {user.name}
-                                </div>
-                                <div className="text-sm font-medium text-muted">
-                                    {user.email}
-                                </div>
-                            </div>
-
-                            <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route('dashboard')}>
-                                    Dashboard
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route('profile.edit')}>
-                                    Profile
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    method="post"
-                                    href={route('logout')}
-                                    as="button"
-                                >
-                                    Log Out
-                                </ResponsiveNavLink>
-                            </div>
-                        </div>
-                    ) : (
-                         <div className="space-y-1 pb-3 pt-2 border-t border-separator">
-                            <ResponsiveNavLink href={route('login')}>
-                                Log in
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('register')}>
-                                Register
-                            </ResponsiveNavLink>
-                        </div>
-                    )}
                 </div>
             </nav>
 
             {header && (
-                <header className="bg-card shadow">
+                <header className="bg-card border-b border-border">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>
