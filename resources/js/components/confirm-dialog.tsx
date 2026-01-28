@@ -52,7 +52,7 @@ export function ConfirmDialog() {
 
     if (!options) return null;
 
-    const { title, description, confirmText, cancelText, variant = 'default', onConfirm, onCancel } = options;
+    const { title, description, content, confirmText, cancelText, variant = 'default', confirmDisabled, onConfirm, onCancel } = options;
     const config = variantConfig[variant];
     const Icon = config.icon;
 
@@ -86,10 +86,11 @@ export function ConfirmDialog() {
                 </AlertDialogHeader>
                 <AlertDialogBody>
                     <AlertDialogDescription>{description}</AlertDialogDescription>
+                    {content && <div className="mt-4">{content}</div>}
                 </AlertDialogBody>
                 <AlertDialogFooter>
                     <AlertDialogClose disabled={isLoading}>{cancelText}</AlertDialogClose>
-                    <Button variant={config.buttonVariant} onClick={handleConfirm} disabled={isLoading}>
+                    <Button variant={config.buttonVariant} onClick={handleConfirm} disabled={isLoading || confirmDisabled}>
                         {isLoading ? 'Processing...' : confirmText}
                     </Button>
                 </AlertDialogFooter>
@@ -97,3 +98,4 @@ export function ConfirmDialog() {
         </AlertDialog>
     );
 }
+

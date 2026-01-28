@@ -30,7 +30,7 @@ export function DialogPopup({
     <BaseDialog.Portal>
       <BaseDialog.Backdrop
         className={cn(
-          'fixed inset-0 min-h-dvh bg-black/60 transition-[color,opacity] backdrop-blur-sm',
+          'fixed inset-0 min-h-dvh bg-black/60 transition-[color,opacity] backdrop-blur-sm z-50',
           'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
         )}
       />
@@ -38,7 +38,7 @@ export function DialogPopup({
         data-slot="dialog-popup"
         {...props}
         className={cn(
-          'fixed left-1/2 -translate-x-1/2 -translate-y-1/2',
+          'fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-50',
           'top-[calc(50%+1.25rem*var(--nested-dialogs))]',
           'bg-dialog text-dialog-foreground backdrop-blur-sm',
           'ring ring-dialog-border rounded-xl shadow',

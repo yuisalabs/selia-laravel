@@ -1,13 +1,16 @@
 import { create } from 'zustand';
+import { ReactNode } from 'react';
 
 export type ConfirmDialogVariant = 'danger' | 'warning' | 'info' | 'default';
 
 export interface ConfirmDialogOptions {
   title?: string;
   description: string;
+  content?: ReactNode;
   confirmText?: string;
   cancelText?: string;
   variant?: ConfirmDialogVariant;
+  confirmDisabled?: boolean;
   onConfirm?: () => void | Promise<void>;
   onCancel?: () => void;
 }
@@ -20,6 +23,7 @@ interface ConfirmDialogState {
 
 interface ConfirmDialogActions {
   show: (options: ConfirmDialogOptions) => void;
+  update: (options: Partial<ConfirmDialogOptions>) => void;
   hide: () => void;
   setLoading: (loading: boolean) => void;
 }
@@ -51,6 +55,12 @@ export const useConfirmDialogStore = create<ConfirmDialogStore>((set) => ({
       options: null,
       isLoading: false,
     });
+  },
+
+  update: (newOptions) => {
+    set((state) => ({
+      options: state.options ? { ...state.options, ...newOptions } : null,
+    }));
   },
 
   setLoading: (loading) => {
