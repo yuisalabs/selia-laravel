@@ -6,17 +6,7 @@ import { cn } from '@/utils/cn';
 import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
-import {
-    AlertDialog,
-    AlertDialogTrigger,
-    AlertDialogPopup,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogBody,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogClose,
-} from '@/components/ui/alert-dialog';
+import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { UserForm } from '@/features/user';
 
 interface Role {
@@ -46,12 +36,22 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
         role: user.roles[0]?.name || '',
     });
 
+    const { show } = useConfirmDialogStore();
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
     };
 
     const handleUpdate = () => {
-        put(route('users.update', user.id));
+        show({
+            title: 'Confirm Update',
+            description: "Are you sure you want to update this user's information? This action will save all changes.",
+            variant: 'info',
+            confirmText: 'Confirm Update',
+            onConfirm: () => {
+                put(route('users.update', user.id));
+            },
+        });
     };
 
     return (
@@ -76,40 +76,10 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
                                 />
 
                                 <div className="flex items-center gap-4">
-                                    <AlertDialog>
-                                        <AlertDialogTrigger
-                                            render={
-                                                <Button variant="primary" type="button" disabled={processing}>
-                                                    <LucideSave />
-                                                    Update
-                                                </Button>
-                                            }
-                                        />
-                                        <AlertDialogPopup>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Confirm Update</AlertDialogTitle>
-                                            </AlertDialogHeader>
-                                            <AlertDialogBody>
-                                                <AlertDialogDescription>
-                                                    Are you sure you want to update this user's information? This action
-                                                    will save all changes.
-                                                </AlertDialogDescription>
-                                            </AlertDialogBody>
-                                            <AlertDialogFooter>
-                                                <AlertDialogClose
-                                                    render={<Button variant="outline">Cancel</Button>}
-                                                />
-                                                <AlertDialogClose
-                                                    render={
-                                                        <Button variant="primary" onClick={handleUpdate} disabled={processing}>
-                                                            <LucideSave />
-                                                            Confirm Update
-                                                        </Button>
-                                                    }
-                                                />
-                                            </AlertDialogFooter>
-                                        </AlertDialogPopup>
-                                    </AlertDialog>
+                                    <Button variant="primary" type="button" disabled={processing} onClick={handleUpdate}>
+                                        <LucideSave />
+                                        Update
+                                    </Button>
                                     <Link
                                         as="button"
                                         href={route('users.index')}
@@ -138,3 +108,4 @@ UserEditPage.layout = (page: any) => {
         </AuthenticatedLayout>
     );
 };
+

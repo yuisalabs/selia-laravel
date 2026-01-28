@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 import { Card } from '@/components/ui/card';
-import { AlertDialog, AlertDialogTrigger, AlertDialogPopup, AlertDialogHeader, AlertDialogTitle, AlertDialogBody, AlertDialogDescription, AlertDialogFooter, AlertDialogClose } from '@/components/ui/alert-dialog';
+import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { LucideSave } from 'lucide-react';
 
 export default function UpdatePasswordForm({
@@ -14,6 +14,7 @@ export default function UpdatePasswordForm({
 }) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
+    const { show } = useConfirmDialogStore();
 
     const {
         data,
@@ -34,19 +35,27 @@ export default function UpdatePasswordForm({
     };
 
     const handleUpdatePassword = () => {
-        put(route('password.update'), {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-            onError: (errors) => {
-                if (errors.password) {
-                    reset('password', 'password_confirmation');
-                    passwordInput.current?.focus();
-                }
+        show({
+            title: 'Confirm Password Update',
+            description: 'Are you sure you want to update your password? This action will change your account password.',
+            variant: 'warning',
+            confirmText: 'Confirm Update',
+            onConfirm: () => {
+                put(route('password.update'), {
+                    preserveScroll: true,
+                    onSuccess: () => reset(),
+                    onError: (errors) => {
+                        if (errors.password) {
+                            reset('password', 'password_confirmation');
+                            passwordInput.current?.focus();
+                        }
 
-                if (errors.current_password) {
-                    reset('current_password');
-                    currentPasswordInput.current?.focus();
-                }
+                        if (errors.current_password) {
+                            reset('current_password');
+                            currentPasswordInput.current?.focus();
+                        }
+                    },
+                });
             },
         });
     };
@@ -116,45 +125,13 @@ export default function UpdatePasswordForm({
                 </Field>
 
                 <div className="flex items-center gap-4">
-                    <AlertDialog>
-                        <AlertDialogTrigger
-                            render={
-                                <Button variant="primary" type="button" disabled={processing}>
-                                    <LucideSave/>
-                                    Save
-                                </Button>
-                            }
-                        />
-                        <AlertDialogPopup>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Confirm Password Update</AlertDialogTitle>
-                            </AlertDialogHeader>
-                            <AlertDialogBody>
-                                <AlertDialogDescription>
-                                    Are you sure you want to update your password? This action will change your account password.
-                                </AlertDialogDescription>
-                            </AlertDialogBody>
-                            <AlertDialogFooter>
-                                <AlertDialogClose
-                                    render={
-                                        <Button variant="outline">
-                                            Cancel
-                                        </Button>
-                                    }
-                                />
-                                <AlertDialogClose
-                                    render={
-                                        <Button variant="primary" onClick={handleUpdatePassword} disabled={processing}>
-                                            <LucideSave/>
-                                            Confirm Update
-                                        </Button>
-                                    }
-                                />
-                            </AlertDialogFooter>
-                        </AlertDialogPopup>
-                    </AlertDialog>
+                    <Button variant="primary" type="button" disabled={processing} onClick={handleUpdatePassword}>
+                        <LucideSave/>
+                        Save
+                    </Button>
                 </div>
             </form>
         </Card>
     );
 }
+
