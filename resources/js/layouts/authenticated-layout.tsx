@@ -75,7 +75,7 @@ export default function AuthenticatedLayout({
             {/* Mobile Sidebar Backdrop */}
             <div
                 className={cn(
-                    'fixed inset-0 bg-black backdrop-blur-sm z-40 transition-all max-lg:block hidden',
+                    'fixed inset-0 bg-black backdrop-blur-sm z-30 transition-all max-lg:block hidden',
                     sidebarOpen ? 'opacity-40 visible' : 'opacity-0 invisible',
                 )}
                 onClick={handleSidebarToggle}
@@ -84,7 +84,7 @@ export default function AuthenticatedLayout({
             {/* Sidebar */}
             <div
                 className={cn(
-                    'fixed top-0 z-50 w-full max-w-72 md:w-72 h-dvh transition-all',
+                    'fixed top-0 z-40 w-full max-w-72 md:w-72 h-dvh transition-all',
                     sidebarOpen ? 'left-0' : '-left-full',
                 )}
             >
