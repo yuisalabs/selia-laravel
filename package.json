@@ -7,6 +7,11 @@
     "dev": "vite",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "*.php": [
+      "./vendor/bin/pint --test"
+    ]
+  },
   "devDependencies": {
     "@headlessui/react": "^2.0.0",
     "@inertiajs/react": "^2.3.1",
@@ -37,10 +42,5 @@
     "momentum-paginator": "^1.0.7",
     "tailwind-merge": "^3.4.0",
     "zustand": "^5.0.10"
-  },
-  "lint-staged": {
-    "*.php": [
-      "./vendor/bin/pint --test"
-    ]
   }
 }
