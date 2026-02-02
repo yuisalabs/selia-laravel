@@ -45,7 +45,7 @@ class PermissionController extends Controller
      */
     public function store(StorePermissionRequest $request): RedirectResponse
     {
-        $this->permissionService->createPermission($request->validated());
+        $this->permissionService->store($request->validated());
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission created successfully.');
@@ -78,7 +78,7 @@ class PermissionController extends Controller
      */
     public function update(UpdatePermissionRequest $request, Permission $permission): RedirectResponse
     {
-        $this->permissionService->updatePermission($permission, $request->validated());
+        $this->permissionService->update($permission, $request->validated());
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission updated successfully.');
@@ -89,7 +89,7 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission): RedirectResponse
     {
-        $this->permissionService->deletePermission($permission);
+        $this->permissionService->destroy($permission);
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission deleted successfully.');

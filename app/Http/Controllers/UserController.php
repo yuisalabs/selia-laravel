@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        $this->userService->createUser($request->validated());
+        $this->userService->store($request->validated());
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully.');
@@ -87,7 +87,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-        $this->userService->updateUser($user, $request->validated());
+        $this->userService->update($user, $request->validated());
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully.');
@@ -99,7 +99,7 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         try {
-            $this->userService->deleteUser($user);
+            $this->userService->destroy($user);
 
             return redirect()->route('users.index')
                 ->with('success', 'User deleted successfully.');

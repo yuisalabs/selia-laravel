@@ -5,76 +5,90 @@ namespace App\Services;
 use App\Data\RoleData;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
-class RoleService
+/**
+ * @extends BaseService<Role, RoleData>
+ */
+class RoleService extends BaseService
 {
+    /**
+     * Get the model class name.
+     *
+     * @return class-string<Role>
+     */
+    protected function model(): string
+    {
+        return Role::class;
+    }
+
+    /**
+     * Get the data class name.
+     *
+     * @return class-string<RoleData>
+     */
+    protected function dataClass(): string
+    {
+        return RoleData::class;
+    }
+
+    /**
+     * Hook: Before storing - set default guard_name.
+     */
+    protected function beforeStore(array &$data): void
+    {
+        $data['guard_name'] = $data['guard_name'] ?? 'web';
+    }
+
+    /**
+     * Hook: After storing - sync permissions.
+     *
+     * @param  Role  $role
+     */
+    protected function afterStore(Model $role, array $data): void
+    {
+        if (isset($data['permissions'])) {
+            $role->syncPermissions($data['permissions']);
+        }
+
+        $role->load('permissions');
+    }
+
+    /**
+     * Hook: After updating - sync permissions.
+     *
+     * @param  Role  $role
+     */
+    protected function afterUpdate(Model $role, array $data): void
+    {
+        if (isset($data['permissions'])) {
+            $role->syncPermissions($data['permissions']);
+        }
+
+        $role->load('permissions');
+    }
+
+    /**
+     * Hook: Before deleting - prevent Super Admin deletion.
+     *
+     * @param  Role  $role
+     *
+     * @throws \Exception
+     */
+    protected function beforeDestroy(Model $role): void
+    {
+        /** @var Role $role */
+        if ($role->name === 'Super Admin') {
+            throw new \Exception('Cannot delete Super Admin role.');
+        }
+    }
+
     /**
      * Get all roles with pagination.
      */
     public function getAllRoles(): LengthAwarePaginator
     {
         return Role::with('permissions')->latest()->paginate(10);
-    }
-
-    /**
-     * Create a new role.
-     */
-    public function createRole(array $data): RoleData
-    {
-        return DB::transaction(function () use ($data): RoleData {
-            $role = Role::create([
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-                'guard_name' => $data['guard_name'] ?? 'web',
-            ]);
-
-            if (isset($data['permissions'])) {
-                $role->syncPermissions($data['permissions']);
-            }
-
-            $role->load('permissions');
-
-            return RoleData::fromModel($role);
-        });
-    }
-
-    /**
-     * Update an existing role.
-     */
-    public function updateRole(Role $role, array $data): RoleData
-    {
-        return DB::transaction(function () use ($role, $data): RoleData {
-            $role->update([
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-                'guard_name' => $data['guard_name'] ?? 'web',
-            ]);
-
-            if (isset($data['permissions'])) {
-                $role->syncPermissions($data['permissions']);
-            }
-
-            $role->load('permissions');
-
-            return RoleData::fromModel($role);
-        });
-    }
-
-    /**
-     * Delete a role.
-     *
-     * @throws \Exception
-     */
-    public function deleteRole(Role $role): void
-    {
-        if ($role->name === 'Super Admin') {
-            throw new \Exception('Cannot delete Super Admin role.');
-        }
-
-        DB::transaction(function () use ($role): void {
-            $role->delete();
-        });
     }
 
     /**

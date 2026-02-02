@@ -5,58 +5,46 @@ namespace App\Services;
 use App\Data\PermissionData;
 use App\Models\Permission;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 
-class PermissionService
+/**
+ * @extends BaseService<Permission, PermissionData>
+ */
+class PermissionService extends BaseService
 {
+    /**
+     * Get the model class name.
+     *
+     * @return class-string<Permission>
+     */
+    protected function model(): string
+    {
+        return Permission::class;
+    }
+
+    /**
+     * Get the data class name.
+     *
+     * @return class-string<PermissionData>
+     */
+    protected function dataClass(): string
+    {
+        return PermissionData::class;
+    }
+
+    /**
+     * Hook: Before storing - set default guard_name.
+     */
+    protected function beforeStore(array &$data): void
+    {
+        $data['guard_name'] = $data['guard_name'] ?? 'web';
+    }
+
     /**
      * Get all permissions with pagination.
      */
     public function getAllPermissions(): LengthAwarePaginator
     {
         return Permission::with('roles')->latest()->paginate(10);
-    }
-
-    /**
-     * Create a new permission.
-     */
-    public function createPermission(array $data): PermissionData
-    {
-        return DB::transaction(function () use ($data): PermissionData {
-            $permission = Permission::create([
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-                'guard_name' => $data['guard_name'] ?? 'web',
-            ]);
-
-            return PermissionData::fromModel($permission);
-        });
-    }
-
-    /**
-     * Update an existing permission.
-     */
-    public function updatePermission(Permission $permission, array $data): PermissionData
-    {
-        return DB::transaction(function () use ($permission, $data): PermissionData {
-            $permission->update([
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-                'guard_name' => $data['guard_name'] ?? 'web',
-            ]);
-
-            return PermissionData::fromModel($permission);
-        });
-    }
-
-    /**
-     * Delete a permission.
-     */
-    public function deletePermission(Permission $permission): void
-    {
-        DB::transaction(function () use ($permission): void {
-            $permission->delete();
-        });
     }
 
     /**

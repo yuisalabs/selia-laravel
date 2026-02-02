@@ -48,7 +48,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $this->roleService->createRole($request->validated());
+        $this->roleService->store($request->validated());
 
         return redirect()->route('roles.index')
             ->with('success', 'Role created successfully.');
@@ -84,7 +84,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        $this->roleService->updateRole($role, $request->validated());
+        $this->roleService->update($role, $request->validated());
 
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully.');
@@ -96,7 +96,7 @@ class RoleController extends Controller
     public function destroy(Role $role): RedirectResponse
     {
         try {
-            $this->roleService->deleteRole($role);
+            $this->roleService->destroy($role);
 
             return redirect()->route('roles.index')
                 ->with('success', 'Role deleted successfully.');
