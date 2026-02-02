@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Data\PermissionData;
 use App\Models\Permission;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class PermissionService
 {
@@ -18,27 +20,33 @@ class PermissionService
     /**
      * Create a new permission.
      */
-    public function createPermission(array $data): Permission
+    public function createPermission(array $data): PermissionData
     {
-        return Permission::create([
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
-            'guard_name' => $data['guard_name'] ?? 'web',
-        ]);
+        return DB::transaction(function () use ($data): PermissionData {
+            $permission = Permission::create([
+                'name' => $data['name'],
+                'description' => $data['description'] ?? null,
+                'guard_name' => $data['guard_name'] ?? 'web',
+            ]);
+
+            return PermissionData::fromModel($permission);
+        });
     }
 
     /**
      * Update an existing permission.
      */
-    public function updatePermission(Permission $permission, array $data): Permission
+    public function updatePermission(Permission $permission, array $data): PermissionData
     {
-        $permission->update([
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
-            'guard_name' => $data['guard_name'],
-        ]);
+        return DB::transaction(function () use ($permission, $data): PermissionData {
+            $permission->update([
+                'name' => $data['name'],
+                'description' => $data['description'] ?? null,
+                'guard_name' => $data['guard_name'] ?? 'web',
+            ]);
 
-        return $permission;
+            return PermissionData::fromModel($permission);
+        });
     }
 
     /**
@@ -46,14 +54,18 @@ class PermissionService
      */
     public function deletePermission(Permission $permission): void
     {
-        $permission->delete();
+        DB::transaction(function () use ($permission): void {
+            $permission->delete();
+        });
     }
 
     /**
      * Prepare permission data for display.
      */
-    public function getPermissionForShow(Permission $permission): Permission
+    public function getPermissionForShow(Permission $permission): PermissionData
     {
-        return $permission->load('roles');
+        $permission->load('roles');
+
+        return PermissionData::fromModel($permission);
     }
 }

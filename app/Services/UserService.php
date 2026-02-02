@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Data\UserData;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -19,42 +21,48 @@ class UserService
     /**
      * Create a new user.
      */
-    public function createUser(array $data): User
+    public function createUser(array $data): UserData
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return DB::transaction(function () use ($data): UserData {
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
 
-        if (isset($data['role'])) {
-            $user->syncRoles([$data['role']]);
-        }
+            if (isset($data['role'])) {
+                $user->syncRoles([$data['role']]);
+            }
 
-        return $user;
+            $user->load('roles');
+
+            return UserData::fromModel($user);
+        });
     }
 
     /**
      * Update an existing user.
      */
-    public function updateUser(User $user, array $data): User
+    public function updateUser(User $user, array $data): UserData
     {
-        $user->update([
-            'name' => $data['name'],
-            'email' => $data['email'],
-        ]);
-
-        if (isset($data['password']) && $data['password']) {
+        return DB::transaction(function () use ($user, $data): UserData {
             $user->update([
-                'password' => Hash::make($data['password']),
+                'name' => $data['name'],
+                'email' => $data['email'],
             ]);
-        }
 
-        if (isset($data['role'])) {
-            $user->syncRoles([$data['role']]);
-        }
+            if (isset($data['password']) && $data['password']) {
+                $user->update(['password' => Hash::make($data['password'])]);
+            }
 
-        return $user;
+            if (isset($data['role'])) {
+                $user->syncRoles([$data['role']]);
+            }
+
+            $user->load('roles');
+
+            return UserData::fromModel($user);
+        });
     }
 
     /**
@@ -68,39 +76,28 @@ class UserService
             throw new \Exception('Cannot delete your own account.');
         }
 
-        $user->delete();
+        DB::transaction(function () use ($user): void {
+            $user->delete();
+        });
     }
 
     /**
      * Prepare user data for editing.
      */
-    public function getUserForEdit(User $user): array
+    public function getUserForEdit(User $user): UserData
     {
         $user->load('roles');
 
-        return [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'roles' => $user->roles,
-        ];
+        return UserData::fromModel($user);
     }
 
     /**
      * Prepare user data for display.
      */
-    public function getUserForShow(User $user): array
+    public function getUserForShow(User $user): UserData
     {
-        $user->load(['roles.permissions']);
+        $user->load('roles.permissions');
 
-        return [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'email_verified_at' => $user->email_verified_at,
-            'created_at' => $user->created_at,
-            'roles' => $user->roles,
-            'permissions' => $user->getAllPermissionNames(),
-        ];
+        return UserData::fromModel($user);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Data\RoleData;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class RoleService
 {
@@ -18,37 +20,45 @@ class RoleService
     /**
      * Create a new role.
      */
-    public function createRole(array $data): Role
+    public function createRole(array $data): RoleData
     {
-        $role = Role::create([
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
-            'guard_name' => $data['guard_name'] ?? 'web',
-        ]);
+        return DB::transaction(function () use ($data): RoleData {
+            $role = Role::create([
+                'name' => $data['name'],
+                'description' => $data['description'] ?? null,
+                'guard_name' => $data['guard_name'] ?? 'web',
+            ]);
 
-        if (isset($data['permissions'])) {
-            $role->syncPermissions($data['permissions']);
-        }
+            if (isset($data['permissions'])) {
+                $role->syncPermissions($data['permissions']);
+            }
 
-        return $role;
+            $role->load('permissions');
+
+            return RoleData::fromModel($role);
+        });
     }
 
     /**
      * Update an existing role.
      */
-    public function updateRole(Role $role, array $data): Role
+    public function updateRole(Role $role, array $data): RoleData
     {
-        $role->update([
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
-            'guard_name' => $data['guard_name'],
-        ]);
+        return DB::transaction(function () use ($role, $data): RoleData {
+            $role->update([
+                'name' => $data['name'],
+                'description' => $data['description'] ?? null,
+                'guard_name' => $data['guard_name'] ?? 'web',
+            ]);
 
-        if (isset($data['permissions'])) {
-            $role->syncPermissions($data['permissions']);
-        }
+            if (isset($data['permissions'])) {
+                $role->syncPermissions($data['permissions']);
+            }
 
-        return $role;
+            $role->load('permissions');
+
+            return RoleData::fromModel($role);
+        });
     }
 
     /**
@@ -62,22 +72,28 @@ class RoleService
             throw new \Exception('Cannot delete Super Admin role.');
         }
 
-        $role->delete();
+        DB::transaction(function () use ($role): void {
+            $role->delete();
+        });
     }
 
     /**
      * Prepare role data for display.
      */
-    public function getRoleForShow(Role $role): Role
+    public function getRoleForShow(Role $role): RoleData
     {
-        return $role->load(['permissions', 'users']);
+        $role->load(['permissions', 'users']);
+
+        return RoleData::fromModel($role);
     }
 
     /**
      * Prepare role data for editing.
      */
-    public function getRoleForEdit(Role $role): Role
+    public function getRoleForEdit(Role $role): RoleData
     {
-        return $role->load('permissions');
+        $role->load('permissions');
+
+        return RoleData::fromModel($role);
     }
 }
