@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\PermissionData;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
@@ -27,7 +28,7 @@ class RoleController extends Controller
     {
         $roles = $this->roleService->getAllRoles();
 
-        return Inertia::render('roles/RoleIndexPage', [
+        return Inertia::render('role/RoleIndexPage', [
             'roles' => $roles,
         ]);
     }
@@ -37,10 +38,8 @@ class RoleController extends Controller
      */
     public function create(): Response
     {
-        $permissions = Permission::all();
-
-        return Inertia::render('roles/RoleCreatePage', [
-            'permissions' => $permissions,
+        return Inertia::render('role/RoleCreatePage', [
+            'permissions' => PermissionData::collect(Permission::all()),
         ]);
     }
 
@@ -60,10 +59,10 @@ class RoleController extends Controller
      */
     public function show(Role $role): Response
     {
-        $role = $this->roleService->getRoleForShow($role);
+        $roleData = $this->roleService->getRoleForShow($role);
 
-        return Inertia::render('roles/RoleShowPage', [
-            'role' => $role,
+        return Inertia::render('role/RoleShowPage', [
+            'role' => $roleData,
         ]);
     }
 
@@ -72,12 +71,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role): Response
     {
-        $role = $this->roleService->getRoleForEdit($role);
-        $permissions = Permission::all();
+        $roleData = $this->roleService->getRoleForEdit($role);
 
-        return Inertia::render('roles/RoleEditPage', [
-            'role' => $role,
-            'permissions' => $permissions,
+        return Inertia::render('role/RoleEditPage', [
+            'role' => $roleData,
+            'permissions' => PermissionData::collect(Permission::all()),
         ]);
     }
 

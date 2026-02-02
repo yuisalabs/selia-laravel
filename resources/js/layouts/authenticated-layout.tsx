@@ -75,7 +75,7 @@ export default function AuthenticatedLayout({
             {/* Mobile Sidebar Backdrop */}
             <div
                 className={cn(
-                    'fixed inset-0 bg-black backdrop-blur-sm z-40 transition-all max-lg:block hidden',
+                    'fixed inset-0 bg-black backdrop-blur-sm z-30 transition-all max-lg:block hidden',
                     sidebarOpen ? 'opacity-40 visible' : 'opacity-0 invisible',
                 )}
                 onClick={handleSidebarToggle}
@@ -84,7 +84,7 @@ export default function AuthenticatedLayout({
             {/* Sidebar */}
             <div
                 className={cn(
-                    'fixed top-0 z-50 w-full max-w-72 md:w-72 h-dvh transition-all',
+                    'fixed top-0 z-40 w-full max-w-72 md:w-72 h-dvh transition-all',
                     sidebarOpen ? 'left-0' : '-left-full',
                 )}
             >
@@ -276,7 +276,7 @@ export default function AuthenticatedLayout({
             </div>
 
             {/* Main Content */}
-            <main className={cn('transition-all', sidebarOpen ? 'xl:ml-72' : 'xl:ml-0')}>
+            <main className={cn('transition-all lg:ml-72', !sidebarOpen && 'lg:ml-0')}>
                 {/* Top Navigation Bar */}
                 <nav className={cn(
                     'h-16 flex items-center gap-2.5 border-b border-border bg-card px-2 max-lg:px-4',
@@ -298,10 +298,7 @@ export default function AuthenticatedLayout({
                 </nav>
 
                 {/* Page Content */}
-                <div className={cn(
-                    'min-h-[calc(100vh-4rem)] flex flex-col max-lg:px-0',
-                    sidebarOpen ? 'xl:pr-0' : 'xl:px-0',
-                )}>  
+                <div className="min-h-[calc(100vh-4rem)] flex flex-col">  
                     {breadcrumbs && breadcrumbs.length > 0 && (
                         <div className="border-b border-border bg-card px-4 py-3">
                             <Breadcrumb>

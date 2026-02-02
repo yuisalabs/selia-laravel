@@ -90,7 +90,7 @@ test('user can check for all roles', function () {
 
 test('user can get all permissions', function () {
     $user = User::factory()->create();
-    
+
     $role1 = Role::create(['name' => 'Editor', 'guard_name' => 'web']);
     $role1->givePermissionTo(['edit-posts']);
 
@@ -100,7 +100,7 @@ test('user can get all permissions', function () {
     $user->syncRoles(['Editor', 'Viewer']);
 
     $permissions = $user->getAllPermissions();
-    
+
     expect($permissions)->toHaveCount(2);
     expect($user->getAllPermissionNames())->toContain('edit-posts', 'view-posts');
 });
@@ -127,7 +127,7 @@ test('permission middleware blocks users without permission', function () {
 test('super admin bypasses all permission checks', function () {
     $user = User::factory()->create();
     $superAdminRole = Role::create(['name' => 'Super Admin', 'guard_name' => 'web']);
-    
+
     $user->assignRole($superAdminRole);
 
     // Super Admin should pass Gate::allows for any ability

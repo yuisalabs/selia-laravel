@@ -5,6 +5,8 @@ import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { Card } from '@/components/ui/card';
+import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
+import { LucideSave } from 'lucide-react';
 
 interface UpdateProfileInformationProps {
     mustVerifyEmail: boolean;
@@ -19,6 +21,7 @@ export default function UpdateProfileInformation({
 }: UpdateProfileInformationProps) {
     const user = usePage().props.auth.user;
     const errors = usePage().props.errors;
+    const { show } = useConfirmDialogStore();
 
     const { data, setData, patch, processing, recentlySuccessful } =
         useForm({
@@ -28,8 +31,18 @@ export default function UpdateProfileInformation({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+    };
 
-        patch(route('profile.update'));
+    const handleUpdate = () => {
+        show({
+            title: 'Confirm Update',
+            description: 'Are you sure you want to update your profile information? This action will save all changes.',
+            variant: 'info',
+            confirmText: 'Confirm Update',
+            onConfirm: () => {
+                patch(route('profile.update'));
+            },
+        });
     };
 
     return (
@@ -103,21 +116,13 @@ export default function UpdateProfileInformation({
                 )}
 
                 <div className="flex items-center gap-4">
-                    <Button variant="primary" type="submit" disabled={processing}>Save</Button>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-muted">
-                            Saved.
-                        </p>
-                    </Transition>
+                    <Button variant="primary" type="button" disabled={processing} onClick={handleUpdate}>
+                        <LucideSave/>
+                        Save
+                    </Button>
                 </div>
             </form>
         </Card>
     );
 }
+

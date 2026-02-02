@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\PermissionData;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Permission;
@@ -26,7 +27,7 @@ class PermissionController extends Controller
     {
         $permissions = $this->permissionService->getAllPermissions();
 
-        return Inertia::render('permissions/PermissionIndexPage', [
+        return Inertia::render('permission/PermissionIndexPage', [
             'permissions' => $permissions,
         ]);
     }
@@ -36,7 +37,7 @@ class PermissionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('permissions/PermissionCreatePage');
+        return Inertia::render('permission/PermissionCreatePage');
     }
 
     /**
@@ -55,10 +56,10 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission): Response
     {
-        $permission = $this->permissionService->getPermissionForShow($permission);
+        $permissionData = $this->permissionService->getPermissionForShow($permission);
 
-        return Inertia::render('permissions/PermissionShowPage', [
-            'permission' => $permission,
+        return Inertia::render('permission/PermissionShowPage', [
+            'permission' => $permissionData,
         ]);
     }
 
@@ -67,8 +68,8 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission): Response
     {
-        return Inertia::render('permissions/PermissionEditPage', [
-            'permission' => $permission,
+        return Inertia::render('permission/PermissionEditPage', [
+            'permission' => PermissionData::fromModel($permission),
         ]);
     }
 

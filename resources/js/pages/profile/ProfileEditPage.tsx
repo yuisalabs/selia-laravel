@@ -16,13 +16,13 @@ export default function ProfileEditPage({
         <>
             <Head title="Profile" />
 
-            <div className="py-12">
+            <div className="py-12 px-6">
                 <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                     <Tabs defaultValue="profile" className="lg:w-6/12 w-full mx-auto">
                         <TabsList>
                             <TabsItem value="profile">Profile</TabsItem>
                             <TabsItem value="password">Password</TabsItem>
-                            <TabsItem value="delete-account">Delete Account</TabsItem>
+                            <TabsItem className="text-nowrap" value="delete-account">Delete Account</TabsItem>
                         </TabsList>
                         <TabsPanel value="profile">
                             <Fieldset>

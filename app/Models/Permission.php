@@ -32,8 +32,8 @@ class Permission extends Model
      */
     public function assignToRole(Role|string $role): self
     {
-        $role = $role instanceof Role 
-            ? $role 
+        $role = $role instanceof Role
+            ? $role
             : Role::where('name', $role)->firstOrFail();
 
         $this->roles()->syncWithoutDetaching([$role->id]);
@@ -46,8 +46,8 @@ class Permission extends Model
      */
     public function removeFromRole(Role|string $role): self
     {
-        $role = $role instanceof Role 
-            ? $role 
+        $role = $role instanceof Role
+            ? $role
             : Role::where('name', $role)->firstOrFail();
 
         $this->roles()->detach($role->id);

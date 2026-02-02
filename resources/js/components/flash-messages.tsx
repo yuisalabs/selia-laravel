@@ -35,7 +35,7 @@ export function FlashMessages() {
                     type,
                     title: type.charAt(0).toUpperCase() + type.slice(1),
                     description: message,
-                    timeout: 1500,
+                    timeout: 2500,
                     actionProps: {
                         children: 'Dismiss',
                         onClick: () => toastManager.close(toastId),

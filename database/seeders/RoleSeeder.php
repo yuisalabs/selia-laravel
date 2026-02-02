@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
             ['name' => 'Super Admin'],
             [
                 'description' => 'Full access to all system features',
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]
         );
 
@@ -30,12 +30,12 @@ class RoleSeeder extends Seeder
         $admin = Role::firstOrCreate(
             ['name' => 'Admin'],
             [
-                'description' => 'Can manage users and view roles/permissions',
-                'guard_name' => 'web'
+                'description' => 'Can manage users and view role/permissions',
+                'guard_name' => 'web',
             ]
         );
 
-        // Admin can manage users but not roles/permissions
+        // Admin can manage users but not role/permissions
         $adminPermissions = Permission::whereIn('name', [
             'view-users',
             'create-users',
@@ -52,7 +52,7 @@ class RoleSeeder extends Seeder
             ['name' => 'User'],
             [
                 'description' => 'Standard user access',
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]
         );
 

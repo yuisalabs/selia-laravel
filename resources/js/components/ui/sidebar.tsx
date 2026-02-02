@@ -290,7 +290,7 @@ export function SidebarGroup({
       role="group"
       data-slot="sidebar-group"
       className={cn(
-        'flex flex-wrap gap-0.5 *:data-[slot=sidebar-list]:p-0',
+        'flex flex-wrap gap-3 *:data-[slot=sidebar-list]:p-0',
         className,
       )}
       {...props}
