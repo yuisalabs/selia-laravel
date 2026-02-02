@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * @extends BaseService<User, UserData>
@@ -93,7 +95,17 @@ class UserService extends BaseService
      */
     public function getAllUsers(): LengthAwarePaginator
     {
-        return User::with('roles')->latest()->paginate(10);
+        return QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('email'),
+            ])
+            ->allowedSorts(['name', 'email', 'created_at'])
+            ->allowedIncludes(['roles'])
+            ->defaultSort('-created_at')
+            ->with('roles')
+            ->paginate(10)
+            ->withQueryString();
     }
 
     /**

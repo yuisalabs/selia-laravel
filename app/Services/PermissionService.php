@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Data\PermissionData;
 use App\Models\Permission;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * @extends BaseService<Permission, PermissionData>
@@ -44,7 +46,17 @@ class PermissionService extends BaseService
      */
     public function getAllPermissions(): LengthAwarePaginator
     {
-        return Permission::with('roles')->latest()->paginate(10);
+        return QueryBuilder::for(Permission::class)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('description'),
+            ])
+            ->allowedSorts(['name', 'created_at'])
+            ->allowedIncludes(['roles'])
+            ->defaultSort('-created_at')
+            ->with('roles')
+            ->paginate(10)
+            ->withQueryString();
     }
 
     /**

@@ -6,6 +6,8 @@ use App\Data\RoleData;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * @extends BaseService<Role, RoleData>
@@ -88,7 +90,17 @@ class RoleService extends BaseService
      */
     public function getAllRoles(): LengthAwarePaginator
     {
-        return Role::with('permissions')->latest()->paginate(10);
+        return QueryBuilder::for(Role::class)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('description'),
+            ])
+            ->allowedSorts(['name', 'created_at'])
+            ->allowedIncludes(['permissions'])
+            ->defaultSort('-created_at')
+            ->with('permissions')
+            ->paginate(10)
+            ->withQueryString();
     }
 
     /**
