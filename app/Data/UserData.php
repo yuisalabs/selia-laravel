@@ -40,8 +40,8 @@ class UserData extends Data
             email_verified_at: $user->email_verified_at?->toISOString(),
             created_at: $user->created_at->toISOString(),
             roles: RoleData::collect($user->roles)->toArray(),
-            permissions: $user->relationLoaded('roles') 
-                ? $user->getAllPermissionNames() 
+            permissions: $user->relationLoaded('roles')
+                ? $user->getAllPermissionNames()
                 : [],
         );
     }

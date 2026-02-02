@@ -9,7 +9,7 @@
   },
   "lint-staged": {
     "*.php": [
-      "./vendor/bin/pint --test"
+      "php vendor/bin/pint --test"
     ]
   },
   "devDependencies": {

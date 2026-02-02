@@ -37,7 +37,7 @@ class PermissionSeeder extends Seeder
                 ['name' => $permission['name']],
                 [
                     'description' => $permission['description'],
-                    'guard_name' => 'web'
+                    'guard_name' => 'web',
                 ]
             );
         }

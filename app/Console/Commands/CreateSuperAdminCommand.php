@@ -80,7 +80,7 @@ class CreateSuperAdminCommand extends Command
 
         // Assign all permissions to Super Admin
         $allPermissions = Permission::all();
-        
+
         if ($allPermissions->isNotEmpty()) {
             $role->syncPermissions($allPermissions->pluck('id')->toArray());
             $this->components->info("Assigned {$allPermissions->count()} permissions to Super Admin role.");

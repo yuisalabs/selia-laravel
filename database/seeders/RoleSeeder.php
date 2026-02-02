@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
             ['name' => 'Super Admin'],
             [
                 'description' => 'Full access to all system features',
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]
         );
 
@@ -31,7 +31,7 @@ class RoleSeeder extends Seeder
             ['name' => 'Admin'],
             [
                 'description' => 'Can manage users and view role/permissions',
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]
         );
 
@@ -52,7 +52,7 @@ class RoleSeeder extends Seeder
             ['name' => 'User'],
             [
                 'description' => 'Standard user access',
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]
         );
 

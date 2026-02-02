@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Data\PermissionData;
 use App\Data\RoleData;
-use App\Data\UserData;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Permission;
