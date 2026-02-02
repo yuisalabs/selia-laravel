@@ -95,7 +95,16 @@ class UserService extends BaseService
      */
     public function getAllUsers(): LengthAwarePaginator
     {
-        return QueryBuilder::for(User::class)
+        $query = User::query();
+
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        return QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::partial('name'),
                 AllowedFilter::partial('email'),

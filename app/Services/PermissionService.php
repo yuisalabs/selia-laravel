@@ -46,7 +46,16 @@ class PermissionService extends BaseService
      */
     public function getAllPermissions(): LengthAwarePaginator
     {
-        return QueryBuilder::for(Permission::class)
+        $query = Permission::query();
+
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        return QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::partial('name'),
                 AllowedFilter::partial('description'),

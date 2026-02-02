@@ -1,23 +1,24 @@
-import { Link } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/utils/cn';
-import { LucideEye, LucideSquarePen } from 'lucide-react';
+import { LucideArrowDown, LucideArrowUp, LucideArrowUpDown, LucideEye, LucideSquarePen } from 'lucide-react';
 import { Role } from './types';
 import { RoleDeleteDialog } from './RoleDeleteDialog';
 
 interface RoleDesktopTableProps {
     roles: Role[];
+    state?: { search?: string, sort?: string };
 }
 
-export function RoleDesktopTable({ roles }: RoleDesktopTableProps) {
+export function RoleDesktopTable({ roles, state }: RoleDesktopTableProps) {
     return (
         <TableContainer>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Name</TableHead>
+                        <SortableHeader label="Name" sortKey="name" state={state} />
                         <TableHead>Description</TableHead>
                         <TableHead>Guard</TableHead>
                         <TableHead>Permissions</TableHead>
@@ -74,5 +75,43 @@ export function RoleDesktopTable({ roles }: RoleDesktopTableProps) {
                 </TableBody>
             </Table>
         </TableContainer>
+    );
+}
+
+function SortableHeader({ label, sortKey, state }: { label: string, sortKey: string, state?: { search?: string, sort?: string } }) {
+    const { sort, search } = state ?? {};
+    
+    const isSorted = sort === sortKey || sort === `-${sortKey}`;
+    const direction = sort === `-${sortKey}` ? 'desc' : 'asc';
+
+    const handleSort = () => {
+        const newSort = sort === sortKey ? `-${sortKey}` : sortKey;
+        
+        router.get(
+            route('roles.index'),
+            { 
+                sort: newSort,
+                search: search 
+            },
+            { preserveState: true }
+        );
+    };
+
+    return (
+        <TableHead 
+            className="cursor-pointer hover:bg-muted/50 transition-colors select-none"
+            onClick={handleSort}
+        >
+            <div className="flex items-center gap-2 group">
+                {label}
+                <span className={cn("text-muted-foreground", isSorted ? "text-primary" : "opacity-0 group-hover:opacity-50")}>
+                    {isSorted ? (
+                        direction === 'asc' ? <LucideArrowUp className="size-3" /> : <LucideArrowDown className="size-3" />
+                    ) : (
+                        <LucideArrowUpDown className="size-3" />
+                    )}
+                </span>
+            </div>
+        </TableHead>
     );
 }

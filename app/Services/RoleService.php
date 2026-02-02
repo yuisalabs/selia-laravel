@@ -90,7 +90,16 @@ class RoleService extends BaseService
      */
     public function getAllRoles(): LengthAwarePaginator
     {
-        return QueryBuilder::for(Role::class)
+        $query = Role::query();
+
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        return QueryBuilder::for($query)
             ->allowedFilters([
                 AllowedFilter::partial('name'),
                 AllowedFilter::partial('description'),

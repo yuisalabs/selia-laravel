@@ -30,6 +30,10 @@ class RoleController extends Controller
 
         return Inertia::render('role/RoleIndexPage', [
             'roles' => $roles,
+            'state' => [
+                'search' => request('search'),
+                'sort' => request('sort'),
+            ],
         ]);
     }
 

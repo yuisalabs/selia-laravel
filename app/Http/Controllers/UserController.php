@@ -32,6 +32,10 @@ class UserController extends Controller
 
         return Inertia::render('user/UserIndexPage', [
             'users' => $users,
+            'state' => [
+                'search' => request('search'),
+                'sort' => request('sort'),
+            ],
         ]);
     }
 

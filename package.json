@@ -38,8 +38,10 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
+    "@types/lodash": "^4.17.23",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "lodash": "^4.17.23",
     "lucide-react": "^0.562.0",
     "momentum-paginator": "^1.0.7",
     "tailwind-merge": "^3.4.0",

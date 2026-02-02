@@ -29,6 +29,10 @@ class PermissionController extends Controller
 
         return Inertia::render('permission/PermissionIndexPage', [
             'permissions' => $permissions,
+            'state' => [
+                'search' => request('search'),
+                'sort' => request('sort'),
+            ],
         ]);
     }
 
