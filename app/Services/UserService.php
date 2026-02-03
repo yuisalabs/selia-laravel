@@ -119,10 +119,13 @@ class UserService extends BaseService
     /**
      * Prepare user for display.
      */
-    public function getUserForShow(User $user): User
+    public function getUserForShow(User $user): array
     {
         $user->load('roles.permissions');
 
-        return $user;
+        return [
+            ...$user->toArray(),
+            'permissions' => $user->getAllPermissionNames(),
+        ];
     }
 }

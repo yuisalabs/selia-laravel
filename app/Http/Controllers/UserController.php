@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\PermissionData;
-use App\Data\RoleData;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Permission;
@@ -45,7 +43,7 @@ class UserController extends Controller
     public function create(): Response
     {
         return Inertia::render('user/UserCreatePage', [
-            'roles' => RoleData::collect(Role::all()),
+            'roles' => Role::all(),
         ]);
     }
 
@@ -81,8 +79,8 @@ class UserController extends Controller
 
         return Inertia::render('user/UserEditPage', [
             'user' => $userData,
-            'roles' => RoleData::collect(Role::all()),
-            'permissions' => PermissionData::collect(Permission::all()),
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
         ]);
     }
 

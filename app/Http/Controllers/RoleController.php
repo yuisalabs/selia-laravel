@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\PermissionData;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
@@ -43,7 +42,7 @@ class RoleController extends Controller
     public function create(): Response
     {
         return Inertia::render('role/RoleCreatePage', [
-            'permissions' => PermissionData::collect(Permission::all()),
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -79,7 +78,7 @@ class RoleController extends Controller
 
         return Inertia::render('role/RoleEditPage', [
             'role' => $roleData,
-            'permissions' => PermissionData::collect(Permission::all()),
+            'permissions' => Permission::all(),
         ]);
     }
 

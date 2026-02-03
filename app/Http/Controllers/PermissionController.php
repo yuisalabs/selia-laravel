@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\PermissionData;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Permission;
@@ -73,7 +72,7 @@ class PermissionController extends Controller
     public function edit(Permission $permission): Response
     {
         return Inertia::render('permission/PermissionEditPage', [
-            'permission' => PermissionData::fromModel($permission),
+            'permission' => $permission,
         ]);
     }
 
