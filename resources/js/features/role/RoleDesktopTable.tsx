@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { LucideArrowDown, LucideArrowUp, LucideArrowUpDown, LucideEye, LucideSquarePen } from 'lucide-react';
 import { Role } from './types';
 import { RoleDeleteDialog } from './RoleDeleteDialog';
+import { useTranslation } from 'react-i18next';
 
 interface RoleDesktopTableProps {
     roles: Role[];
@@ -13,15 +14,17 @@ interface RoleDesktopTableProps {
 }
 
 export function RoleDesktopTable({ roles, state }: RoleDesktopTableProps) {
+    const { t } = useTranslation();
+
     return (
         <TableContainer>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <SortableHeader label="Name" sortKey="name" state={state} />
-                        <TableHead>Description</TableHead>
-                        <TableHead>Guard</TableHead>
-                        <TableHead>Permissions</TableHead>
+                        <SortableHeader label={t('roles.name')} sortKey="name" state={state} />
+                        <TableHead>{t('roles.description')}</TableHead>
+                        <TableHead>{t('roles.guard_name')}</TableHead>
+                        <TableHead>{t('permissions.title')}</TableHead>
                         <TableHead className="w-[1%] whitespace-nowrap"></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -41,7 +44,7 @@ export function RoleDesktopTable({ roles, state }: RoleDesktopTableProps) {
                                         </Badge>
                                     ))}
                                     {role.permissions.length === 0 && (
-                                        <span className="text-sm text-muted">No permissions</span>
+                                        <span className="text-sm text-muted">{t('roles.no_permissions')}</span>
                                     )}
                                 </div>
                             </TableCell>
@@ -53,7 +56,7 @@ export function RoleDesktopTable({ roles, state }: RoleDesktopTableProps) {
                                         className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
                                     >
                                         <LucideEye className="size-4" />
-                                        <span className="hidden xl:inline">View</span>
+                                        <span className="hidden xl:inline">{t('common.view')}</span>
                                     </Link>
                                     <Link
                                         as="button"
@@ -61,7 +64,7 @@ export function RoleDesktopTable({ roles, state }: RoleDesktopTableProps) {
                                         className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}
                                     >
                                         <LucideSquarePen className="size-4" />
-                                        <span className="hidden xl:inline">Edit</span>
+                                        <span className="hidden xl:inline">{t('common.edit')}</span>
                                     </Link>
                                     <RoleDeleteDialog
                                         roleId={role.id}

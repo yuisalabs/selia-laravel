@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { LucideArrowDown, LucideArrowUp, LucideArrowUpDown, LucideEye, LucideSquarePen } from 'lucide-react';
 import { User } from './types';
 import { UserDeleteDialog } from './UserDeleteDialog';
+import { useTranslation } from 'react-i18next';
 
 interface UserDesktopTableProps {
     users: User[];
@@ -14,21 +15,22 @@ interface UserDesktopTableProps {
 }
 
 export function UserDesktopTable({ users, authUserId, state }: UserDesktopTableProps) {
+    const { t } = useTranslation();
+
     return (
         <TableContainer>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <SortableHeader label="Name" sortKey="name" state={state} />
-                        <SortableHeader label="Email" sortKey="email" state={state} />
-                        <SortableHeader label="Created At" sortKey="created_at" state={state} />
-                        <TableHead>Roles</TableHead>
-                        <TableHead>Status</TableHead>
+                        <SortableHeader label={t('users.name')} sortKey="name" state={state} />
+                        <SortableHeader label={t('users.email')} sortKey="email" state={state} />
+                        <SortableHeader label={t('users.created_at')} sortKey="created_at" state={state} />
+                        <TableHead>{t('users.roles')}</TableHead>
+                        <TableHead>{t('users.status')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {/* ... (rest of table body remains same, omitted for brevity if unmodified, but here I must include or be careful) ... */}
                     {users.map((user) => (
                         <TableRow key={user.id}>
                             <TableCell className="font-medium">{user.name}</TableCell>
@@ -42,14 +44,14 @@ export function UserDesktopTable({ users, authUserId, state }: UserDesktopTableP
                                         {user.roles[0].name}
                                     </Badge>
                                 ) : (
-                                    <span className="text-sm text-muted">No role</span>
+                                    <span className="text-sm text-muted">{t('users.no_role')}</span>
                                 )}
                             </TableCell>
                             <TableCell>
                                 {user.email_verified_at ? (
-                                    <Badge variant="success">Verified</Badge>
+                                    <Badge variant="success">{t('users.verified')}</Badge>
                                 ) : (
-                                    <Badge variant="warning">Unverified</Badge>
+                                    <Badge variant="warning">{t('users.unverified')}</Badge>
                                 )}
                             </TableCell>
                             <TableCell>
@@ -60,7 +62,7 @@ export function UserDesktopTable({ users, authUserId, state }: UserDesktopTableP
                                         className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
                                     >
                                         <LucideEye className="size-4" />
-                                        <span className="hidden xl:inline">View</span>
+                                        <span className="hidden xl:inline">{t('common.view')}</span>
                                     </Link>
                                     <Link
                                         as="button"
@@ -68,7 +70,7 @@ export function UserDesktopTable({ users, authUserId, state }: UserDesktopTableP
                                         className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}
                                     >
                                         <LucideSquarePen className="size-4" />
-                                        <span className="hidden xl:inline">Edit</span>
+                                        <span className="hidden xl:inline">{t('common.edit')}</span>
                                     </Link>
                                     <UserDeleteDialog
                                         userId={user.id}

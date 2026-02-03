@@ -10,8 +10,10 @@ import { PermissionDesktopTable, PermissionMobileList, PermissionIndexPageProps 
 import { Input } from '@/components/ui/input';
 import { useState, useCallback } from 'react';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 export default function PermissionIndexPage({ permissions, state }: PermissionIndexPageProps & { state?: { search?: string, sort?: string } }) {
+    const { t } = useTranslation();
     const { search: currentSearch, sort } = state ?? { search: '', sort: '' };
     const [search, setSearch] = useState(currentSearch || '');
 
@@ -38,15 +40,15 @@ export default function PermissionIndexPage({ permissions, state }: PermissionIn
 
     return (
         <>
-            <Head title="Permissions" />
+            <Head title={t('permissions.title')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                             <div className="text-start">
-                                <CardTitle>Permissions</CardTitle>
-                                <CardDescription>Manage system permissions</CardDescription>
+                                <CardTitle>{t('permissions.title')}</CardTitle>
+                                <CardDescription>{t('permissions.description')}</CardDescription>
                             </div>
                             <div className="flex flex-col md:flex-row gap-4">
                                 <div className="relative w-full md:w-64">
@@ -54,7 +56,7 @@ export default function PermissionIndexPage({ permissions, state }: PermissionIn
                                         <LucideSearch className="size-4" />
                                     </div>
                                     <Input
-                                        placeholder="Search permissions..."
+                                        placeholder={t('permissions.search_placeholder')}
                                         className="pl-9"
                                         value={search}
                                         onChange={onSearchChange}
@@ -66,7 +68,7 @@ export default function PermissionIndexPage({ permissions, state }: PermissionIn
                                     className={cn(buttonVariants({ variant: 'primary' }), 'w-fit text-nowrap self-end md:self-auto')}
                                 >
                                     <LucideCirclePlus />
-                                    Create Permission
+                                    {t('permissions.create')}
                                 </Link>
                             </div>
                         </CardHeader>
@@ -89,10 +91,13 @@ export default function PermissionIndexPage({ permissions, state }: PermissionIn
     );
 }
 
-PermissionIndexPage.layout = (page: any) => {
+const LinkLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
-        <AuthenticatedLayout header={<Heading size="sm">Permissions</Heading>} breadcrumbs={[{ label: 'Permissions' }]}>
-            {page}
+        <AuthenticatedLayout header={<Heading size="sm">{t('permissions.title')}</Heading>} breadcrumbs={[{ label: t('permissions.title') }]}>
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+PermissionIndexPage.layout = (page: any) => <LinkLayout>{page}</LinkLayout>;

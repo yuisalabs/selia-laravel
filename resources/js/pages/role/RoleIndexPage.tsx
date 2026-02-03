@@ -10,8 +10,10 @@ import { RoleDesktopTable, RoleMobileList, RoleIndexPageProps } from '@/features
 import { Input } from '@/components/ui/input';
 import { useState, useCallback } from 'react';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 export default function RoleIndexPage({ roles, state }: RoleIndexPageProps & { state?: { search?: string, sort?: string } }) {
+    const { t } = useTranslation();
     const { search: currentSearch, sort } = state ?? { search: '', sort: '' };
     const [search, setSearch] = useState(currentSearch || '');
 
@@ -38,15 +40,15 @@ export default function RoleIndexPage({ roles, state }: RoleIndexPageProps & { s
 
     return (
         <>
-            <Head title="Roles" />
+            <Head title={t('roles.title')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                             <div className="text-start">
-                                <CardTitle>Roles</CardTitle>
-                                <CardDescription>Manage roles and their permissions</CardDescription>
+                                <CardTitle>{t('roles.title')}</CardTitle>
+                                <CardDescription>{t('roles.description')}</CardDescription>
                             </div>
                             <div className="flex flex-col md:flex-row gap-4">
                                 <div className="relative w-full md:w-64">
@@ -54,7 +56,7 @@ export default function RoleIndexPage({ roles, state }: RoleIndexPageProps & { s
                                         <LucideSearch className="size-4" />
                                     </div>
                                     <Input
-                                        placeholder="Search roles..."
+                                        placeholder={t('roles.search_placeholder')}
                                         className="pl-9"
                                         value={search}
                                         onChange={onSearchChange}
@@ -66,7 +68,7 @@ export default function RoleIndexPage({ roles, state }: RoleIndexPageProps & { s
                                     className={cn(buttonVariants({ variant: 'primary' }), 'w-fit text-nowrap self-end md:self-auto')}
                                 >
                                     <LucideCirclePlus />
-                                    Create Role
+                                    {t('roles.create')}
                                 </Link>
                             </div>
                         </CardHeader>
@@ -89,10 +91,13 @@ export default function RoleIndexPage({ roles, state }: RoleIndexPageProps & { s
     );
 }
 
-RoleIndexPage.layout = (page: any) => {
+const IndexLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
-        <AuthenticatedLayout header={<Heading size="sm">Roles</Heading>} breadcrumbs={[{ label: 'Roles' }]}>
-            {page}
+        <AuthenticatedLayout header={<Heading size="sm">{t('roles.title')}</Heading>} breadcrumbs={[{ label: t('roles.title') }]}>
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+RoleIndexPage.layout = (page: any) => <IndexLayout>{page}</IndexLayout>;

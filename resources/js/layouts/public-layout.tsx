@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/components/application-logo';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
@@ -19,11 +20,13 @@ import {
 import { PropsWithChildren, ReactNode, useState, useEffect } from 'react';
 import { FlashMessages } from '@/components/flash-messages';
 import { cn } from '@/utils/cn';
+import { useTranslation } from 'react-i18next';
 
 export default function PublicLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
+    const { t } = useTranslation();
     const user = usePage().props.auth.user;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -95,7 +98,7 @@ export default function PublicLayout({
                                 )}
                             >
                                 <LucideHome className="size-4" />
-                                Home
+                                {t('navigation.home')}
                             </Link>
                             <a
                                 href="https://selia.earth/docs/introduction"
@@ -137,7 +140,7 @@ export default function PublicLayout({
                                         )}
                                     >
                                         <LucideLayoutDashboard className="size-4" />
-                                        Dashboard
+                                        {t('navigation.dashboard')}
                                     </Link>
                                     <Link
                                         href={route('profile.edit')}
@@ -148,7 +151,7 @@ export default function PublicLayout({
                                         )}
                                     >
                                         <LucideUserRound className="size-4" />
-                                        Profile
+                                        {t('navigation.profile')}
                                     </Link>
                                     <Link
                                         href={route('logout')}
@@ -161,7 +164,7 @@ export default function PublicLayout({
                                         )}
                                     >
                                         <LucideLogOut className="size-4" />
-                                        Log out
+                                        {t('common.logout')}
                                     </Link>
                                 </div>
                             </div>
@@ -175,7 +178,7 @@ export default function PublicLayout({
                                     )}
                                 >
                                     <LucideLogIn className="size-4" />
-                                    Log in
+                                    {t('common.login')}
                                 </Link>
                                 <Link
                                     href={route('register')}
@@ -185,7 +188,7 @@ export default function PublicLayout({
                                     )}
                                 >
                                     <LucideUserPlus className="size-4" />
-                                    Register
+                                    {t('common.register')}
                                 </Link>
                             </div>
                         )}
@@ -213,7 +216,7 @@ export default function PublicLayout({
                                         route().current('welcome') && 'bg-accent'
                                     )}
                                 >
-                                    Home
+                                    {t('navigation.home')}
                                 </Link>
                                 <a
                                     href="https://selia.earth/docs/introduction"
@@ -255,7 +258,7 @@ export default function PublicLayout({
                                                     />
                                                 }>
                                                 <LucideLayoutDashboard />
-                                                Dashboard
+                                                {t('navigation.dashboard')}
                                             </Button>
                                         }/>
                                         <MenuItem render={
@@ -269,7 +272,7 @@ export default function PublicLayout({
                                                     />
                                                 }>
                                                 <LucideUserRound />
-                                                Profile
+                                                {t('navigation.profile')}
                                             </Button>
                                         }/>
                                         <MenuSeparator />
@@ -286,7 +289,7 @@ export default function PublicLayout({
                                                     />
                                                 }>
                                                 <LucideLogOut />
-                                                Log out
+                                                {t('common.logout')}
                                             </Button>
                                         }/>
                                     </MenuPopup>
@@ -296,20 +299,22 @@ export default function PublicLayout({
                                     <Button
                                         nativeButton={false}
                                         variant="plain"
-                                        render={<Link href={route('login')}>Log in</Link>}
+                                        render={<Link href={route('login')}>{t('common.login')}</Link>}
                                     />
                                     <Button
                                         nativeButton={false}
                                         variant="primary"
-                                        render={<Link href={route('register')}>Register</Link>}
+                                        render={<Link href={route('register')}>{t('common.register')}</Link>}
                                     />
                                 </div>
                             )}
+                            <LanguageSwitcher />
                             <ThemeToggle />
                         </div>
 
                         {/* Mobile Right Side */}
                         <div className="flex items-center gap-2 md:hidden">
+                            <LanguageSwitcher />
                             <ThemeToggle />
                             <Button
                                 variant="plain"

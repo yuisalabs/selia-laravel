@@ -8,6 +8,7 @@ import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { RoleForm } from '@/features/role';
+import { useTranslation } from 'react-i18next';
 
 interface Permission {
     id: number;
@@ -29,6 +30,7 @@ interface RoleEditPageProps {
 }
 
 export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
+    const { t } = useTranslation();
     const { data, setData, put, processing, errors } = useForm({
         name: role.name,
         description: role.description || '',
@@ -44,10 +46,10 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
 
     const handleUpdate = () => {
         show({
-            title: 'Confirm Update',
-            description: "Are you sure you want to update this role's information? This action will save all changes.",
+            title: t('common.confirm'),
+            description: t('roles.update_confirm'),
             variant: 'info',
-            confirmText: 'Confirm Update',
+            confirmText: t('common.confirm'),
             onConfirm: () => {
                 put(route('roles.update', role.id));
             },
@@ -64,14 +66,14 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
 
     return (
         <>
-            <Head title={`Edit Role: ${role.name}`} />
+            <Head title={`${t('roles.edit')}: ${role.name}`} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Edit Role</CardTitle>
-                            <CardDescription>Update role details and permissions</CardDescription>
+                            <CardTitle>{t('roles.edit')}</CardTitle>
+                            <CardDescription>{t('roles.edit_description')}</CardDescription>
                         </CardHeader>
                         <CardBody>
                             <form onSubmit={submit} className="space-y-6">
@@ -86,7 +88,7 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="button" disabled={processing} onClick={handleUpdate}>
                                         <LucideSave />
-                                        Update
+                                        {t('common.save')}
                                     </Button>
                                     <Link
                                         as="button"
@@ -94,7 +96,7 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
                                         <LucideCircleX />
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Link>
                                 </div>
                             </form>
@@ -106,14 +108,16 @@ export default function RoleEditPage({ role, permissions }: RoleEditPageProps) {
     );
 }
 
-RoleEditPage.layout = (page: any) => {
+const EditLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">Edit Role</Heading>}
-            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Edit' }]}
+            header={<Heading size="sm">{t('roles.edit')}</Heading>}
+            breadcrumbs={[{ label: t('roles.title'), href: route('roles.index') }, { label: t('common.edit') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
 
+RoleEditPage.layout = (page: any) => <EditLayout>{page}</EditLayout>;

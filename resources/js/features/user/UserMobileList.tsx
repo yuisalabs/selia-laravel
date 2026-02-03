@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import { LucideEye, LucideSquarePen } from 'lucide-react';
 import { User } from './types';
 import { UserDeleteDialog } from './UserDeleteDialog';
+import { useTranslation } from 'react-i18next';
 
 interface UserMobileListProps {
     users: User[];
@@ -12,6 +13,8 @@ interface UserMobileListProps {
 }
 
 export function UserMobileList({ users, authUserId }: UserMobileListProps) {
+    const { t } = useTranslation();
+
     return (
         <div>
             {users.map((user) => (
@@ -23,23 +26,23 @@ export function UserMobileList({ users, authUserId }: UserMobileListProps) {
                         </div>
                         {user.email_verified_at ? (
                             <Badge variant="success" className="shrink-0">
-                                Verified
+                                {t('users.verified')}
                             </Badge>
                         ) : (
                             <Badge variant="warning" className="shrink-0">
-                                Unverified
+                                {t('users.unverified')}
                             </Badge>
                         )}
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Role:</span>
+                        <span className="text-muted-foreground">{t('users.role')}:</span>
                         {user.roles.length > 0 ? (
                             <Badge variant="secondary" className="text-xs">
                                 {user.roles[0].name}
                             </Badge>
                         ) : (
-                            <span className="text-muted">No role</span>
+                            <span className="text-muted">{t('users.no_role')}</span>
                         )}
                     </div>
 
@@ -50,7 +53,7 @@ export function UserMobileList({ users, authUserId }: UserMobileListProps) {
                             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-8 px-2')}
                         >
                             <LucideEye className="w-4 h-4 mr-1" />
-                            View
+                            {t('common.view')}
                         </Link>
                         <Link
                             as="button"
@@ -58,7 +61,7 @@ export function UserMobileList({ users, authUserId }: UserMobileListProps) {
                             className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'h-8 px-2')}
                         >
                             <LucideSquarePen className="w-4 h-4 mr-1" />
-                            Edit
+                            {t('common.edit')}
                         </Link>
                         <UserDeleteDialog
                             userId={user.id}

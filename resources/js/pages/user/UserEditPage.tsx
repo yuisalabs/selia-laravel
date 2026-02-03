@@ -8,6 +8,7 @@ import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { UserForm } from '@/features/user';
+import { useTranslation } from 'react-i18next';
 
 interface Role {
     id: number;
@@ -28,6 +29,7 @@ interface UserEditPageProps {
 }
 
 export default function UserEditPage({ user, roles, permissions }: UserEditPageProps) {
+    const { t } = useTranslation();
     const { data, setData, put, processing, errors } = useForm({
         name: user.name,
         email: user.email,
@@ -44,10 +46,10 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
 
     const handleUpdate = () => {
         show({
-            title: 'Confirm Update',
-            description: "Are you sure you want to update this user's information? This action will save all changes.",
+            title: t('common.confirm'),
+            description: t('users.update_confirm'),
             variant: 'info',
-            confirmText: 'Confirm Update',
+            confirmText: t('common.confirm'),
             onConfirm: () => {
                 put(route('users.update', user.id));
             },
@@ -56,14 +58,14 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
 
     return (
         <>
-            <Head title={`Edit User: ${user.name}`} />
+            <Head title={`${t('users.edit')}: ${user.name}`} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Edit User</CardTitle>
-                            <CardDescription>Update user details and role assignments</CardDescription>
+                            <CardTitle>{t('users.edit')}</CardTitle>
+                            <CardDescription>{t('users.edit_description')}</CardDescription>
                         </CardHeader>
                         <CardBody>
                             <form onSubmit={submit} className="space-y-6">
@@ -78,7 +80,7 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="button" disabled={processing} onClick={handleUpdate}>
                                         <LucideSave />
-                                        Update
+                                        {t('common.save')}
                                     </Button>
                                     <Link
                                         as="button"
@@ -86,7 +88,7 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
                                         <LucideCircleX />
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Link>
                                 </div>
                             </form>
@@ -98,14 +100,16 @@ export default function UserEditPage({ user, roles, permissions }: UserEditPageP
     );
 }
 
-UserEditPage.layout = (page: any) => {
+const EditLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">Edit User</Heading>}
-            breadcrumbs={[{ label: 'Users', href: route('users.index') }, { label: 'Edit' }]}
+            header={<Heading size="sm">{t('users.edit')}</Heading>}
+            breadcrumbs={[{ label: t('users.title'), href: route('users.index') }, { label: t('common.edit') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
 
+UserEditPage.layout = (page: any) => <EditLayout>{page}</EditLayout>;

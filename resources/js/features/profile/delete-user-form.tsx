@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { LucideTrash2 } from 'lucide-react';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteUserForm({
     className = '',
@@ -15,6 +16,7 @@ export default function DeleteUserForm({
     const passwordInput = useRef<HTMLInputElement>(null);
     const [password, setPassword] = useState('');
     const { show, update, hide } = useConfirmDialogStore();
+    const { t } = useTranslation();
 
     const {
         setData,
@@ -32,10 +34,10 @@ export default function DeleteUserForm({
         clearErrors();
         
         show({
-            title: 'Are you sure you want to delete your account?',
-            description: 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+            title: t('profile.delete_account_confirm'),
+            description: t('profile.delete_account_confirm_description', { defaultValue: 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.' }),
             variant: 'danger',
-            confirmText: 'Delete Account',
+            confirmText: t('common.delete_account'),
             confirmDisabled: true,
             content: (
                 <PasswordInput
@@ -46,6 +48,7 @@ export default function DeleteUserForm({
                         setData('password', value);
                         update({ confirmDisabled: !value });
                     }}
+                    placeholder={t('auth.password_placeholder')}
                 />
             ),
             onConfirm: () => {
@@ -79,20 +82,17 @@ export default function DeleteUserForm({
         <Card className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-foreground">
-                    Delete Account
+                    {t('profile.delete_account')}
                 </h2>
 
                 <p className="mt-1 text-sm text-muted">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Before deleting your account,
-                    please download any data or information that you wish to
-                    retain.
+                    {t('profile.delete_account_description', { defaultValue: 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.' })}
                 </p>
             </header>
 
             <Button variant="danger" onClick={confirmUserDeletion}>
                 <LucideTrash2/>
-                Delete Account
+                {t('common.delete_account')}
             </Button>
         </Card>
     );
@@ -102,10 +102,12 @@ function PasswordInput({
     passwordInput,
     error,
     onChange,
+    placeholder,
 }: {
     passwordInput: React.RefObject<HTMLInputElement>;
     error?: string;
     onChange: (value: string) => void;
+    placeholder?: string;
 }) {
     return (
         <Field invalid={!!error}>
@@ -118,10 +120,9 @@ function PasswordInput({
                 onChange={(e) => onChange(e.target.value)}
                 className="mt-1 block w-full"
                 autoFocus
-                placeholder="Enter your password"
+                placeholder={placeholder}
             />
             <FieldError match={!!error}>{error}</FieldError>
         </Field>
     );
 }
-

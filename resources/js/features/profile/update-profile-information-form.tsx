@@ -7,6 +7,7 @@ import { FormEventHandler } from 'react';
 import { Card } from '@/components/ui/card';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { LucideSave } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface UpdateProfileInformationProps {
     mustVerifyEmail: boolean;
@@ -22,6 +23,7 @@ export default function UpdateProfileInformation({
     const user = usePage().props.auth.user;
     const errors = usePage().props.errors;
     const { show } = useConfirmDialogStore();
+    const { t } = useTranslation();
 
     const { data, setData, patch, processing, recentlySuccessful } =
         useForm({
@@ -35,10 +37,10 @@ export default function UpdateProfileInformation({
 
     const handleUpdate = () => {
         show({
-            title: 'Confirm Update',
-            description: 'Are you sure you want to update your profile information? This action will save all changes.',
+            title: t('profile.update_profile_confirm'),
+            description: t('profile.update_profile_confirm_description', { defaultValue: 'Are you sure you want to update your profile information? This action will save all changes.' }),
             variant: 'info',
-            confirmText: 'Confirm Update',
+            confirmText: t('common.confirm_update'),
             onConfirm: () => {
                 patch(route('profile.update'));
             },
@@ -49,17 +51,17 @@ export default function UpdateProfileInformation({
         <Card className={className}>
             <header>
                 <h2 className="text-lg font-medium text-foreground">
-                    Profile Information
+                    {t('profile.profile_information')}
                 </h2>
 
                 <p className="mt-1 text-sm text-muted">
-                    Update your account's profile information and email address.
+                    {t('profile.profile_information_description', { defaultValue: "Update your account's profile information and email address." })}
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <Field invalid={!!errors.name}>
-                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <FieldLabel htmlFor="name">{t('users.name')}</FieldLabel>
 
                     <Input
                         id="name"
@@ -69,14 +71,14 @@ export default function UpdateProfileInformation({
                         required
                         autoFocus
                         autoComplete="name"
-                        placeholder="Enter your name"
+                        placeholder={t('users.name_placeholder')}
                     />
 
                     <FieldError match={!!errors.name}>{errors.name}</FieldError>
                 </Field>
 
                 <Field invalid={!!errors.email}>
-                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <FieldLabel htmlFor="email">{t('auth.email')}</FieldLabel>
 
                     <Input
                         id="email"
@@ -86,7 +88,7 @@ export default function UpdateProfileInformation({
                         onChange={(e) => setData('email', e.target.value)}
                         required
                         autoComplete="username"
-                        placeholder="Enter your email"
+                        placeholder={t('auth.email_placeholder')}
                     />
 
                     <FieldError match={!!errors.email}>{errors.email}</FieldError>
@@ -95,21 +97,20 @@ export default function UpdateProfileInformation({
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="mt-2 text-sm text-foreground">
-                            Your email address is unverified.
+                            {t('auth.email_unverified')}
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
                                 className="rounded-md text-sm text-muted underline hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                             >
-                                Click here to re-send the verification email.
+                                {t('auth.click_to_resend_verification')}
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-green-600">
-                                A new verification link has been sent to your
-                                email address.
+                                {t('auth.verification_link_sent_new', { defaultValue: 'A new verification link has been sent to your email address.' })}
                             </div>
                         )}
                     </div>
@@ -118,11 +119,10 @@ export default function UpdateProfileInformation({
                 <div className="flex items-center gap-4">
                     <Button variant="primary" type="button" disabled={processing} onClick={handleUpdate}>
                         <LucideSave/>
-                        Save
+                        {t('common.save')}
                     </Button>
                 </div>
             </form>
         </Card>
     );
 }
-

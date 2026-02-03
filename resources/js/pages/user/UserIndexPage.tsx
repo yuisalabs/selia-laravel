@@ -10,8 +10,10 @@ import { UserDesktopTable, UserMobileList, UserIndexPageProps } from '@/features
 import { Input } from '@/components/ui/input';
 import { useState, useCallback } from 'react';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 export default function UserIndexPage({ users, state }: UserIndexPageProps & { state?: { search?: string, sort?: string } }) {
+    const { t } = useTranslation();
     const authUser = usePage().props.auth.user;
     const { search: currentSearch, sort } = state ?? { search: '', sort: '' };
     const [search, setSearch] = useState(currentSearch || '');
@@ -39,15 +41,15 @@ export default function UserIndexPage({ users, state }: UserIndexPageProps & { s
 
     return (
         <>
-            <Head title="Users" />
+            <Head title={t('users.title')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card className="">
                         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                             <div className="text-start">
-                                <CardTitle>Users</CardTitle>
-                                <CardDescription>Manage users and their roles</CardDescription>
+                                <CardTitle>{t('users.title')}</CardTitle>
+                                <CardDescription>{t('users.description')}</CardDescription>
                             </div>
                             <div className="flex flex-col md:flex-row gap-4">
                                 <div className="relative w-full md:w-64">
@@ -55,7 +57,7 @@ export default function UserIndexPage({ users, state }: UserIndexPageProps & { s
                                         <LucideSearch className="size-4" />
                                     </div>
                                     <Input
-                                        placeholder="Search users..."
+                                        placeholder={t('users.search_placeholder')}
                                         className="pl-9"
                                         value={search}
                                         onChange={onSearchChange}
@@ -67,7 +69,7 @@ export default function UserIndexPage({ users, state }: UserIndexPageProps & { s
                                     className={cn(buttonVariants({ variant: 'primary' }), 'w-fit text-nowrap self-end md:self-auto')}
                                 >
                                     <LucideCirclePlus />
-                                    Create User
+                                    {t('users.create')}
                                 </Link>
                             </div>
                         </CardHeader>
@@ -90,10 +92,13 @@ export default function UserIndexPage({ users, state }: UserIndexPageProps & { s
     );
 }
 
-UserIndexPage.layout = (page: any) => {
+const IndexLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
-        <AuthenticatedLayout header={<Heading size="sm">Users</Heading>} breadcrumbs={[{ label: 'Users' }]}>
-            {page}
+        <AuthenticatedLayout header={<Heading size="sm">{t('users.title')}</Heading>} breadcrumbs={[{ label: t('users.title') }]}>
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+UserIndexPage.layout = (page: any) => <IndexLayout>{page}</IndexLayout>;

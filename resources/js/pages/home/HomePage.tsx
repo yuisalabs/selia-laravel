@@ -13,29 +13,31 @@ import {
     LucideLayoutTemplate, 
     LucideZap 
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function HomePage() {
+    const { t } = useTranslation();
+
     return (
         <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-            <Head title="Home" />
+            <Head title={t('home.title')} />
             
             {/* Hero Section */}
             <section className="relative overflow-hidden pt-16 md:pt-20 lg:pt-24 space-y-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <Badge variant="primary-outline" className="mb-6 py-1.5 px-4 text-sm font-medium rounded-full bg-background/50 backdrop-blur-sm border-primary/20 text-primary">
-                        v1.0.0 Now Available
+                        {t('home.version_badge')}
                     </Badge>
                     
                     <Heading size="lg" className="font-bold tracking-tight text-foreground text-4xl sm:text-6xl mb-6">
-                        Build Modern Web Apps <br className="hidden sm:block" />
+                        {t('home.hero_title_1')} <br className="hidden sm:block" />
                         <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-purple-600">
-                            Faster Than Ever
+                            {t('home.hero_title_2')}
                         </span>
                     </Heading>
                     
                     <p className="mx-auto max-w-2xl text-lg text-muted-foreground mb-10 leading-relaxed">
-                        The ultimate starter kit for Laravel 12 and React 19. 
-                        Pre-configured with Inertia.js 2.0, Tailwind CSS 4.0, and a beautiful UI library to help you ship your next idea in record time.
+                        {t('home.hero_description')}
                     </p>
                     
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -45,7 +47,7 @@ export default function HomePage() {
                             nativeButton={false}
                             render={
                                 <Link href={route('register')}>
-                                    Get Started
+                                    {t('home.get_started')}
                                     <LucideArrowRight className="size-4" />
                                 </Link>
                             }
@@ -57,7 +59,7 @@ export default function HomePage() {
                             nativeButton={false}
                             render={
                                 <a href="https://selia.earth/docs" target="_blank" rel="noopener noreferrer">
-                                    Documentation
+                                    {t('home.documentation')}
                                 </a>
                             }
                         />
@@ -83,42 +85,42 @@ export default function HomePage() {
             <section className="py-16 md:py-24 bg-card/50 border-y border-border/50">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <Heading size="lg" className="mb-4 text-3xl">Everything You Need</Heading>
+                        <Heading size="lg" className="mb-4 text-3xl">{t('home.features_title')}</Heading>
                         <p className="text-muted-foreground max-w-2xl mx-auto">
-                            Stop wasting time on configuration. Selia comes battery-packed with the latest technologies and best practices pre-configured.
+                            {t('home.features_description')}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <FeatureCard 
                             icon={LucideZap}
-                            title="Inertia.js 2.0"
-                            description="Build single-page apps using classic server-side routing. No client-side routing complexity."
+                            title={t('home.feature_inertia_title')}
+                            description={t('home.feature_inertia_desc')}
                         />
                         <FeatureCard 
                             icon={LucideLayoutTemplate}
-                            title="React 19"
-                            description="Leverage the latest React features including Server Components and Actions support."
+                            title={t('home.feature_react_title')}
+                            description={t('home.feature_react_desc')}
                         />
                         <FeatureCard 
                             icon={LucideDatabase}
-                            title="Laravel 12"
-                            description="The PHP framework for web artisans. Powerful, elegant, and ready for any scale."
+                            title={t('home.feature_laravel_title')}
+                            description={t('home.feature_laravel_desc')}
                         />
                         <FeatureCard 
                             icon={LucideBox}
-                            title="Tailwind CSS 4.0"
-                            description="Rapidly build modern websites without ever leaving your HTML. Now faster than ever."
+                            title={t('home.feature_tailwind_title')}
+                            description={t('home.feature_tailwind_desc')}
                         />
                          <FeatureCard 
                             icon={LucideLayers}
-                            title="UI Components"
-                            description="A comprehensive set of accessible, unstyled components built on Radix UI and Shadcn."
+                            title={t('home.feature_ui_title')}
+                            description={t('home.feature_ui_desc')}
                         />
                         <FeatureCard 
                             icon={LucideCode2}
-                            title="Type Safe"
-                            description="Full TypeScript support across the full stack with Spatie Laravel Data integration."
+                            title={t('home.feature_typesafe_title')}
+                            description={t('home.feature_typesafe_desc')}
                         />
                     </div>
                 </div>
@@ -127,7 +129,7 @@ export default function HomePage() {
             {/* Footer */}
             <footer className="py-12 border-t border-border mt-auto">
                 <p className="text-sm text-center text-muted-foreground">
-                    © {new Date().getFullYear()} Selia UI Kit. All rights reserved.
+                    {t('home.copyright', { year: new Date().getFullYear() })}
                 </p>
             </footer>
         </div>

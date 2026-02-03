@@ -3,6 +3,7 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ResetPasswordFormProps {
     token: string;
@@ -11,6 +12,7 @@ interface ResetPasswordFormProps {
 
 export default function ResetPasswordForm({ token, email }: ResetPasswordFormProps) {
     const errors = usePage().props.errors;
+    const { t } = useTranslation();
 
     const { data, setData, post, processing, reset } = useForm({
         token: token,
@@ -30,49 +32,49 @@ export default function ResetPasswordForm({ token, email }: ResetPasswordFormPro
     return (
         <form onSubmit={submit}>
             <Field invalid={!!errors.email}>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">{t('auth.email')}</FieldLabel>
                 <Input
                     id="email"
                     type="email"
                     name="email"
                     value={data.email}
                     autoComplete="username"
-                    placeholder="Enter your email"
+                    placeholder={t('auth.email_placeholder')}
                     onChange={(e) => setData('email', e.target.value)}
                 />
                 <FieldError match={!!errors.email}>{errors.email}</FieldError>
             </Field>
 
             <Field className="mt-4" invalid={!!errors.password}>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
                 <Input
                     id="password"
                     type="password"
                     name="password"
                     value={data.password}
                     autoComplete="new-password"
-                    placeholder="Enter new password"
+                    placeholder={t('auth.password_placeholder_new', { defaultValue: 'Enter new password' })}
                     onChange={(e) => setData('password', e.target.value)}
                 />
                 <FieldError match={!!errors.password}>{errors.password}</FieldError>
             </Field>
 
             <Field className="mt-4" invalid={!!errors.password_confirmation}>
-                <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
+                <FieldLabel htmlFor="password_confirmation">{t('auth.confirm_password')}</FieldLabel>
                 <Input
                     id="password_confirmation"
                     type="password"
                     name="password_confirmation"
                     value={data.password_confirmation}
                     autoComplete="new-password"
-                    placeholder="Confirm new password"
+                    placeholder={t('auth.confirm_password_placeholder_new', { defaultValue: 'Confirm new password' })}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
                 />
                 <FieldError match={!!errors.password_confirmation}>{errors.password_confirmation}</FieldError>
             </Field>
 
             <Button variant="primary" className="mt-4 w-full" type="submit" disabled={processing}>
-                Reset Password
+                {t('auth.reset_password')}
             </Button>
         </form>
     );

@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/components/application-logo';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Menu, MenuItem, MenuPopup, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
@@ -36,6 +37,7 @@ import { PropsWithChildren, ReactNode, useState, useEffect, Fragment as React } 
 import { FlashMessages } from '@/components/flash-messages';
 import { cn } from '@/utils/cn';
 import { Breadcrumb, BreadcrumbButton, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { useTranslation } from 'react-i18next';
 
 export interface BreadcrumbItemType {
     label: string;
@@ -47,6 +49,7 @@ export default function AuthenticatedLayout({
     breadcrumbs,
     children,
 }: PropsWithChildren<{ header?: ReactNode; breadcrumbs?: BreadcrumbItemType[] }>) {
+    const { t } = useTranslation();
     const user = usePage().props.auth.user;
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -127,7 +130,7 @@ export default function AuthenticatedLayout({
                                             }
                                         >
                                             <LucideLayoutDashboard />
-                                            Dashboard
+                                            {t('navigation.dashboard')}
                                         </SidebarItemButton>
                                     </SidebarItem>
 
@@ -142,7 +145,7 @@ export default function AuthenticatedLayout({
                                             }
                                         >
                                             <LucideUsers />
-                                            Users
+                                            {t('navigation.users')}
                                         </SidebarItemButton>
                                     </SidebarItem>
 
@@ -157,7 +160,7 @@ export default function AuthenticatedLayout({
                                             }
                                         >
                                             <LucideShield />
-                                            Roles
+                                            {t('navigation.roles')}
                                         </SidebarItemButton>
                                     </SidebarItem>
 
@@ -172,7 +175,7 @@ export default function AuthenticatedLayout({
                                             }
                                         >
                                             <LucideKey />
-                                            Permissions
+                                            {t('navigation.permissions')}
                                         </SidebarItemButton>
                                     </SidebarItem>
 
@@ -187,7 +190,7 @@ export default function AuthenticatedLayout({
                                             }
                                         >
                                             <LucideUserCog />
-                                            Profile
+                                            {t('navigation.profile')}
                                         </SidebarItemButton>
                                     </SidebarItem>
                                 </SidebarList>
@@ -232,7 +235,7 @@ export default function AuthenticatedLayout({
                                                         />
                                                     }>
                                                     <LucideHouse/>
-                                                    Home
+                                                    {t('navigation.home')}
                                                 </Button>
                                             }/>
                                             <MenuItem render={
@@ -246,7 +249,7 @@ export default function AuthenticatedLayout({
                                                         />
                                                     }>
                                                     <LucideUserRound />
-                                                    Profile
+                                                    {t('navigation.profile')}
                                                 </Button>
                                             }/>
                                             <MenuSeparator />
@@ -263,7 +266,7 @@ export default function AuthenticatedLayout({
                                                         />
                                                     }>
                                                     <LucideLogOut/>
-                                                    Log out
+                                                    {t('common.logout')}
                                                 </Button>
                                             }/>
                                         </MenuPopup>
@@ -292,7 +295,8 @@ export default function AuthenticatedLayout({
                     {header && (
                         <>{header}</>
                     )}
-                    <div className="ml-auto">
+                    <div className="ml-auto flex items-center gap-1">
+                        <LanguageSwitcher />
                         <ThemeToggle />
                     </div>
                 </nav>

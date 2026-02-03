@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { LucideArrowDown, LucideArrowUp, LucideArrowUpDown, LucideEye, LucideSquarePen } from 'lucide-react';
 import { Permission } from './types';
 import { PermissionDeleteDialog } from './PermissionDeleteDialog';
+import { useTranslation } from 'react-i18next';
 
 interface PermissionDesktopTableProps {
     permissions: Permission[];
@@ -13,15 +14,17 @@ interface PermissionDesktopTableProps {
 }
 
 export function PermissionDesktopTable({ permissions, state }: PermissionDesktopTableProps) {
+    const { t } = useTranslation();
+
     return (
         <TableContainer>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <SortableHeader label="Name" sortKey="name" state={state} />
-                        <TableHead>Description</TableHead>
-                        <TableHead>Guard</TableHead>
-                        <TableHead>Roles</TableHead>
+                        <SortableHeader label={t('permissions.name')} sortKey="name" state={state} />
+                        <TableHead>{t('permissions.description')}</TableHead>
+                        <TableHead>{t('roles.guard_name')}</TableHead>
+                        <TableHead>{t('permissions.roles')}</TableHead>
                         <TableHead className="w-[1%] whitespace-nowrap"></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -41,7 +44,7 @@ export function PermissionDesktopTable({ permissions, state }: PermissionDesktop
                                         </Badge>
                                     ))}
                                     {permission.roles.length === 0 && (
-                                        <span className="text-sm text-muted">No roles</span>
+                                        <span className="text-sm text-muted">{t('permissions.no_roles')}</span>
                                     )}
                                 </div>
                             </TableCell>
@@ -53,7 +56,7 @@ export function PermissionDesktopTable({ permissions, state }: PermissionDesktop
                                         className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
                                     >
                                         <LucideEye className="size-4" />
-                                        <span className="hidden xl:inline">View</span>
+                                        <span className="hidden xl:inline">{t('common.view')}</span>
                                     </Link>
                                     <Link
                                         as="button"
@@ -61,7 +64,7 @@ export function PermissionDesktopTable({ permissions, state }: PermissionDesktop
                                         className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}
                                     >
                                         <LucideSquarePen className="size-4" />
-                                        <span className="hidden xl:inline">Edit</span>
+                                        <span className="hidden xl:inline">{t('common.edit')}</span>
                                     </Link>
                                     <PermissionDeleteDialog
                                         permissionId={permission.id}

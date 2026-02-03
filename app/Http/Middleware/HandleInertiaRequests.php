@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Data\AuthUserData;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -43,6 +44,44 @@ class HandleInertiaRequests extends Middleware
                 'warning' => fn () => $request->session()->get('warning'),
                 'info' => fn () => $request->session()->get('info'),
             ],
+            'locale' => [
+                'current' => app()->getLocale(),
+                'available' => $this->getAvailableLocales(),
+                'urls' => $this->getLocaleUrls(),
+            ],
         ];
+    }
+
+    /**
+     * Get available locales with their information.
+     *
+     * @return array<string, array<string, string>>
+     */
+    private function getAvailableLocales(): array
+    {
+        $locales = [];
+        foreach (config('laravellocalization.supportedLocales', []) as $code => $info) {
+            $locales[$code] = [
+                'name' => $info['name'],
+                'native' => $info['native'],
+            ];
+        }
+
+        return $locales;
+    }
+
+    /**
+     * Get URLs for switching locales.
+     *
+     * @return array<string, string>
+     */
+    private function getLocaleUrls(): array
+    {
+        $urls = [];
+        foreach (array_keys(config('laravellocalization.supportedLocales', [])) as $locale) {
+            $urls[$locale] = LaravelLocalization::getLocalizedURL($locale, null, [], true);
+        }
+
+        return $urls;
     }
 }
