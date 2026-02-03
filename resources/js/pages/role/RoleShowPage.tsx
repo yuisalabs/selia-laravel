@@ -43,7 +43,7 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
             <Head title={`${t('roles.show')}: ${role.name}`} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 space-y-6">
                     <Card>
                         <CardHeader className="flex items-center justify-between">
                             <Link
@@ -120,10 +120,10 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
 
                             <div>
                                 <h3 className="text-sm font-medium text-foreground mb-3">
-                                    {t('roles.users_with_role')} ({role.users.length})
+                                    {t('roles.users_with_role')} ({role.users?.length || 0})
                                 </h3>
                                 <div className="space-y-2">
-                                    {role.users.length > 0 ? (
+                                    {role.users && role.users.length > 0 ? (
                                         role.users.map((user) => (
                                             <Item
                                                 key={user.id}

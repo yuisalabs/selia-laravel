@@ -46,7 +46,7 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
             <Head title={t('roles.create')} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
                             <CardTitle>{t('roles.create')}</CardTitle>

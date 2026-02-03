@@ -35,7 +35,7 @@ export default function PermissionShowPage({ permission }: PermissionShowPagePro
             <Head title={`${t('permissions.show')}: ${permission.name}`} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 space-y-6">
                     <Card>
                         <CardHeader className="flex items-center justify-between">
                             <Link
@@ -93,10 +93,10 @@ export default function PermissionShowPage({ permission }: PermissionShowPagePro
 
                             <div>
                                 <h3 className="text-sm font-medium text-foreground mb-3">
-                                    {t('permissions.roles_with_permission')} ({permission.roles.length})
+                                    {t('permissions.roles_with_permission')} ({permission.roles?.length || 0})
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
-                                    {permission.roles.length > 0 ? (
+                                    {permission.roles && permission.roles.length > 0 ? (
                                         permission.roles.map((role) => (
                                             <Badge key={role.id} variant="secondary">
                                                 {role.name}

@@ -46,11 +46,11 @@ export default function PermissionIndexPage({ permissions, state }: PermissionIn
                 <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-                            <div className="text-start">
+                            <div className="text-start w-full">
                                 <CardTitle>{t('permissions.title')}</CardTitle>
                                 <CardDescription>{t('permissions.description')}</CardDescription>
                             </div>
-                            <div className="flex flex-col md:flex-row gap-4">
+                            <div className="flex flex-col-reverse md:flex-row gap-4 w-full justify-end">
                                 <div className="relative w-full md:w-64">
                                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
                                         <LucideSearch className="size-4" />

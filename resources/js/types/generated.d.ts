@@ -11,13 +11,15 @@ export type PermissionData = {
     name: string;
     description: any | string | null;
     guard_name: string;
+    roles: Array<any>;
 };
 export type RoleData = {
     id: any | number;
     name: string;
     description: any | string | null;
     guard_name: string;
-    permissions: Array<PermissionData> | Array<number>;
+    permissions: Array<any>;
+    users: Array<any>;
 };
 export type UserData = {
     id: any | number;
@@ -27,6 +29,6 @@ export type UserData = {
     role: any | string | null;
     email_verified_at: any | string | null;
     created_at: any | string;
-    roles: Array<RoleData>;
+    roles: Array<any>;
     permissions: Array<string>;
 };

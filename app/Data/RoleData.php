@@ -3,9 +3,7 @@
 namespace App\Data;
 
 use App\Models\Role;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -17,8 +15,8 @@ class RoleData extends Data
         public string $name,
         public string|Optional|null $description,
         public string $guard_name,
-        #[DataCollectionOf(PermissionData::class)]
-        public DataCollection|array $permissions,
+        public array $permissions,
+        public array $users,
     ) {}
 
     public static function fromModel(Role $role): self
@@ -29,7 +27,19 @@ class RoleData extends Data
             description: $role->description,
             guard_name: $role->guard_name,
             permissions: $role->relationLoaded('permissions')
-                ? PermissionData::collect($role->permissions, DataCollection::class)
+                 ? $role->permissions->map(fn ($perm) => [
+                     'id' => $perm->id,
+                     'name' => $perm->name,
+                     'description' => $perm->description,
+                     'guard_name' => $perm->guard_name,
+                 ])->toArray()
+                 : [],
+            users: $role->relationLoaded('users')
+                ? $role->users->map(fn ($user) => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ])->toArray()
                 : [],
         );
     }

@@ -21,8 +21,8 @@ export default function DashboardPage({ stats }: DashboardProps) {
             <Head title={t('navigation.dashboard')} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="grid gap-4 px-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         <StatCard
                             title={t('dashboard.total_users')}
                             value={stats.users}

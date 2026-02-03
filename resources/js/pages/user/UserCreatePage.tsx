@@ -38,7 +38,7 @@ export default function UserCreatePage({ roles }: UserCreatePageProps) {
             <Head title={t('users.create')} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
                             <CardTitle>{t('users.create')}</CardTitle>

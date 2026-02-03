@@ -19,11 +19,11 @@ export default function ProfileEditPage({
         <>
             <Head title={t('profile.title')} />
 
-            <div className="py-12 px-6">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+            <div className="py-12">
+                <div className="mx-auto max-w-7xl px-6 space-y-6 sm:px-6 lg:px-8">
                     <Tabs defaultValue="profile" className="lg:w-6/12 w-full mx-auto">
                         <TabsList>
-                            <TabsItem value="profile">{t('profile.information')}</TabsItem>
+                            <TabsItem value="profile" className="text-nowrap truncate">{t('profile.information')}</TabsItem>
                             <TabsItem value="password">{t('auth.password')}</TabsItem>
                             <TabsItem className="text-nowrap" value="delete-account">{t('profile.delete_account')}</TabsItem>
                         </TabsList>

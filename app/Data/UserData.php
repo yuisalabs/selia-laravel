@@ -3,9 +3,7 @@
 namespace App\Data;
 
 use App\Models\User;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -20,8 +18,7 @@ class UserData extends Data
         public string|Optional|null $role,
         public string|Optional|null $email_verified_at,
         public string|Optional $created_at,
-        #[DataCollectionOf(RoleData::class)]
-        public DataCollection $roles,
+        public array $roles,
         /** @var string[] */
         public array $permissions,
     ) {}
@@ -41,7 +38,18 @@ class UserData extends Data
             role: Optional::create(),
             email_verified_at: $user->email_verified_at?->toISOString(),
             created_at: $user->created_at->toISOString(),
-            roles: RoleData::collect($user->roles, DataCollection::class),
+            roles: $user->relationLoaded('roles')
+                ? $user->roles->map(fn ($role) => [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'description' => $role->description,
+                    'guard_name' => $role->guard_name,
+                    'permissions' => $role->permissions->map(fn ($perm) => [
+                        'id' => $perm->id,
+                        'name' => $perm->name,
+                    ])->toArray(),
+                ])->toArray()
+                : [],
             permissions: $user->relationLoaded('roles')
                 ? $user->getAllPermissionNames()
                 : [],

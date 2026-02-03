@@ -37,7 +37,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
             <Head title={`${t('users.show')}: ${user.name}`} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 space-y-6">
                     <Card>
                         <CardHeader className="flex items-center justify-between">
                             <Link
