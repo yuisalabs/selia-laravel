@@ -4,11 +4,9 @@ namespace App\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Spatie\LaravelData\Data;
 
 /**
  * @template TModel of Model
- * @template TData of Data
  */
 abstract class BaseService
 {
@@ -20,20 +18,13 @@ abstract class BaseService
     abstract protected function model(): string;
 
     /**
-     * Get the data class name.
-     *
-     * @return class-string<TData>
-     */
-    abstract protected function dataClass(): string;
-
-    /**
      * Store a new record.
      *
-     * @return TData
+     * @return TModel
      */
-    public function store(array $data): Data
+    public function store(array $data): Model
     {
-        return DB::transaction(function () use ($data): Data {
+        return DB::transaction(function () use ($data): Model {
             $this->beforeStore($data);
 
             $modelClass = $this->model();
@@ -41,9 +32,7 @@ abstract class BaseService
 
             $this->afterStore($model, $data);
 
-            $dataClass = $this->dataClass();
-
-            return $dataClass::from($model);
+            return $model;
         });
     }
 
@@ -51,20 +40,18 @@ abstract class BaseService
      * Update an existing record.
      *
      * @param  TModel  $model
-     * @return TData
+     * @return TModel
      */
-    public function update(Model $model, array $data): Data
+    public function update(Model $model, array $data): Model
     {
-        return DB::transaction(function () use ($model, $data): Data {
+        return DB::transaction(function () use ($model, $data): Model {
             $this->beforeUpdate($model, $data);
 
             $model->update($data);
 
             $this->afterUpdate($model, $data);
 
-            $dataClass = $this->dataClass();
-
-            return $dataClass::from($model);
+            return $model;
         });
     }
 

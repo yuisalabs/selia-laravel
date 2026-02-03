@@ -8,11 +8,7 @@ import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { UserForm } from '@/features/user';
 import { useTranslation } from 'react-i18next';
-
-interface Role {
-    id: number;
-    name: string;
-}
+import type { Role } from '@/types';
 
 interface UserCreatePageProps {
     roles: Role[];

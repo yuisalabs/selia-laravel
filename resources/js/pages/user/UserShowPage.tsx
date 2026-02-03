@@ -8,25 +8,10 @@ import { Divider } from '@/components/ui/divider';
 import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { useTranslation } from 'react-i18next';
-
-interface Role {
-    id: number;
-    name: string;
-    permissions: Array<{ id: number; name: string }>;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at?: string;
-    created_at: string;
-    roles: Role[];
-    permissions: string[];
-}
+import type { UserWithRelations } from '@/types';
 
 interface UserShowPageProps {
-    user: User;
+    user: UserWithRelations;
 }
 
 export default function UserShowPage({ user }: UserShowPageProps) {

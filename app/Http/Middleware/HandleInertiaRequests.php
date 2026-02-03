@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Data\AuthUserData;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -35,7 +34,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user()
-                    ? AuthUserData::fromModel($request->user())
+                    ? $this->getAuthUserData($request->user())
                     : null,
             ],
             'flash' => [
@@ -49,6 +48,25 @@ class HandleInertiaRequests extends Middleware
                 'available' => $this->getAvailableLocales(),
                 'urls' => $this->getLocaleUrls(),
             ],
+        ];
+    }
+
+    /**
+     * Get authenticated user data.
+     *
+     * @return array<string, mixed>
+     */
+    private function getAuthUserData($user): array
+    {
+        $user->loadMissing('roles.permissions');
+
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'email_verified_at' => $user->email_verified_at?->toISOString(),
+            'roles' => $user->roles->pluck('name')->toArray(),
+            'permissions' => $user->getAllPermissionNames(),
         ];
     }
 

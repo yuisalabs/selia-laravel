@@ -9,30 +9,10 @@ import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
 import { Item } from '@/components/ui/item';
 import { Heading } from '@/components/ui/heading';
 import { useTranslation } from 'react-i18next';
-
-interface Permission {
-    id: number;
-    name: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface Role {
-    id: number;
-    name: string;
-    guard_name: string;
-    created_at: string;
-    updated_at: string;
-    permissions: Permission[];
-    users: User[];
-}
+import type { RoleWithRelations } from '@/types';
 
 interface RoleShowPageProps {
-    role: Role;
+    role: RoleWithRelations;
 }
 
 export default function RoleShowPage({ role }: RoleShowPageProps) {

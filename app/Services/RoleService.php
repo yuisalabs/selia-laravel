@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Data\RoleData;
 use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
- * @extends BaseService<Role, RoleData>
+ * @extends BaseService<Role>
  */
 class RoleService extends BaseService
 {
@@ -22,16 +21,6 @@ class RoleService extends BaseService
     protected function model(): string
     {
         return Role::class;
-    }
-
-    /**
-     * Get the data class name.
-     *
-     * @return class-string<RoleData>
-     */
-    protected function dataClass(): string
-    {
-        return RoleData::class;
     }
 
     /**
@@ -113,22 +102,22 @@ class RoleService extends BaseService
     }
 
     /**
-     * Prepare role data for display.
+     * Prepare role for display.
      */
-    public function getRoleForShow(Role $role): RoleData
+    public function getRoleForShow(Role $role): Role
     {
         $role->load(['permissions', 'users']);
 
-        return RoleData::fromModel($role);
+        return $role;
     }
 
     /**
-     * Prepare role data for editing.
+     * Prepare role for editing.
      */
-    public function getRoleForEdit(Role $role): RoleData
+    public function getRoleForEdit(Role $role): Role
     {
         $role->load('permissions');
 
-        return RoleData::fromModel($role);
+        return $role;
     }
 }

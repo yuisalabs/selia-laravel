@@ -9,21 +9,10 @@ import { Heading } from '@/components/ui/heading';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { UserForm } from '@/features/user';
 import { useTranslation } from 'react-i18next';
-
-interface Role {
-    id: number;
-    name: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    roles: Role[];
-}
+import type { Role, UserWithRelations } from '@/types';
 
 interface UserEditPageProps {
-    user: User;
+    user: UserWithRelations;
     roles: Role[];
     permissions: Array<{ id: number; name: string }>;
 }

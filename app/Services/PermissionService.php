@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use App\Data\PermissionData;
 use App\Models\Permission;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
- * @extends BaseService<Permission, PermissionData>
+ * @extends BaseService<Permission>
  */
 class PermissionService extends BaseService
 {
@@ -21,16 +20,6 @@ class PermissionService extends BaseService
     protected function model(): string
     {
         return Permission::class;
-    }
-
-    /**
-     * Get the data class name.
-     *
-     * @return class-string<PermissionData>
-     */
-    protected function dataClass(): string
-    {
-        return PermissionData::class;
     }
 
     /**
@@ -69,12 +58,12 @@ class PermissionService extends BaseService
     }
 
     /**
-     * Prepare permission data for display.
+     * Prepare permission for display.
      */
-    public function getPermissionForShow(Permission $permission): PermissionData
+    public function getPermissionForShow(Permission $permission): Permission
     {
         $permission->load('roles');
 
-        return PermissionData::fromModel($permission);
+        return $permission;
     }
 }

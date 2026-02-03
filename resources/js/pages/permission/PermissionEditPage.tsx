@@ -9,13 +9,7 @@ import { Heading } from '@/components/ui/heading';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { PermissionForm } from '@/features/permission';
 import { useTranslation } from 'react-i18next';
-
-interface Permission {
-    id: number;
-    name: string;
-    description: string | null;
-    guard_name: string;
-}
+import type { Permission } from '@/types';
 
 interface PermissionEditPageProps {
     permission: Permission;

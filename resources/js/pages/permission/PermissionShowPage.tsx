@@ -8,23 +8,10 @@ import { Divider } from '@/components/ui/divider';
 import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { useTranslation } from 'react-i18next';
-
-interface Role {
-    id: number;
-    name: string;
-}
-
-interface Permission {
-   id: number;
-    name: string;
-    guard_name: string;
-    created_at: string;
-    updated_at: string;
-    roles: Role[];
-}
+import type { PermissionWithRelations } from '@/types';
 
 interface PermissionShowPageProps {
-    permission: Permission;
+    permission: PermissionWithRelations;
 }
 
 export default function PermissionShowPage({ permission }: PermissionShowPageProps) {

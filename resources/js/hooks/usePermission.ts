@@ -1,8 +1,8 @@
 import { usePage } from '@inertiajs/react';
-import type { AuthUserData } from '@/types/generated';
+import type { PageProps } from '@/types';
 
 export function usePermission() {
-    const { auth } = usePage<{ auth: { user: AuthUserData } }>().props;
+    const { auth } = usePage<PageProps>().props;
 
     const can = (permission: string): boolean => {
         return auth.user?.permissions?.includes(permission) ?? false;

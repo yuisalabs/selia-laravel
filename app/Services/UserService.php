@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Data\UserData;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +10,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
- * @extends BaseService<User, UserData>
+ * @extends BaseService<User>
  */
 class UserService extends BaseService
 {
@@ -23,16 +22,6 @@ class UserService extends BaseService
     protected function model(): string
     {
         return User::class;
-    }
-
-    /**
-     * Get the data class name.
-     *
-     * @return class-string<UserData>
-     */
-    protected function dataClass(): string
-    {
-        return UserData::class;
     }
 
     /**
@@ -118,22 +107,22 @@ class UserService extends BaseService
     }
 
     /**
-     * Prepare user data for editing.
+     * Prepare user for editing.
      */
-    public function getUserForEdit(User $user): UserData
+    public function getUserForEdit(User $user): User
     {
         $user->load('roles');
 
-        return UserData::fromModel($user);
+        return $user;
     }
 
     /**
-     * Prepare user data for display.
+     * Prepare user for display.
      */
-    public function getUserForShow(User $user): UserData
+    public function getUserForShow(User $user): User
     {
         $user->load('roles.permissions');
 
-        return UserData::fromModel($user);
+        return $user;
     }
 }

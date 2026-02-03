@@ -8,12 +8,7 @@ import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { RoleForm } from '@/features/role';
 import { useTranslation } from 'react-i18next';
-
-interface Permission {
-    id: number;
-    name: string;
-    description: string | null;
-}
+import type { Permission } from '@/types';
 
 interface RoleCreatePageProps {
     permissions: Permission[];
