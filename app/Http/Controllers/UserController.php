@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\PermissionData;
-use App\Data\RoleData;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Permission;
@@ -32,6 +30,10 @@ class UserController extends Controller
 
         return Inertia::render('user/UserIndexPage', [
             'users' => $users,
+            'state' => [
+                'search' => request('search'),
+                'sort' => request('sort'),
+            ],
         ]);
     }
 
@@ -41,7 +43,7 @@ class UserController extends Controller
     public function create(): Response
     {
         return Inertia::render('user/UserCreatePage', [
-            'roles' => RoleData::collect(Role::all()),
+            'roles' => Role::all(),
         ]);
     }
 
@@ -50,7 +52,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        $this->userService->createUser($request->validated());
+        $this->userService->store($request->validated());
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully.');
@@ -77,8 +79,8 @@ class UserController extends Controller
 
         return Inertia::render('user/UserEditPage', [
             'user' => $userData,
-            'roles' => RoleData::collect(Role::all()),
-            'permissions' => PermissionData::collect(Permission::all()),
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -87,7 +89,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-        $this->userService->updateUser($user, $request->validated());
+        $this->userService->update($user, $request->validated());
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully.');
@@ -99,7 +101,7 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         try {
-            $this->userService->deleteUser($user);
+            $this->userService->destroy($user);
 
             return redirect()->route('users.index')
                 ->with('success', 'User deleted successfully.');

@@ -16,13 +16,14 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
+        "mcamara/laravel-localization": "^2.3",
         "spatie/enum": "^3.13",
-        "spatie/laravel-data": "^4.19",
-        "spatie/laravel-typescript-transformer": "^2.5",
+        "spatie/laravel-query-builder": "^6.4",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "fruitcake/laravel-debugbar": "^4.0",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.27",

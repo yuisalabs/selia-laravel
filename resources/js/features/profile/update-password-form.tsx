@@ -6,6 +6,7 @@ import { FormEventHandler, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { LucideSave } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function UpdatePasswordForm({
     className = '',
@@ -15,6 +16,7 @@ export default function UpdatePasswordForm({
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
     const { show } = useConfirmDialogStore();
+    const { t } = useTranslation();
 
     const {
         data,
@@ -36,10 +38,10 @@ export default function UpdatePasswordForm({
 
     const handleUpdatePassword = () => {
         show({
-            title: 'Confirm Password Update',
-            description: 'Are you sure you want to update your password? This action will change your account password.',
+            title: t('profile.update_password_confirm'),
+            description: t('profile.update_password_confirm_description', { defaultValue: 'Are you sure you want to update your password? This action will change your account password.' }),
             variant: 'warning',
-            confirmText: 'Confirm Update',
+            confirmText: t('common.confirm_update'),
             onConfirm: () => {
                 put(route('password.update'), {
                     preserveScroll: true,
@@ -64,18 +66,17 @@ export default function UpdatePasswordForm({
         <Card className={className}>
             <header>
                 <h2 className="text-lg font-medium text-foreground">
-                    Update Password
+                    {t('profile.update_password')}
                 </h2>
 
                 <p className="mt-1 text-sm text-muted">
-                    Ensure your account is using a long, random password to stay
-                    secure.
+                    {t('profile.update_password_description', { defaultValue: 'Ensure your account is using a long, random password to stay secure.' })}
                 </p>
             </header>
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
                 <Field invalid={!!errors.current_password}>
-                    <FieldLabel htmlFor="current_password">Current Password</FieldLabel>
+                    <FieldLabel htmlFor="current_password">{t('auth.current_password')}</FieldLabel>
 
                     <Input
                         id="current_password"
@@ -85,14 +86,14 @@ export default function UpdatePasswordForm({
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="current-password"
-                        placeholder="Enter your current password"
+                        placeholder={t('auth.current_password_placeholder')}
                     />
 
                     <FieldError match={!!errors.current_password}>{errors.current_password}</FieldError>
                 </Field>
 
                 <Field invalid={!!errors.password}>
-                    <FieldLabel htmlFor="password">New Password</FieldLabel>
+                    <FieldLabel htmlFor="password">{t('auth.new_password')}</FieldLabel>
 
                     <Input
                         id="password"
@@ -102,14 +103,14 @@ export default function UpdatePasswordForm({
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        placeholder="Enter your new password"
+                        placeholder={t('auth.new_password_placeholder')}
                     />
 
                     <FieldError match={!!errors.password}>{errors.password}</FieldError>
                 </Field>
 
                 <Field invalid={!!errors.password_confirmation}>
-                    <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
+                    <FieldLabel htmlFor="password_confirmation">{t('auth.confirm_password')}</FieldLabel>
 
                     <Input
                         id="password_confirmation"
@@ -118,7 +119,7 @@ export default function UpdatePasswordForm({
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        placeholder="Confirm your new password"
+                        placeholder={t('auth.confirm_new_password_placeholder', { defaultValue: 'Confirm your new password' })}
                     />
 
                     <FieldError match={!!errors.password_confirmation}>{errors.password_confirmation}</FieldError>
@@ -127,11 +128,10 @@ export default function UpdatePasswordForm({
                 <div className="flex items-center gap-4">
                     <Button variant="primary" type="button" disabled={processing} onClick={handleUpdatePassword}>
                         <LucideSave/>
-                        Save
+                        {t('common.save')}
                     </Button>
                 </div>
             </form>
         </Card>
     );
 }
-

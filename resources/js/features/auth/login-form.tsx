@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Text, TextLink } from '@/components/ui/text';
 import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormProps {
     canResetPassword?: boolean;
@@ -13,6 +14,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ canResetPassword }: LoginFormProps) {
     const errors = usePage().props.errors;
+    const { t } = useTranslation();
 
     const { data, setData, post, processing, reset } = useForm({
         email: '',
@@ -32,14 +34,14 @@ export default function LoginForm({ canResetPassword }: LoginFormProps) {
         <>
             <form onSubmit={submit}>
                 <Field invalid={!!errors.email}>
-                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <FieldLabel htmlFor="email">{t('auth.email')}</FieldLabel>
                     <Input
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
                         autoComplete="username"
-                        placeholder="Enter your email"
+                        placeholder={t('auth.email_placeholder')}
                         onChange={(e) => setData('email', e.target.value)}
                     />
                     <FieldError match={!!errors.email}>{errors.email}</FieldError>
@@ -47,10 +49,10 @@ export default function LoginForm({ canResetPassword }: LoginFormProps) {
 
                 <Field className="mt-4" invalid={!!errors.password}>
                     <div className="flex items-center justify-between">
-                        <FieldLabel htmlFor="password">Password</FieldLabel>
+                        <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
                         {canResetPassword && (
                             <TextLink href={route('password.request')}>
-                                Forgot your password?
+                                {t('auth.forgot_password_question')}
                             </TextLink>
                         )}
                     </div>
@@ -60,7 +62,7 @@ export default function LoginForm({ canResetPassword }: LoginFormProps) {
                         name="password"
                         value={data.password}
                         autoComplete="current-password"
-                        placeholder="Enter your password"
+                        placeholder={t('auth.password_placeholder')}
                         onChange={(e) => setData('password', e.target.value)}
                     />
                     <FieldError match={!!errors.password}>{errors.password}</FieldError>
@@ -73,7 +75,7 @@ export default function LoginForm({ canResetPassword }: LoginFormProps) {
                             checked={data.remember}
                             onCheckedChange={(checked) => setData('remember', checked as boolean)}
                         />
-                        <span>Remember me</span>
+                        <span>{t('auth.remember_me')}</span>
                     </Label>
                 </div>
 
@@ -85,12 +87,12 @@ export default function LoginForm({ canResetPassword }: LoginFormProps) {
                     progress={processing}
                     disabled={processing}
                 >
-                    Log in
+                    {t('auth.login')}
                 </Button>
             </form>
 
             <Text className="text-center mt-4">
-                Don't have an account? <TextLink href={route('register')}>Register</TextLink>
+                {t('auth.no_account')} <TextLink href={route('register')}>{t('auth.register')}</TextLink>
             </Text>
         </>
     );

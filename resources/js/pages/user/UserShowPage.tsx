@@ -7,34 +7,22 @@ import { Badge } from '@/components/ui/badge';
 import { Divider } from '@/components/ui/divider';
 import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
-
-interface Role {
-    id: number;
-    name: string;
-    permissions: Array<{ id: number; name: string }>;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at?: string;
-    created_at: string;
-    roles: Role[];
-    permissions: string[];
-}
+import { useTranslation } from 'react-i18next';
+import type { UserWithRelations } from '@/types';
 
 interface UserShowPageProps {
-    user: User;
+    user: UserWithRelations;
 }
 
 export default function UserShowPage({ user }: UserShowPageProps) {
+    const { t } = useTranslation();
+
     return (
         <>
-            <Head title={`User: ${user.name}`} />
+            <Head title={`${t('users.show')}: ${user.name}`} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 space-y-6">
                     <Card>
                         <CardHeader className="flex items-center justify-between">
                             <Link
@@ -43,7 +31,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
                                 className={cn(buttonVariants({ variant: 'outline' }))}
                             >
                                 <LucideArrowLeft/>
-                                Back
+                                {t('common.back')}
                             </Link>
                             <div className="space-x-2">
                                 <Link
@@ -52,7 +40,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
                                     className={cn(buttonVariants({ variant: 'secondary' }))}
                                 >
                                     <LucideSquarePen/>
-                                    Edit
+                                    {t('common.edit')}
                                 </Link>
                             </div>
                         </CardHeader>
@@ -60,30 +48,30 @@ export default function UserShowPage({ user }: UserShowPageProps) {
                             <div className="flex items-center gap-2">
                                 <div>
                                     <CardTitle>{user.name}</CardTitle>
-                                    <CardDescription>User details and information</CardDescription>
+                                    <CardDescription>{t('users.show_description')}</CardDescription>
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Name</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('users.name')}</h3>
                                     <p className="mt-1 text-sm text-foreground">{user.name}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Email</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('users.email')}</h3>
                                     <p className="mt-1 text-sm text-foreground">{user.email}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Email Verification</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('users.email_verification')}</h3>
                                     <p className="mt-1">
                                         {user.email_verified_at ? (
-                                            <Badge variant="success">Verified</Badge>
+                                            <Badge variant="success">{t('users.verified')}</Badge>
                                         ) : (
-                                            <Badge variant="warning">Unverified</Badge>
+                                            <Badge variant="warning">{t('users.unverified')}</Badge>
                                         )}
                                     </p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Created At</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('users.created_at')}</h3>
                                     <p className="mt-1 text-sm text-foreground">
                                         {new Date(user.created_at).toLocaleString()}
                                     </p>
@@ -94,7 +82,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
 
                             <div>
                                 <h3 className="text-sm font-medium text-foreground mb-3">
-                                    Roles ({user.roles.length})
+                                    {t('users.roles')} ({user.roles.length})
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {user.roles.length > 0 ? (
@@ -104,7 +92,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
                                             </Badge>
                                         ))
                                     ) : (
-                                        <p className="text-sm text-muted">No roles assigned</p>
+                                        <p className="text-sm text-muted">{t('users.no_roles')}</p>
                                     )}
                                 </div>
                             </div>
@@ -113,7 +101,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
 
                             <div>
                                 <h3 className="text-sm font-medium text-foreground mb-3">
-                                    Permissions ({user.permissions.length})
+                                    {t('permissions.title')} ({user.permissions.length})
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                     {user.permissions.length > 0 ? (
@@ -126,7 +114,7 @@ export default function UserShowPage({ user }: UserShowPageProps) {
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="text-sm text-muted">No permissions</p>
+                                        <p className="text-sm text-muted">{t('users.no_permissions')}</p>
                                     )}
                                 </div>
                             </div>
@@ -138,13 +126,16 @@ export default function UserShowPage({ user }: UserShowPageProps) {
     );
 }
 
-UserShowPage.layout = (page: any) => {
+const ShowLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">User Details</Heading>}
-            breadcrumbs={[{ label: 'Users', href: route('users.index') }, { label: 'Details' }]}
+            header={<Heading size="sm">{t('users.show')}</Heading>}
+            breadcrumbs={[{ label: t('users.title'), href: route('users.index') }, { label: t('common.show') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+UserShowPage.layout = (page: any) => <ShowLayout>{page}</ShowLayout>;

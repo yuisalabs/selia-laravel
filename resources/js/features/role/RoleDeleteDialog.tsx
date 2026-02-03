@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { LucideTrash2 } from 'lucide-react';
 import { router } from '@inertiajs/react';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
+import { useTranslation } from 'react-i18next';
 
 interface RoleDeleteDialogProps {
     roleId: number;
@@ -12,13 +13,14 @@ interface RoleDeleteDialogProps {
 
 export function RoleDeleteDialog({ roleId, roleName, disabled = false, variant = 'default' }: RoleDeleteDialogProps) {
     const { show } = useConfirmDialogStore();
+    const { t } = useTranslation();
 
     const handleClick = () => {
         show({
-            title: 'Are you sure?',
-            description: `This will permanently delete the role "${roleName}". This action cannot be undone.`,
+            title: t('common.are_you_sure'),
+            description: t('roles.delete_confirm', { name: roleName, defaultValue: `This will permanently delete the role "${roleName}". This action cannot be undone.` }),
             variant: 'danger',
-            confirmText: 'Delete',
+            confirmText: t('common.delete'),
             onConfirm: () => {
                 router.delete(route('roles.destroy', roleId));
             },
@@ -34,8 +36,7 @@ export function RoleDeleteDialog({ roleId, roleName, disabled = false, variant =
             onClick={handleClick}
         >
             <LucideTrash2 className={variant === 'sm' ? 'w-4 h-4 mr-1' : 'size-4'} />
-            {variant === 'sm' ? 'Delete' : <span className="hidden xl:inline">Delete</span>}
+            {variant === 'sm' ? t('common.delete') : <span className="hidden xl:inline">{t('common.delete')}</span>}
         </Button>
     );
 }
-

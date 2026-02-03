@@ -5,12 +5,15 @@ import { cn } from '@/utils/cn';
 import { LucideEye, LucideSquarePen } from 'lucide-react';
 import { Role } from './types';
 import { RoleDeleteDialog } from './RoleDeleteDialog';
+import { useTranslation } from 'react-i18next';
 
 interface RoleMobileListProps {
     roles: Role[];
 }
 
 export function RoleMobileList({ roles }: RoleMobileListProps) {
+    const { t } = useTranslation();
+
     return (
         <div>
             {roles.map((role) => (
@@ -26,14 +29,14 @@ export function RoleMobileList({ roles }: RoleMobileListProps) {
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Permissions:</span>
+                        <span className="text-muted-foreground">{t('permissions.title')}:</span>
                         <div className="flex flex-wrap gap-1 justify-end">
                             {role.permissions.map((permission) => (
                                 <Badge key={permission.id} variant="secondary" className="text-xs">
                                     {permission.name}
                                 </Badge>
                             ))}
-                            {role.permissions.length === 0 && <span className="text-muted">No permissions</span>}
+                            {role.permissions.length === 0 && <span className="text-muted">{t('roles.no_permissions')}</span>}
                         </div>
                     </div>
 
@@ -44,7 +47,7 @@ export function RoleMobileList({ roles }: RoleMobileListProps) {
                             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-8 px-2')}
                         >
                             <LucideEye className="w-4 h-4 mr-1" />
-                            View
+                            {t('common.view')}
                         </Link>
                         <Link
                             as="button"
@@ -52,7 +55,7 @@ export function RoleMobileList({ roles }: RoleMobileListProps) {
                             className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'h-8 px-2')}
                         >
                             <LucideSquarePen className="w-4 h-4 mr-1" />
-                            Edit
+                            {t('common.edit')}
                         </Link>
                         <RoleDeleteDialog
                             roleId={role.id}

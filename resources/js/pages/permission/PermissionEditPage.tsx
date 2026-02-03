@@ -8,19 +8,15 @@ import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { useConfirmDialogStore } from '@/stores/confirm-dialog-store';
 import { PermissionForm } from '@/features/permission';
-
-interface Permission {
-    id: number;
-    name: string;
-    description: string | null;
-    guard_name: string;
-}
+import { useTranslation } from 'react-i18next';
+import type { Permission } from '@/types';
 
 interface PermissionEditPageProps {
     permission: Permission;
 }
 
 export default function PermissionEditPage({ permission }: PermissionEditPageProps) {
+    const { t } = useTranslation();
     const { data, setData, put, processing, errors } = useForm({
         name: permission.name,
         description: permission.description || '',
@@ -35,10 +31,10 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
 
     const handleUpdate = () => {
         show({
-            title: 'Confirm Update',
-            description: "Are you sure you want to update this permission's information? This action will save all changes.",
+            title: t('common.confirm'),
+            description: t('permissions.update_confirm'),
             variant: 'info',
-            confirmText: 'Confirm Update',
+            confirmText: t('common.confirm'),
             onConfirm: () => {
                 put(route('permissions.update', permission.id));
             },
@@ -47,14 +43,14 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
 
     return (
         <>
-            <Head title={`Edit Permission: ${permission.name}`} />
+            <Head title={`${t('permissions.edit')}: ${permission.name}`} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Edit Permission</CardTitle>
-                            <CardDescription>Update permission details</CardDescription>
+                            <CardTitle>{t('permissions.edit')}</CardTitle>
+                            <CardDescription>{t('permissions.edit_description')}</CardDescription>
                         </CardHeader>
                         <CardBody>
                             <form onSubmit={submit} className="space-y-6">
@@ -63,7 +59,7 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="button" disabled={processing} onClick={handleUpdate}>
                                         <LucideSave />
-                                        Update
+                                        {t('common.save')}
                                     </Button>
                                     <Link
                                         as="button"
@@ -71,7 +67,7 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
                                         <LucideCircleX />
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Link>
                                 </div>
                             </form>
@@ -83,14 +79,16 @@ export default function PermissionEditPage({ permission }: PermissionEditPagePro
     );
 }
 
-PermissionEditPage.layout = (page: any) => {
+const EditLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">Edit Permission</Heading>}
-            breadcrumbs={[{ label: 'Permissions', href: route('permissions.index') }, { label: 'Edit' }]}
+            header={<Heading size="sm">{t('permissions.edit')}</Heading>}
+            breadcrumbs={[{ label: t('permissions.title'), href: route('permissions.index') }, { label: t('common.edit') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
 
+PermissionEditPage.layout = (page: any) => <EditLayout>{page}</EditLayout>;

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\PermissionData;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Permission;
@@ -29,6 +28,10 @@ class PermissionController extends Controller
 
         return Inertia::render('permission/PermissionIndexPage', [
             'permissions' => $permissions,
+            'state' => [
+                'search' => request('search'),
+                'sort' => request('sort'),
+            ],
         ]);
     }
 
@@ -45,7 +48,7 @@ class PermissionController extends Controller
      */
     public function store(StorePermissionRequest $request): RedirectResponse
     {
-        $this->permissionService->createPermission($request->validated());
+        $this->permissionService->store($request->validated());
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission created successfully.');
@@ -69,7 +72,7 @@ class PermissionController extends Controller
     public function edit(Permission $permission): Response
     {
         return Inertia::render('permission/PermissionEditPage', [
-            'permission' => PermissionData::fromModel($permission),
+            'permission' => $permission,
         ]);
     }
 
@@ -78,7 +81,7 @@ class PermissionController extends Controller
      */
     public function update(UpdatePermissionRequest $request, Permission $permission): RedirectResponse
     {
-        $this->permissionService->updatePermission($permission, $request->validated());
+        $this->permissionService->update($permission, $request->validated());
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission updated successfully.');
@@ -89,7 +92,7 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission): RedirectResponse
     {
-        $this->permissionService->deletePermission($permission);
+        $this->permissionService->destroy($permission);
 
         return redirect()->route('permissions.index')
             ->with('success', 'Permission deleted successfully.');

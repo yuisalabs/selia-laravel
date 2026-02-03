@@ -5,12 +5,15 @@ import { cn } from '@/utils/cn';
 import { LucideEye, LucideSquarePen } from 'lucide-react';
 import { Permission } from './types';
 import { PermissionDeleteDialog } from './PermissionDeleteDialog';
+import { useTranslation } from 'react-i18next';
 
 interface PermissionMobileListProps {
     permissions: Permission[];
 }
 
 export function PermissionMobileList({ permissions }: PermissionMobileListProps) {
+    const { t } = useTranslation();
+
     return (
         <div>
             {permissions.map((permission) => (
@@ -26,14 +29,14 @@ export function PermissionMobileList({ permissions }: PermissionMobileListProps)
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Roles:</span>
+                        <span className="text-muted-foreground">{t('permissions.roles')}:</span>
                         <div className="flex flex-wrap gap-1 justify-end">
                             {permission.roles.map((role) => (
                                 <Badge key={role.id} variant="secondary" className="text-xs">
                                     {role.name}
                                 </Badge>
                             ))}
-                            {permission.roles.length === 0 && <span className="text-muted">No roles</span>}
+                            {permission.roles.length === 0 && <span className="text-muted">{t('permissions.no_roles')}</span>}
                         </div>
                     </div>
 
@@ -44,7 +47,7 @@ export function PermissionMobileList({ permissions }: PermissionMobileListProps)
                             className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-8 px-2')}
                         >
                             <LucideEye className="w-4 h-4 mr-1" />
-                            View
+                            {t('common.view')}
                         </Link>
                         <Link
                             as="button"
@@ -52,7 +55,7 @@ export function PermissionMobileList({ permissions }: PermissionMobileListProps)
                             className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'h-8 px-2')}
                         >
                             <LucideSquarePen className="w-4 h-4 mr-1" />
-                            Edit
+                            {t('common.edit')}
                         </Link>
                         <PermissionDeleteDialog
                             permissionId={permission.id}

@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function VerifyEmailForm({ status }: { status?: string }) {
     const { post, processing } = useForm({});
+    const { t } = useTranslation();
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -15,8 +17,7 @@ export default function VerifyEmailForm({ status }: { status?: string }) {
         <>
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                    {t('auth.verification_link_sent', { defaultValue: 'A new verification link has been sent to the email address you provided during registration.' })}
                 </div>
             )}
 
@@ -29,7 +30,7 @@ export default function VerifyEmailForm({ status }: { status?: string }) {
                     progress={processing}
                     disabled={processing}
                 >
-                    Resend Verification Email
+                    {t('auth.resend_verification')}
                 </Button>
                 <Button
                     nativeButton={true}
@@ -43,7 +44,7 @@ export default function VerifyEmailForm({ status }: { status?: string }) {
                             as="button"
                         />
                     }>
-                    Log out
+                    {t('auth.logout')}
                 </Button>
             </form>
         </>

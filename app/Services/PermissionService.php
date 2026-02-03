@@ -2,70 +2,68 @@
 
 namespace App\Services;
 
-use App\Data\PermissionData;
 use App\Models\Permission;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
-class PermissionService
+/**
+ * @extends BaseService<Permission>
+ */
+class PermissionService extends BaseService
 {
+    /**
+     * Get the model class name.
+     *
+     * @return class-string<Permission>
+     */
+    protected function model(): string
+    {
+        return Permission::class;
+    }
+
+    /**
+     * Hook: Before storing - set default guard_name.
+     */
+    protected function beforeStore(array &$data): void
+    {
+        $data['guard_name'] = $data['guard_name'] ?? 'web';
+    }
+
     /**
      * Get all permissions with pagination.
      */
     public function getAllPermissions(): LengthAwarePaginator
     {
-        return Permission::with('roles')->latest()->paginate(10);
+        $query = Permission::query();
+
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        return QueryBuilder::for($query)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('description'),
+            ])
+            ->allowedSorts(['name', 'created_at'])
+            ->allowedIncludes(['roles'])
+            ->defaultSort('-created_at')
+            ->with('roles')
+            ->paginate(10)
+            ->withQueryString();
     }
 
     /**
-     * Create a new permission.
+     * Prepare permission for display.
      */
-    public function createPermission(array $data): PermissionData
-    {
-        return DB::transaction(function () use ($data): PermissionData {
-            $permission = Permission::create([
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-                'guard_name' => $data['guard_name'] ?? 'web',
-            ]);
-
-            return PermissionData::fromModel($permission);
-        });
-    }
-
-    /**
-     * Update an existing permission.
-     */
-    public function updatePermission(Permission $permission, array $data): PermissionData
-    {
-        return DB::transaction(function () use ($permission, $data): PermissionData {
-            $permission->update([
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-                'guard_name' => $data['guard_name'] ?? 'web',
-            ]);
-
-            return PermissionData::fromModel($permission);
-        });
-    }
-
-    /**
-     * Delete a permission.
-     */
-    public function deletePermission(Permission $permission): void
-    {
-        DB::transaction(function () use ($permission): void {
-            $permission->delete();
-        });
-    }
-
-    /**
-     * Prepare permission data for display.
-     */
-    public function getPermissionForShow(Permission $permission): PermissionData
+    public function getPermissionForShow(Permission $permission): Permission
     {
         $permission->load('roles');
 
-        return PermissionData::fromModel($permission);
+        return $permission;
     }
 }

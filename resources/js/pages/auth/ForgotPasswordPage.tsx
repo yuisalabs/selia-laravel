@@ -2,18 +2,19 @@ import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import ForgotPasswordForm from '@/features/auth/forgot-password-form';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPassword({ status }: { status?: string }) {
+    const { t } = useTranslation();
+
     return (
         <GuestLayout>
-            <Head title="Forgot Password" />
+            <Head title={t('auth.forgot_password')} />
 
             <CardHeader className="text-center border-none">
-                <CardTitle>Forgot Password</CardTitle>
+                <CardTitle>{t('auth.forgot_password')}</CardTitle>
                 <CardDescription>
-                    Forgot your password? No problem. Just let us know your email
-                    address and we will email you a password reset link that will
-                    allow you to choose a new one.
+                    {t('auth.forgot_password_message')}
                 </CardDescription>
             </CardHeader>
 

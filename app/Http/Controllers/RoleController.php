@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\PermissionData;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
@@ -30,6 +29,10 @@ class RoleController extends Controller
 
         return Inertia::render('role/RoleIndexPage', [
             'roles' => $roles,
+            'state' => [
+                'search' => request('search'),
+                'sort' => request('sort'),
+            ],
         ]);
     }
 
@@ -39,7 +42,7 @@ class RoleController extends Controller
     public function create(): Response
     {
         return Inertia::render('role/RoleCreatePage', [
-            'permissions' => PermissionData::collect(Permission::all()),
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -48,7 +51,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $this->roleService->createRole($request->validated());
+        $this->roleService->store($request->validated());
 
         return redirect()->route('roles.index')
             ->with('success', 'Role created successfully.');
@@ -75,7 +78,7 @@ class RoleController extends Controller
 
         return Inertia::render('role/RoleEditPage', [
             'role' => $roleData,
-            'permissions' => PermissionData::collect(Permission::all()),
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -84,7 +87,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        $this->roleService->updateRole($role, $request->validated());
+        $this->roleService->update($role, $request->validated());
 
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully.');
@@ -96,7 +99,7 @@ class RoleController extends Controller
     public function destroy(Role $role): RedirectResponse
     {
         try {
-            $this->roleService->deleteRole($role);
+            $this->roleService->destroy($role);
 
             return redirect()->route('roles.index')
                 ->with('success', 'Role deleted successfully.');

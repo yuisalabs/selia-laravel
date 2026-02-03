@@ -7,8 +7,10 @@ import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { PermissionForm } from '@/features/permission';
+import { useTranslation } from 'react-i18next';
 
 export default function PermissionCreatePage() {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',
@@ -22,14 +24,14 @@ export default function PermissionCreatePage() {
 
     return (
         <>
-            <Head title="Create Permission" />
+            <Head title={t('permissions.create')} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Create Permission</CardTitle>
-                            <CardDescription>Create a new system permission</CardDescription>
+                            <CardTitle>{t('permissions.create')}</CardTitle>
+                            <CardDescription>{t('permissions.create_description')}</CardDescription>
                         </CardHeader>
                         <CardBody>
                             <form onSubmit={submit} className="space-y-6">
@@ -38,7 +40,7 @@ export default function PermissionCreatePage() {
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>
                                         <LucideSave />
-                                        Create
+                                        {t('common.create')}
                                     </Button>
                                     <Link
                                         as="button"
@@ -46,7 +48,7 @@ export default function PermissionCreatePage() {
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
                                         <LucideCircleX />
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Link>
                                 </div>
                             </form>
@@ -58,13 +60,16 @@ export default function PermissionCreatePage() {
     );
 }
 
-PermissionCreatePage.layout = (page: any) => {
+const CreateLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">Create Permission</Heading>}
-            breadcrumbs={[{ label: 'Permissions', href: route('permissions.index') }, { label: 'Create' }]}
+            header={<Heading size="sm">{t('permissions.create')}</Heading>}
+            breadcrumbs={[{ label: t('permissions.title'), href: route('permissions.index') }, { label: t('common.create') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+PermissionCreatePage.layout = (page: any) => <CreateLayout>{page}</CreateLayout>;

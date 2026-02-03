@@ -3,43 +3,35 @@ import { Heading } from '@/components/ui/heading';
 import { cn } from '@/utils/cn';
 import { Head, Link } from '@inertiajs/react';
 import { LucideArrowLeft, LucideHome, LucideRefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ErrorPageProps {
     status: number;
 }
 
-const errorMessages: Record<number, { title: string; description: string }> = {
-    403: {
-        title: 'Forbidden',
-        description: "You don't have permission to access this resource.",
-    },
-    404: {
-        title: 'Page Not Found',
-        description: 'The page you are looking for could not be found.',
-    },
-    419: {
-        title: 'Page Expired',
-        description: 'Your session has expired. Please refresh and try again.',
-    },
-    429: {
-        title: 'Too Many Requests',
-        description: "You've made too many requests. Please wait a moment.",
-    },
-    500: {
-        title: 'Server Error',
-        description: 'Something went wrong on our end. Please try again later.',
-    },
-    503: {
-        title: 'Service Unavailable',
-        description: "We're currently under maintenance. Please check back soon.",
-    },
-};
-
 export default function ErrorPage({ status }: ErrorPageProps) {
-    const error = errorMessages[status] || {
-        title: 'Error',
-        description: 'An unexpected error occurred.',
+    const { t } = useTranslation();
+
+    const getErrorInfo = (status: number) => {
+        switch (status) {
+            case 403:
+                return { title: t('error.403'), description: t('error.403_message') };
+            case 404:
+                return { title: t('error.404'), description: t('error.404_message') };
+            case 419:
+                return { title: t('error.419'), description: t('error.419_message') };
+            case 429:
+                return { title: t('error.429'), description: t('error.429_message') };
+            case 500:
+                return { title: t('error.500'), description: t('error.500_message') };
+            case 503:
+                return { title: t('error.503'), description: t('error.503_message') };
+            default:
+                return { title: t('error.title'), description: t('error.default_message') };
+        }
     };
+
+    const error = getErrorInfo(status);
 
     const handleGoBack = () => {
         window.history.back();
@@ -72,7 +64,7 @@ export default function ErrorPage({ status }: ErrorPageProps) {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Button variant="outline" onClick={handleGoBack}>
                         <LucideArrowLeft className="size-4" />
-                        Go Back
+                        {t('common.back')}
                     </Button>
                     
                     <Link
@@ -80,7 +72,7 @@ export default function ErrorPage({ status }: ErrorPageProps) {
                         className={cn(buttonVariants({ variant: 'primary' }))}
                     >
                         <LucideHome className="size-4" />
-                        Go Home
+                        {t('error.go_home')}
                     </Link>
 
                     {status === 419 && (
@@ -89,7 +81,7 @@ export default function ErrorPage({ status }: ErrorPageProps) {
                             onClick={() => window.location.reload()}
                         >
                             <LucideRefreshCw className="size-4" />
-                            Refresh Page
+                            {t('common.refresh')}
                         </Button>
                     )}
                 </div>

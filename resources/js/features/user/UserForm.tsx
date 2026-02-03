@@ -1,6 +1,7 @@
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Select, SelectItem, SelectList, SelectPopup, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslation } from 'react-i18next';
 
 interface Role {
     id: number;
@@ -33,66 +34,67 @@ interface UserFormProps {
 
 export function UserForm({ data, errors, roles, onDataChange, mode = 'create' }: UserFormProps) {
     const isEditMode = mode === 'edit';
+    const { t } = useTranslation();
 
     return (
         <div className="space-y-6">
             <Field invalid={!!errors.name}>
-                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <FieldLabel htmlFor="name">{t('users.name')}</FieldLabel>
                 <Input
                     id="name"
                     value={data.name}
                     onChange={(e) => onDataChange('name', e.target.value)}
                     required
                     autoFocus
-                    placeholder="Enter user name"
+                    placeholder={t('users.name_placeholder')}
                 />
                 <FieldError match={!!errors.name}>{errors.name}</FieldError>
             </Field>
 
             <Field invalid={!!errors.email}>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">{t('users.email')}</FieldLabel>
                 <Input
                     id="email"
                     type="email"
                     value={data.email}
                     onChange={(e) => onDataChange('email', e.target.value)}
                     required
-                    placeholder="Enter email address"
+                    placeholder={t('users.email_placeholder')}
                 />
                 <FieldError match={!!errors.email}>{errors.email}</FieldError>
             </Field>
 
             <Field invalid={!!errors.password}>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
                 <Input
                     id="password"
                     type="password"
                     value={data.password}
                     onChange={(e) => onDataChange('password', e.target.value)}
                     required={!isEditMode}
-                    placeholder={isEditMode ? 'Leave blank to keep current password' : 'Enter password'}
+                    placeholder={isEditMode ? t('users.password_placeholder_edit') : t('users.password_placeholder')}
                 />
                 <FieldError match={!!errors.password}>{errors.password}</FieldError>
             </Field>
 
             <Field invalid={!!errors.password_confirmation}>
-                <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
+                <FieldLabel htmlFor="password_confirmation">{t('auth.confirm_password')}</FieldLabel>
                 <Input
                     id="password_confirmation"
                     type="password"
                     value={data.password_confirmation}
                     onChange={(e) => onDataChange('password_confirmation', e.target.value)}
                     required={!isEditMode}
-                    placeholder={isEditMode ? 'Confirm new password' : 'Confirm password'}
+                    placeholder={isEditMode ? t('users.password_confirm_placeholder_edit') : t('users.password_confirm_placeholder')}
                 />
                 <FieldError match={!!errors.password_confirmation}>{errors.password_confirmation}</FieldError>
             </Field>
 
             <Field invalid={!!errors.role}>
-                <FieldLabel>Role</FieldLabel>
+                <FieldLabel>{t('users.role')}</FieldLabel>
                 <Select value={data.role} onValueChange={(value) => onDataChange('role', value as string)}>
                     <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
+                        <SelectValue placeholder={t('users.select_role')} />
                     </SelectTrigger>
                     <SelectPopup>
                         <SelectList>

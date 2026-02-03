@@ -3,9 +3,11 @@ import { Field, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPasswordForm({ status }: { status?: string }) {
     const errors = usePage().props.errors;
+    const { t } = useTranslation();
 
     const { data, setData, post, processing } = useForm({
         email: '',
@@ -33,7 +35,7 @@ export default function ForgotPasswordForm({ status }: { status?: string }) {
                         name="email"
                         value={data.email}
                         autoComplete="username"
-                        placeholder="Enter your email"
+                        placeholder={t('auth.email_placeholder')}
                         onChange={(e) => setData('email', e.target.value)}
                     />
                     <FieldError match={!!errors.email}>{errors.email}</FieldError>
@@ -44,7 +46,7 @@ export default function ForgotPasswordForm({ status }: { status?: string }) {
                     className="my-4 w-full"
                     disabled={processing}
                 >
-                    Email Password Reset Link
+                    {t('auth.send_reset_link')}
                 </Button>
             </form>
         </>

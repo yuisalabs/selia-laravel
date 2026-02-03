@@ -7,18 +7,15 @@ import { FormEventHandler } from 'react';
 import { LucideCircleX, LucideSave } from 'lucide-react';
 import { Heading } from '@/components/ui/heading';
 import { RoleForm } from '@/features/role';
-
-interface Permission {
-    id: number;
-    name: string;
-    description: string | null;
-}
+import { useTranslation } from 'react-i18next';
+import type { Permission } from '@/types';
 
 interface RoleCreatePageProps {
     permissions: Permission[];
 }
 
 export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',
@@ -41,14 +38,14 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
 
     return (
         <>
-            <Head title="Create Role" />
+            <Head title={t('roles.create')} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Create Role</CardTitle>
-                            <CardDescription>Create a new role and assign permissions</CardDescription>
+                            <CardTitle>{t('roles.create')}</CardTitle>
+                            <CardDescription>{t('roles.create_description')}</CardDescription>
                         </CardHeader>
                         <CardBody>
                             <form onSubmit={submit} className="space-y-6">
@@ -63,7 +60,7 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
                                 <div className="flex items-center gap-4">
                                     <Button variant="primary" type="submit" disabled={processing}>
                                         <LucideSave />
-                                        Create
+                                        {t('common.create')}
                                     </Button>
                                     <Link
                                         as="button"
@@ -71,7 +68,7 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
                                         className={cn(buttonVariants({ variant: 'outline' }))}
                                     >
                                         <LucideCircleX />
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Link>
                                 </div>
                             </form>
@@ -83,13 +80,16 @@ export default function RoleCreatePage({ permissions }: RoleCreatePageProps) {
     );
 }
 
-RoleCreatePage.layout = (page: any) => {
+const CreateLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">Create Role</Heading>}
-            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Create' }]}
+            header={<Heading size="sm">{t('roles.create')}</Heading>}
+            breadcrumbs={[{ label: t('roles.title'), href: route('roles.index') }, { label: t('common.create') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+RoleCreatePage.layout = (page: any) => <CreateLayout>{page}</CreateLayout>;

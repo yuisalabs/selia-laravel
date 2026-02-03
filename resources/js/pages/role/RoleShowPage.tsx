@@ -8,39 +8,22 @@ import { Divider } from '@/components/ui/divider';
 import { LucideArrowLeft, LucideSquarePen } from 'lucide-react';
 import { Item } from '@/components/ui/item';
 import { Heading } from '@/components/ui/heading';
-
-interface Permission {
-    id: number;
-    name: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface Role {
-    id: number;
-    name: string;
-    guard_name: string;
-    created_at: string;
-    updated_at: string;
-    permissions: Permission[];
-    users: User[];
-}
+import { useTranslation } from 'react-i18next';
+import type { RoleWithRelations } from '@/types';
 
 interface RoleShowPageProps {
-    role: Role;
+    role: RoleWithRelations;
 }
 
 export default function RoleShowPage({ role }: RoleShowPageProps) {
+    const { t } = useTranslation();
+
     return (
         <>
-            <Head title={`Role: ${role.name}`} />
+            <Head title={`${t('roles.show')}: ${role.name}`} />
 
             <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+                <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 space-y-6">
                     <Card>
                         <CardHeader className="flex items-center justify-between">
                             <Link
@@ -49,7 +32,7 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                                 className={cn(buttonVariants({ variant: 'outline' }))}
                             >
                                 <LucideArrowLeft/>
-                                Back
+                                {t('common.back')}
                             </Link>
                             <div className="space-x-2">
                                 <Link
@@ -58,7 +41,7 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                                     className={cn(buttonVariants({ variant: 'secondary' }))}
                                 >
                                     <LucideSquarePen/>
-                                    Edit
+                                    {t('common.edit')}
                                 </Link>
                             </div>
                         </CardHeader>
@@ -66,28 +49,28 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                             <div className="flex items-center gap-2">
                                 <div>
                                     <CardTitle>{role.name}</CardTitle>
-                                    <CardDescription>Role details and information</CardDescription>
+                                    <CardDescription>{t('roles.show_description')}</CardDescription>
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Name</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('roles.name')}</h3>
                                     <p className="mt-1 text-sm text-foreground">{role.name}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Guard Name</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('roles.guard_name')}</h3>
                                     <p className="mt-1">
                                         <Badge variant="secondary">{role.guard_name}</Badge>
                                     </p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Created At</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('users.created_at')}</h3>
                                     <p className="mt-1 text-sm text-foreground">
                                         {new Date(role.created_at).toLocaleString()}
                                     </p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-muted">Updated At</h3>
+                                    <h3 className="text-sm font-medium text-muted">{t('users.updated_at')}</h3>
                                     <p className="mt-1 text-sm text-foreground">
                                         {new Date(role.updated_at).toLocaleString()}
                                     </p>
@@ -98,7 +81,7 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
 
                             <div>
                                 <h3 className="text-sm font-medium text-foreground mb-3">
-                                    Permissions ({role.permissions.length})
+                                    {t('permissions.title')} ({role.permissions.length})
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {role.permissions.length > 0 ? (
@@ -108,7 +91,7 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                                             </Badge>
                                         ))
                                     ) : (
-                                        <p className="text-sm text-muted">No permissions assigned</p>
+                                        <p className="text-sm text-muted">{t('roles.no_permissions')}</p>
                                     )}
                                 </div>
                             </div>
@@ -117,10 +100,10 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
 
                             <div>
                                 <h3 className="text-sm font-medium text-foreground mb-3">
-                                    Users with this role ({role.users.length})
+                                    {t('roles.users_with_role')} ({role.users?.length || 0})
                                 </h3>
                                 <div className="space-y-2">
-                                    {role.users.length > 0 ? (
+                                    {role.users && role.users.length > 0 ? (
                                         role.users.map((user) => (
                                             <Item
                                                 key={user.id}
@@ -135,12 +118,12 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
                                                     href={route('users.show', user.id)}
                                                     className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
                                                 >
-                                                    View
+                                                    {t('common.show')}
                                                 </Link>
                                             </Item>
                                         ))
                                     ) : (
-                                        <p className="text-sm text-muted">No users have this role</p>
+                                        <p className="text-sm text-muted">{t('roles.no_users')}</p>
                                     )}
                                 </div>
                             </div>
@@ -152,13 +135,16 @@ export default function RoleShowPage({ role }: RoleShowPageProps) {
     );
 }
 
-RoleShowPage.layout = (page: any) => {
+const ShowLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation();
     return (
         <AuthenticatedLayout
-            header={<Heading size="sm">Role Details</Heading>}
-            breadcrumbs={[{ label: 'Roles', href: route('roles.index') }, { label: 'Details' }]}
+            header={<Heading size="sm">{t('roles.show')}</Heading>}
+            breadcrumbs={[{ label: t('roles.title'), href: route('roles.index') }, { label: t('common.show') }]}
         >
-            {page}
+            {children}
         </AuthenticatedLayout>
     );
 };
+
+RoleShowPage.layout = (page: any) => <ShowLayout>{page}</ShowLayout>;
