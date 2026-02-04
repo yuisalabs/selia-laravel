@@ -53,6 +53,7 @@
             "@php artisan migrate --force",
             "@php artisan make:superadmin --email=superadmin@yuisalabs.dev --name=Super Admin --password=superadmin",
             "@php artisan db:seed",
+            "@php artisan route:trans:cache",
             "npm install",
             "npm run build"
         ],

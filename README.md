@@ -6,6 +6,20 @@ laravel new app --using=yuisalabs/selia-laravel
 
 Make sure to update your `APP_URL` in the `.env` file before using the route function. Then, run `npm run dev` to generate and watch routes properly during development.
 
+> [!WARNING]
+> This project uses `mcamara/laravel-localization`. You MUST ensure `APP_URL` matches your local development URL exactly (e.g. `http://selia-laravel.test` or `http://localhost:8000`).
+>
+> Additionally, whenever you modify routes, you MUST run:
+> ```bash
+> php artisan route:trans:cache
+> ```
+
+> [!CAUTION]
+> This project enforces **Conventional Commits** using `commitlint` and `husky`.
+> Ensure your commit messages follow the standard format (e.g., `feat: add new login page`).
+
+For detailed setup and development instructions, please read [HOW_TO_DEVELOP.md](HOW_TO_DEVELOP.md).
+
 ## Laravel Inertia React with TypeScript
 
 By default, packages like Laravel Breeze use regular JavaScript for React. However, this project is tailored for those who want an Inertia.js boilerplate with TypeScript, enhanced with the **Selia UI Kit**.
