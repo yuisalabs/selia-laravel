@@ -107,6 +107,10 @@ class Role extends Model
                 return (int) $permission;
             }
 
+            if (is_string($permission) && \Illuminate\Support\Str::isUuid($permission)) {
+                return $permission;
+            }
+
             return Permission::where('name', $permission)->firstOrFail()->id;
         })->all();
     }
